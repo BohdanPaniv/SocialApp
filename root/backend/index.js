@@ -2,11 +2,15 @@ const express = require("express");
 const mongoose = require("mongoose");
 const dotenv = require("dotenv");
 const PORT = process.env.PORT || 5000;
+const authRoute = require("./routes/authentication");
 
 const app = express();
 dotenv.config();
 
-app.use(express.json());
+app.use(express.json({ extended: true }));
+app.use("/api/auth", authRoute);
+
+main();
 
 async function main() {
     try {
@@ -24,5 +28,3 @@ async function main() {
         process.exit(1);
     }
 }
-
-main();
