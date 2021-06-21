@@ -5,7 +5,9 @@
   "main": "index.js",
   "scripts": {
     "star": "node index.js",
-    "server": "nodemon index.js"
+    "backend": "nodemon index.js",
+    "frontend": "npm --prefix ../frontend run start",
+    "dev": "concurrently \"npm run backend\" \"npm run frontend\""
   },
   "author": "Bohdan Paniv <bohdan.paniv@gmail.com>",
   "license": "ISC",
