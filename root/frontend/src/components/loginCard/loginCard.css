@@ -1,0 +1,59 @@
+.form-control-login, 
+.form-action-login, 
+.form-text-login{
+  display: flex;
+  width: 100%;
+}
+
+.login-form{
+  height: 300px;
+  padding: 20px;
+  width: 400px;
+  background-color: white;
+  border-radius: 10px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  box-shadow: 0 10px 20px rgba(0,0,0,0.19), 0 6px 6px rgba(0,0,0,0.23);
+}
+
+.form-control-login input,
+.form-action-login button,
+.form-text-login span{
+  width: 100%;
+}
+
+.form-input-login{
+  width: 100%;
+}
+
+.form-action-login .MuiButton-label{
+  text-transform: none;
+  font-size: 20px;
+}
+
+.form-action-login .login-button{
+  background-color: #1775ee;
+}
+
+.form-action-login .login-button:hover{
+  background-color: #1775ee;
+}
+
+.form-action-login .create-button{
+  background-color: rgb(33, 185, 33);
+}
+
+.form-action-login .create-button:hover{
+  background-color: rgb(33, 185, 33);
+}
+
+.form-text-login{
+  text-align: center;
+  justify-content: center;
+  color: #1775ee;
+}
+
+.last-element{
+  margin-bottom: 0!important;
+}
