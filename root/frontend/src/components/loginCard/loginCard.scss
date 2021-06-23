@@ -1,0 +1,94 @@
+$width-parameter: 100%;
+$blue-color: #1775ee;
+$create-button-color: rgb(33, 185, 33);
+$box-shadow: 0 10px 20px rgba(0,0,0,0.19), 0 6px 6px rgba(0,0,0,0.23);
+
+%form-components{
+  display: flex;
+  width: $width-parameter;
+}
+
+.login-card{
+  .login-form{
+
+    .form-input{
+      width: $width-parameter;
+      margin-bottom: 20px;
+    }
+  
+    .form-control{
+      @extend %form-components;
+  
+      input{
+        width: $width-parameter;
+      }
+    }
+  
+    .form-action{
+      @extend %form-components;
+      padding-bottom: 20px;
+  
+      button{
+        width: $width-parameter;
+      }
+  
+      .login-button{
+        background-color: $blue-color;
+      }
+  
+      .create-button{
+        background-color: $create-button-color;
+      }
+  
+      .MuiButton-label{
+        text-transform: none;
+        font-size: 20px;
+      }
+    }
+  
+    .form-text{
+      text-align: center;
+      justify-content: center;
+      padding-bottom: 20px;
+      color: $blue-color;
+      @extend %form-components;
+  
+      span{
+        width: $width-parameter;
+      }
+  
+      .change-password-link{
+        font-size: 16px;
+      }
+    }
+    
+    .last-element{
+      padding-bottom: 0!important;
+    }
+  }
+}
+
+@media (max-width: 900px){
+  .login-card{
+    width: 100%;
+    
+    .card-container{
+      background-color: #f0f2f5;
+      width: 100%;
+      max-width: 400px;
+      padding: 0;
+      box-shadow:none;
+    }
+
+    .form-input{
+      background-color: white;
+    }
+    
+    .login-button, 
+    .create-button, 
+    .log-into-button, 
+    .create-acount-button{
+      height: 35px;
+    }
+  }
+}
