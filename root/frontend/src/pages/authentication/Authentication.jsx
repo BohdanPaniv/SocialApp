@@ -1,4 +1,4 @@
-import "./authentication.css";
+import "./authentication.scss";
 import { useState } from "react";
 import LoginCard from "../../components/loginCard/LoginCard";
 import RegisterCard from "../../components/registerCard/RegisterCard";
