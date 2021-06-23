@@ -1,13 +1,14 @@
-import "./changePassword.css";
-import ChangePasswordCard from "../../components/changePasswordCard/ChangePasswordCard";
+import "./changePassword.scss";
+// import ChangePasswordCard from "../../components/changePasswordCard/ChangePasswordCard";
+import CheckEmailCard from "../../components/checkEmailCard/CheckEmailCard";
 
 const ChangePassword = () => {
   return (
     <div className="change-password">
-      <h1 className="change-passwor-logo">
+      <h1 className="logo">
         SocialApp
       </h1>
-      <ChangePasswordCard/>
+      <CheckEmailCard/>
     </div>
   );
 }
