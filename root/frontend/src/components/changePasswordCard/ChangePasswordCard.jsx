@@ -1,39 +1,52 @@
-import "./changePasswordCard.css";
+import "./changePasswordCard.scss";
 import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
+import Card from "../card/Card";
 
-const changePasswordCard = () => {
-  return (
-    <form className="change-password-form" noValidate>
-      <div className="change-password-form-text">
-        <span>
-          Please enter your email
-        </span>
-      </div>
-      <div className="change-password-form-control">
-        <TextField
-          type="email"
-          className="change-password-form-input"
-          label="Email"
-          variant="outlined"/>
-      </div>
-      <div className="change-password-form-btn-block">
-        <Button
-          variant="contained" 
-          className="change-password-cancel-button"
-          href="/"
-          color="primary">
-            Cancel
-        </Button>
-        <Button
-          variant="contained" 
-          className="change-password-search-button"
-          color="primary">
-            Search
-        </Button>
-      </div>
-    </form>
-  );
+const ChangePasswordCard = () => {
+  return(
+    <div className="change-password-card">
+      <Card>
+        <form className="change-password-form" noValidate>
+          <div className="form-text">
+            <span>
+              Enter your new Password
+            </span>
+          </div>
+          <div className="form-control">
+            <TextField
+              type="password"
+              autoComplete="on"
+              className="form-input"
+              label="New Password"
+              variant="outlined"
+            />
+          </div>
+          <div className="form-control">
+            <TextField
+              type="password"
+              autoComplete="on"
+              className="form-input"
+              label="Repeat Password"
+              variant="outlined"
+            />
+          </div>
+          <div className="form-control 
+                          execute-button 
+                          last-element"
+          >
+            <Button
+              variant="contained" 
+              className="change-password-button"
+              color="primary"
+            >
+              Search
+            </Button>
+          </div>
+        </form>
+      </Card>
+    </div>
+  )
 }
 
-export default changePasswordCard;
+export default ChangePasswordCard;
