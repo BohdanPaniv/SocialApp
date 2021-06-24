@@ -1,10 +1,10 @@
-import React from 'react';
 import ReactDOM from 'react-dom';
 import App from './App';
+import { SnackbarProvider } from 'notistack';
 
 ReactDOM.render(
-  <React.StrictMode>
+  <SnackbarProvider maxSnack={4}>
     <App />
-  </React.StrictMode>,
+  </SnackbarProvider>,
   document.getElementById('root')
 );
