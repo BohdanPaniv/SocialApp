@@ -8,8 +8,8 @@ const User = require("../models/User");
 router.post(
 	"/register",
 	[
-		body("surname", "Surname is empty").notEmpty(),
 		body("name", "Name is empty").notEmpty(),
+		body("surname", "Surname is empty").notEmpty(),
 		body("email")
 			.notEmpty()
 			.withMessage("Email is empty")
@@ -30,8 +30,7 @@ router.post(
 
 			if (!errors.isEmpty()) {
 				return res.status(400).json({
-					errors: errors.array(),
-					message: "Incorrect registration data"
+					errors: errors.array()
 				});
 			}
 			
