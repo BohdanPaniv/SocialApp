@@ -8,8 +8,10 @@ const User = require("../models/User");
 router.post(
 	"/register",
 	[
-		body("name", "Name is empty").notEmpty(),
-		body("surname", "Surname is empty").notEmpty(),
+		body("name", "Name is empty")
+			.notEmpty(),
+		body("surname", "Surname is empty")
+			.notEmpty(),
 		body("email")
 			.notEmpty()
 			.withMessage("Email is empty")
@@ -22,7 +24,8 @@ router.post(
 					}
 				});
 			}),
-		body("password", "Password is empty").notEmpty()
+		body("password", "Password is empty")
+			.notEmpty()
 	],
 	async (req, res) => {
 		try {
@@ -30,7 +33,7 @@ router.post(
 
 			if (!errors.isEmpty()) {
 				return res.status(400).json({
-					errors: errors.array()
+					message: errors.array()
 				});
 			}
 			
@@ -47,7 +50,9 @@ router.post(
 
 			await user.save();
 
-			res.status(201).json({ message: "User is created"});
+			res.json({
+				message: "User created"
+			});
 		} catch (error) {
 			res.status(500).json(error);
 		}
@@ -72,8 +77,7 @@ router.post(
 
 			if (!errors.isEmpty()) {
 				return res.status(400).json({
-					errors: errors.array(),
-					message: "Incorrect registration data"
+					message: errors.array()
 				});
 			}
 
@@ -82,26 +86,86 @@ router.post(
 			const user = await User.findOne({ email });
 
 			if (!user) {
-				return res.status(400).json({ message: "User not found"});
+				return res.status(400).json({
+					message: "User not found"
+				});
 			}
 
 			const isMatch = await bcrypt.compare(password, user.password);
 
 			if (!isMatch) {
-				return res.status(400).json({ message: "User not found"});
+				return res.status(400).json({
+					message: "User not found"
+				});
 			}
 
 			const token = jwtWebToken.sign(
 				{ userId: user.id },
-				process.env.jwtSecret,
-				{ expiresIn: "1h" }
+				process.env.jwtSecret
 			);
+
+			let time = 1000 * 60 * 60 * 24 * 30;
+			let expiresDate = new Date(new Date().getTime() + time);
+
+			res.cookie("token", token, {
+				expires: expiresDate,
+				httpOnly: true
+			});
 
 			res.json({
 				token,
-				userId: user.id
+				user: {
+					id: user.id,
+					surname: user.surname,
+					name: user.name,
+					email: user.email
+				}
 			});
 			
+		} catch (error) {
+			res.status(500).json(error);
+		}
+	}
+);
+
+// api/auth/user
+router.get(
+	"/user",
+	async (req, res) => {
+		try {
+			const token = req.cookies?.token;
+
+			if (!token) {
+				return res.status(400).json({
+					message: "User does not exist"
+				});
+			}
+
+			const decoded = jwtWebToken.verify(token, process.env.jwtSecret);
+
+			if (!decoded) {
+				return res.status(400).json({
+					message: "Incorrect token"
+				});
+			}
+
+			const user = await User.findById(decoded.userId);
+
+			if (!user) {
+				return res.status(400).json({
+					message: "User not found"
+				});
+			}
+
+			res.json({
+				token,
+				user: {
+					id: user.id,
+					surname: user.surname,
+					name: user.name,
+					email: user.email
+				}
+			});
 		} catch (error) {
 			res.status(500).json(error);
 		}
