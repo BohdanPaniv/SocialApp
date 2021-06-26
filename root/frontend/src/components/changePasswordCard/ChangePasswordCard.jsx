@@ -46,7 +46,7 @@ const ChangePasswordCard = () => {
         </form>
       </Card>
     </div>
-  )
-}
+  );
+};
 
 export default ChangePasswordCard;

@@ -5,12 +5,11 @@ import { useHistory } from "react-router-dom";
 import Card from "../card/Card";
 
 const CheckEmailCard = () => {
-
   const history = useHistory();
 
   const backToAuthPage = () => {
     history.push("/");
-  }
+  };
 
   return (
     <div className="check-email-card">
@@ -50,6 +49,6 @@ const CheckEmailCard = () => {
       </Card>
     </div>
   );
-}
+};
 
 export default CheckEmailCard;

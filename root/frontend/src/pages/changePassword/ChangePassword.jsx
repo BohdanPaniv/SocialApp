@@ -11,6 +11,6 @@ const ChangePassword = () => {
       <CheckEmailCard/>
     </div>
   );
-}
+};
 
 export default ChangePassword;
