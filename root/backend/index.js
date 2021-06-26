@@ -3,10 +3,13 @@ const mongoose = require("mongoose");
 const dotenv = require("dotenv");
 const PORT = process.env.PORT || 5000;
 const authRoute = require("./routes/authentication");
+const changePasswordRoute = require("./routes/changePassword");
+const cookieParser = require("cookie-parser");
 
 const app = express();
 dotenv.config();
 
+app.use(cookieParser());
 app.use(express.json({ extended: true }));
 app.use("/api/auth", authRoute);
 
