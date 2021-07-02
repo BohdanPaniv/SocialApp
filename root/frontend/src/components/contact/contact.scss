@@ -1,0 +1,21 @@
+.contact {
+  display: flex;
+  align-items: center;
+  margin-bottom: 15px;
+
+  .image-container {
+    margin-right: 10px;
+    position: relative;
+  }
+
+  .image {
+    height: 40px;
+    width: 40px;
+    border-radius: 50%;
+    object-fit: cover;
+  }
+
+  .user-name {
+    font-weight: 550;
+  }
+}
