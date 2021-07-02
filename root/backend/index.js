@@ -1,33 +1,63 @@
 const express = require("express");
-const mongoose = require("mongoose");
 const dotenv = require("dotenv");
-const PORT = process.env.PORT || 5000;
-const authRoute = require("./routes/authentication");
-const changePasswordRoute = require("./routes/changePassword");
-const cookieParser = require("cookie-parser");
-
-const app = express();
 dotenv.config();
 
+const PORT = process.env.PORT || 5000;
+
+const cookieParser = require("cookie-parser");
+const connection = require("./connection");
+const Grid = require("gridfs-stream");
+
+const authRoute = require("./routes/authentication");
+const postsRouter = require("./routes/posts");
+const feedRouter = require("./routes/feed");
+const filesRouter = require("./routes/files");
+const changePasswordRoute = require("./routes/changePassword");
+
+const mongoose = require("mongoose");
+const app = express();
+
 app.use(cookieParser());
-app.use(express.json({ extended: true }));
+app.use(express.json({extended: true, limit: '50mb'}));
 app.use("/api/auth", authRoute);
+app.use("/api/posts", postsRouter);
+app.use("/api/feed", feedRouter);
 
-main();
+let gridFSBucket;
+connection();
+	
+const conn = mongoose.connection;
+conn.once("open", function () {
+	gridFSBucket = Grid(conn.db, mongoose.mongo);
+	gridFSBucket.collection("photos");
+});
 
-async function main() {
-    try {
-        await mongoose.connect(process.env.MONGO_URL, {
-            useNewUrlParser: true,
-            useUnifiedTopology: true,
-            useCreateIndex: true
-        });
+app.use("/api/file", filesRouter);
 
-        app.listen(PORT, () => {
-            console.log(`Server has been started on port ${PORT}`)
-        });
-    } catch (error) {
-        console.log("Server Error", e.message);
-        process.exit(1);
-    }
-}
+app.get(
+  "/file/:filename", 
+	async (req, res) => {
+	try {
+		const file = await gridFSBucket.files.findOne({ filename: req.params.filename });
+		const readStream = gridFSBucket.createReadStream(file.filename);
+		readStream.pipe(res);
+	} catch (error) {
+		res.json({ message: "not found"});
+	}
+});
+
+app.delete(
+  "/:filename", 
+	async (req, res) => {
+	try {
+		await gridFSBucket.files.deleteOne({ filename: req.params.filename });
+		res.send("success");
+	} catch (error) {
+		console.log(error);
+		res.json({ message: "An error occured"});
+	}
+});
+
+app.listen(PORT, () => {
+	console.log(`Server has been started on port ${PORT}`)
+});
