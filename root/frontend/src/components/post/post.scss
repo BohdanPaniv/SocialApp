@@ -1,0 +1,84 @@
+$box-shadow: 0 10px 20px rgba(0,0,0,0.19), 0 6px 6px rgba(0,0,0,0.23);
+
+.post {
+  width: 100%;
+  border-radius: 10px;
+  box-shadow: $box-shadow;
+  margin: 30px 0;
+
+  .post-wrapper {
+    padding: 10px;
+  }
+
+  .post-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .top-left {
+    display: flex;
+    align-items: center;
+  }
+
+  .post-icon {
+    height: 40px;
+    width: 40px;
+    border-radius: 50%;
+    object-fit: cover;
+  }
+
+  .user-name {
+    margin: 0 10px;
+    font-weight: 550;
+  }
+
+  .date {
+    font-size: 12px;
+  }
+
+  .post-center {
+    margin: 20px 0 10px;
+  }
+
+  .image {
+    width: 100%;
+    margin-top: 20px;
+    max-height: 500px;
+    object-fit: contain;
+  }
+
+  .post-bottom {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin: 0 10px;
+  }
+
+  .bottom-left {
+    display: flex;
+    align-items: center;
+  }
+
+  .icon {
+    width: 25px;
+    height: 25px;
+    margin-right: 5px;
+  }
+
+  .like-counter {
+    font-size: 15px;
+  }
+
+  .comment-text {
+    border-bottom: 1px dashed grey;
+  }
+
+  .options {
+    -webkit-transform: rotate(90deg);
+    -moz-transform: rotate(90deg);
+    -o-transform: rotate(90deg);
+    -ms-transform: rotate(90deg);
+    transform: rotate(90deg);
+  }
+}
