@@ -9,26 +9,28 @@ import {
   LOGIN_FAIL,
   CLEAR_RESPONSE
 } from "./types";
-import axios from "axios";
+import axios from "./../../utils/API";
 import { returnResponse } from "./responseActions";
 
 export const logIn = (data) => {
   return async(dispatch) => {
     await axios
     .post("auth/login", data)
-    .then(res =>
+    .then(res => {
       dispatch({
         type: LOGIN_SUCCESS,
         payload: res.data
-      })
-    )
+      });
+    })
     .catch(err => {
       dispatch(
         returnResponse(err.response.data, err.response.status, REGISTER_FAIL)
       );
+
       dispatch({
         type: LOGIN_FAIL
       });
+      
       dispatch({
         type: CLEAR_RESPONSE
       });
@@ -44,6 +46,7 @@ export const register = (data) => {
       dispatch(
         returnResponse(res.data, res.status, REGISTER_SUCCESS)
       );
+
       dispatch({
         type: REGISTER_SUCCESS
       });
@@ -52,6 +55,7 @@ export const register = (data) => {
       dispatch(
         returnResponse(err.response.data, err.response.status, REGISTER_FAIL)
       );
+
       dispatch({
         type: REGISTER_FAIL
       });
@@ -82,10 +86,14 @@ export const loadUser = () =>{
       })
     )
     .catch(err => {
-      dispatch(returnResponse(err.response.data, err.response.status));
+      dispatch(
+        returnResponse(err.response.data, err.response.status)
+      );
+      
       dispatch({
         type: AUTH_ERROR
       });
+
       dispatch({
         type: CLEAR_RESPONSE
       });
