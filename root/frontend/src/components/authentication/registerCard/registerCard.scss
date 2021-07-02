@@ -1,78 +1,64 @@
 $blue-color: #1775ee;
 $green-color: rgb(33, 185, 33);
 
-%form-component-parameters{
-  display: flex;
-  width: 100%;
-}
+.register-card {
+  .form-input {
+    width: 100%;
+  }
 
-.register-card{
-  .register-form{
-    .form-input{
-      width: 100%;
+  .form-action {
+    display: flex;
+    width: 100%;
+    margin-bottom: 20px;
+  }
+
+  .btn {
+    text-transform: none;
+    font-size: 20px;
+  }
+
+  .log-into-button {
+    width: 100%;
+    background-color: $blue-color;
+
+    &:hover {
+      background-color: $blue-color;
     }
-  
-    .form-action {
-      display: flex;
-      width: 100%;
-      margin-bottom: 20px;
-  
-      .MuiButton-label{
-        text-transform: none;
-        font-size: 20px;
-      }
-  
-      .log-into-button{
-        background-color: $blue-color;
-      }
-  
-      .log-into-button:hover{
-        background-color: $blue-color;
-      }
-  
-      .create-acount-button{
-        background-color: $green-color;
-      }
-  
-      .create-acount-button:hover{
-        background-color: $green-color;
-      }
-  
-      button{
-        width: 100%;
-      }
+  }
+
+  .create-acount-button {
+    background-color: $green-color;
+    width: 100%;
+
+    &:hover {
+      background-color: $green-color;
     }
-  
-    .form-control{
-      @extend %form-component-parameters;
-      margin-bottom: 20px;
-  
-      input{
-        width: 100%;
-      }
-    }
-  
-    .form-text{
-      @extend %form-component-parameters;
-      margin-bottom: 20px;
-      text-align: center;
-  
-      span{
-        width: 100%;
-      }
-    }
-  
-    .last-element{
-      margin-bottom: 0;
-    }
+  }
+
+  .form-control {
+    display: flex;
+    width: 100%;
+    margin-bottom: 20px;
+  }
+
+  .form-content {
+    display: flex;
+    width: 100%;
+    margin-bottom: 20px;
+    text-align: center;
+    justify-content: center;
+  }
+
+  .last-element {
+    margin-bottom: 0;
   }
 }
 
 @media (max-width: 900px){
-  .register-card{
+  .register-card {
     width: 100%;
     
-    .card-container{
+    .card-container {
       background-color: #f0f2f5;
       width: 100%;
       max-width: 400px;
@@ -80,14 +66,14 @@ $green-color: rgb(33, 185, 33);
       box-shadow:none;
     }
 
-    .form-input{
+    .form-input {
       background-color: white;
     }
     
     .login-button, 
     .create-button, 
     .log-into-button, 
-    .create-acount-button{
+    .create-acount-button {
       height: 35px;
     }
   }

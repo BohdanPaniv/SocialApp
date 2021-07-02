@@ -4,19 +4,19 @@ import Button from '@material-ui/core/Button';
 import Card from "../../card/Card";
 import { useCallback, useEffect, useRef } from "react";
 import { register } from "../../../store/actions/authActions";
-import { connect } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { REGISTER_SUCCESS } from "../../../store/actions/types";
 
 const RegisterCard = ({
     isLogin,
-    setIsLogin,
-    register,
-    response
+    setIsLogin
 }) => {
   const name = useRef();
   const surname = useRef();
   const email = useRef();
   const password = useRef();
+  const response = useSelector(state => state.response);
+  const dispatch = useDispatch();
 
   const changeIsLogin = useCallback(() => {
     setIsLogin(!isLogin);
@@ -32,7 +32,7 @@ const RegisterCard = ({
       password: password.current.value
     };
 
-    register(user);
+    dispatch(register(user));
   };
 
   useEffect(() => {
@@ -44,7 +44,11 @@ const RegisterCard = ({
   return (
     <div className="register-card">
       <Card>
-        <form className="register-form" noValidate onSubmit={event => signUp(event) }>
+        <form
+          className="register-form"
+          noValidate 
+          onSubmit={event => signUp(event) }
+        >
           <div className="form-control">
             <TextField 
               className="form-input"
@@ -83,20 +87,22 @@ const RegisterCard = ({
           <div className="form-action">
             <Button
               variant="contained" 
-              className="create-acount-button"
+              className="create-acount-button btn"
               color="primary"
               type="submit"
             >
               Sign Up
             </Button>
           </div>
-          <div className="form-text">
-            <span>Already have Account?</span>
+          <div className="form-content">
+            <span>
+              Already have Account?
+            </span>
           </div>
           <div className="form-action last-element">
             <Button 
               variant="contained" 
-              className="log-into-button"
+              className="log-into-button btn"
               onClick={ changeIsLogin }
               color="primary"
             >
@@ -109,10 +115,4 @@ const RegisterCard = ({
   );
 };
 
-const mapStateToProps = (state) => ({
-  response: state.response
-});
-
-const mapDispatchToProps = { register };
-
-export default connect(mapStateToProps, mapDispatchToProps)(RegisterCard);
+export default RegisterCard;
