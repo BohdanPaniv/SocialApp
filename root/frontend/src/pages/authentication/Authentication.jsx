@@ -1,14 +1,23 @@
 import "./authentication.scss";
-import { useState } from "react";
-import LoginCard from "../../components/loginCard/LoginCard";
-import RegisterCard from "../../components/registerCard/RegisterCard";
+import { useState, useEffect } from "react";
+import LoginCard from "../../components/authentication/loginCard/LoginCard";
+import RegisterCard from "../../components/authentication/registerCard/RegisterCard";
+import { useMessage } from "../../hooks/useMessage";
+import { useSelector } from 'react-redux';
 
 const Authentication = () => {
-
   const [isLogin, setIsLogin] = useState(true);
+  const message = useMessage();
+  const response = useSelector(state => state.response);
+
+  useEffect(() => {
+    if (response.id){
+      message(response);
+    }
+  }, [response, message]);
 
   return (
-    <div className="auth">
+    <div className="auth-page">
       <div className="auth-container">
         <div className="auth-left">
           <h1 className="auth-logo">
@@ -23,16 +32,18 @@ const Authentication = () => {
             isLogin ? 
               <LoginCard
                 isLogin={ isLogin }
-                setIsLogin={ setIsLogin }/> 
+                setIsLogin={ setIsLogin }
+              /> 
               : 
               <RegisterCard
                 isLogin={ isLogin }
-                setIsLogin={ setIsLogin }/>
+                setIsLogin={ setIsLogin }
+              />
           }
         </div>
       </div>
     </div>
   );
-}
+};
 
 export default Authentication;
