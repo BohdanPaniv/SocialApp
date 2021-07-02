@@ -1,31 +1,25 @@
 import "./loginCard.scss";
-import { useRef } from "react";
-import TextField from "@material-ui/core/TextField";
-import Button from "@material-ui/core/Button";
-import Link from "@material-ui/core/Link";
-import { useHistory } from "react-router-dom";
+import {
+  TextField,
+  Button
+} from "@material-ui/core";
+import { useRef, useCallback } from "react";
+import { Link } from "react-router-dom";
 import Card from "../../card/Card";
+import { useDispatch } from "react-redux";
 import { logIn } from "../../../store/actions/authActions";
-import { connect } from 'react-redux';
 
 const LoginCard = ({
   isLogin,
-  setIsLogin,
-  logIn
+  setIsLogin
 }) => {
-  const history = useHistory();
   const email = useRef();
   const password = useRef();
+  const dispatch = useDispatch();
 
-  const changeIsLogin = () => {
+  const changeIsLogin = useCallback(() => {
     setIsLogin(!isLogin);
-  };
-
-  const changePasswordLink = (event) => {
-    event.preventDefault();
-    
-    history.push("/changePassword");
-  };
+  }, [isLogin, setIsLogin]);
 
   const signIn = (event) => {
     event.preventDefault();
@@ -35,13 +29,17 @@ const LoginCard = ({
       password: password.current.value
     };
 
-    logIn(user);
+    dispatch(logIn(user));
   };
 
   return (
     <div className="login-card">
       <Card>
-        <form className="login-form" noValidate onSubmit={event => signIn(event) }>
+        <form 
+          className="login-form" 
+          noValidate 
+          onSubmit={event => signIn(event) }
+        >
           <div className="form-control">
             <TextField
               type="email"
@@ -71,13 +69,14 @@ const LoginCard = ({
               Log In
             </Button>
           </div>
-          <div className="form-text">
+          <div className="form-content">
             <Link
-              component="button"
-              onClick={ event => changePasswordLink(event) }
-              className="change-password-link"
+              to="/changePassword"
+              className="link"
             >
+              <span className="change-password-link">
               Forgot Password?
+              </span>
             </Link>
           </div>
           <div className="form-action last-element">
@@ -96,10 +95,4 @@ const LoginCard = ({
   );
 };
 
-const mapStateToProps = (state) => ({
-  error: state.error
-});
-
-const mapDispatchToProps = { logIn };
-
-export default connect(mapStateToProps, mapDispatchToProps)(LoginCard);
+export default LoginCard;
