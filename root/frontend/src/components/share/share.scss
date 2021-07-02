@@ -1,0 +1,109 @@
+$box-shadow: 0 10px 20px rgba(0,0,0,0.19), 0 6px 6px rgba(0,0,0,0.23);
+
+.share {
+  width: 100%;
+  border-radius: 10px;
+  box-shadow: $box-shadow;
+
+  .form-top {
+    display: flex;
+    margin-bottom: 20px;
+  }
+
+  .share-form {
+    padding: 10px;
+  }
+
+  .share-icon {
+    height: 50px;
+    width: 50px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin-right: 10px;
+  }
+
+  .form-control {
+    width: 100%;
+  }
+
+  .form-input {
+    width: 100%;
+  }
+
+  .form-action {
+    flex: 3;
+  }
+
+  .form-bottom {
+    display: flex;
+    align-items: center;
+  }
+
+  .options {
+    display: flex;
+    padding-left: 10px;
+    width: 100%;
+    text-align: end;
+  }
+
+  .option {
+    display: flex;
+    align-items: center;
+    margin-right: 15px;
+    flex-basis: auto;
+    padding: 0 10px;
+
+    &:hover {
+      background-color: #f0f2f5;
+      border-radius: 15px;
+    }
+  }
+  
+  .icon {
+    font-size: 18px;
+    margin-right: 3px;
+  }
+
+  .option-text {
+    white-space: nowrap;
+    font-size: 14px;
+    font-weight: 500;
+  }
+
+  .share-btn {
+    padding: 7px;
+    background-color: green;
+    font-weight: 500;
+    color: white;
+    text-transform: none;
+
+    &:hover {
+      background-color: green;
+    }
+  }
+
+  .file {
+    display: none;
+  }
+
+  .image-container{
+    padding: 0 20px 10px 20px;
+    position: relative;
+  }
+  
+  .image{
+    width: 100%;
+    object-fit: cover;
+  }
+  
+  .cancel-btn{
+    position: absolute;
+    top: 0;
+    right: 20px;
+    cursor: pointer;
+    opacity: 0.7;
+    color: black;
+    background-color: white;
+    border-radius: 50%;
+  }
+}
