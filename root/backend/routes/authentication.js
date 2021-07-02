@@ -50,9 +50,7 @@ router.post(
 
 			await user.save();
 
-			res.json({
-				message: "User created"
-			});
+			res.json({ message: "User created" });
 		} catch (error) {
 			res.status(500).json(error);
 		}
@@ -82,16 +80,15 @@ router.post(
 			}
 
 			const { email, password } = req.body;
+			const foundUser = await User.findOne({ email });
 
-			const user = await User.findOne({ email });
-
-			if (!user) {
+			if (!foundUser) {
 				return res.status(400).json({
 					message: "User not found"
 				});
 			}
 
-			const isMatch = await bcrypt.compare(password, user.password);
+			const isMatch = await bcrypt.compare(password, foundUser.password);
 
 			if (!isMatch) {
 				return res.status(400).json({
@@ -100,7 +97,7 @@ router.post(
 			}
 
 			const token = jwtWebToken.sign(
-				{ userId: user.id },
+				{ userId: foundUser.id },
 				process.env.jwtSecret
 			);
 
@@ -112,14 +109,22 @@ router.post(
 				httpOnly: true
 			});
 
+			const user = {
+				id: foundUser.id,
+				surname: foundUser.surname,
+				name: foundUser.name,
+				email: foundUser.email,
+				profilePicture: foundUser.profilePicture,
+				coverPicture: foundUser.coverPicture,
+				desc: foundUser.desc,
+				city: foundUser.city,
+				from: foundUser.from,
+				relationship: foundUser.relationship
+			};
+
 			res.json({
 				token,
-				user: {
-					id: user.id,
-					surname: user.surname,
-					name: user.name,
-					email: user.email
-				}
+				user
 			});
 			
 		} catch (error) {
@@ -149,22 +154,30 @@ router.get(
 				});
 			}
 
-			const user = await User.findById(decoded.userId);
+			const foundUser = await User.findById(decoded.userId);
 
-			if (!user) {
+			if (!foundUser) {
 				return res.status(400).json({
 					message: "User not found"
 				});
 			}
 
+			const user = {
+				id: foundUser.id,
+				surname: foundUser.surname,
+				name: foundUser.name,
+				email: foundUser.email,
+				profilePicture: foundUser.profilePicture,
+				coverPicture: foundUser.coverPicture,
+				desc: foundUser.desc,
+				city: foundUser.city,
+				from: foundUser.from,
+				relationship: foundUser.relationship
+			};
+
 			res.json({
 				token,
-				user: {
-					id: user.id,
-					surname: user.surname,
-					name: user.name,
-					email: user.email
-				}
+				user
 			});
 		} catch (error) {
 			res.status(500).json(error);
