@@ -2,11 +2,12 @@ import {
   GET_POSTS_LOADING,
   GET_POSTS_LOADED,
   CREATION_POST_ERROR,
-  USER_POST_ADDED,
-  POST_LIKED,
-  POST_UNLIKED,
+  PROFILE_POST_ADDED,
+  PROFILE_POST_LIKED,
+  PROFILE_POST_UNLIKED,
   UNLIKE_POST_ERROR,
-  LIKE_POST_ERROR
+  LIKE_POST_ERROR,
+  LOGOUT_SUCCESS
 } from "../actions/types";
 
 const initialState = {
@@ -27,21 +28,36 @@ export default function userPostsReducer(state = initialState, action){
         ...action.payload,
         isLoading: false
       };
-    case USER_POST_ADDED:
-      return {
-        ...state,
-        posts: [action.payload, ...state.posts]
-      };
     case CREATION_POST_ERROR:
       return {
         ...state
       };
-    case POST_LIKED:
-    case POST_UNLIKED:
+    case PROFILE_POST_ADDED:
+    case PROFILE_POST_LIKED:
+    case PROFILE_POST_UNLIKED:
+      let profilePosts = [...state.posts];
+      
+      profilePosts = profilePosts.map(post => {
+        if (post._id === action.payload._id) {
+          return action.payload;
+        }
+
+        return post;
+      });
+
+      return {
+        ...state,
+        posts: profilePosts
+      }
     case UNLIKE_POST_ERROR:
     case LIKE_POST_ERROR:
-      return{
+      return {
         ...state
+      };
+    case LOGOUT_SUCCESS:
+      return {
+        ...state,
+        posts: []
       };
     default:
       return state;

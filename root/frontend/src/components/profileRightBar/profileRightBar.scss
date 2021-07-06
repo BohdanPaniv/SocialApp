@@ -1,0 +1,52 @@
+$blue: #1877f2;
+
+.profile-right-bar {
+  .follow-btn {
+    padding: 7px;
+    background-color: $blue;
+    font-weight: 500;
+    color: white;
+    text-transform: none;
+    margin-top: 20px;
+
+    &:hover {
+      background-color: $blue;
+    }
+  }
+
+  .title {
+    margin: 20px 0;
+  }
+
+  .info {
+    margin-bottom: 30px;
+  }
+
+  .info-item {
+    margin-bottom: 10px;
+  }
+
+  .info-key {
+    font-weight: 550;
+    margin-right: 10px;
+  }
+
+  .followers {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+  }
+
+  .follower-image {
+    height: 100px;
+    width: 100px;
+    object-fit: cover;
+    border-radius: 5px;
+  }
+
+  .follower {
+    display: grid;
+    margin: 0 25px 25px 0;
+    justify-items: center;
+  }
+}

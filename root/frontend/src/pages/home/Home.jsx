@@ -10,6 +10,9 @@ import { useSelector } from 'react-redux';
 const Home = () => {
   const message = useMessage();
   const response = useSelector(state => state.response);
+  const user = useSelector(store => store.auth.user);
+  const path = process.env.REACT_APP_GET_FILE;
+  const imageHref = user.profilePicture ? path + user.profilePicture : "/assets/default-user.png";
 
   useEffect(() => {
     if (response.id){
@@ -19,10 +22,17 @@ const Home = () => {
 
   return (
     <div className="home-page">
-      <TopBar />
+      <TopBar imageHref={imageHref}/>
       <div className="home-page-container">
-        <SideBar />
-        <Feed />
+        <SideBar
+          user={user} 
+          imageHref={imageHref}
+        />
+        <Feed 
+          user={user} 
+          isHome={true} 
+          owner={user}
+        />
         <RightBar />
       </div>
     </div>

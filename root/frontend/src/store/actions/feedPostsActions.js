@@ -1,4 +1,4 @@
-import axios from "./../../utils/API";
+import axios from "../../utils/API";
 import {
   GET_FEED_LOADED,
   GET_FEED_LOADING,
@@ -11,9 +11,7 @@ export const getFeed = (data) => {
       type: GET_FEED_LOADING
     });
 
-    await axios
-    .post("feed/getFeed", data)
-    .then(res => {
+    await axios.post("posts/getFeed", data).then(res => {
       dispatch({
         type: GET_FEED_LOADED,
         payload: res.data.posts.sort((a, b) => b.createdAt - a.createdAt)
@@ -25,4 +23,4 @@ export const getFeed = (data) => {
       })
     });
   };
-}
+};

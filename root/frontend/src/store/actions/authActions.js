@@ -7,16 +7,15 @@ import {
   AUTH_ERROR,
   LOGIN_SUCCESS,
   LOGIN_FAIL,
-  CLEAR_RESPONSE
+  CLEAR_RESPONSE,
+  LOGOUT_FAIL
 } from "./types";
 import axios from "./../../utils/API";
 import { returnResponse } from "./responseActions";
 
 export const logIn = (data) => {
   return async(dispatch) => {
-    await axios
-    .post("auth/login", data)
-    .then(res => {
+    await axios.post("auth/login", data).then(res => {
       dispatch({
         type: LOGIN_SUCCESS,
         payload: res.data
@@ -35,14 +34,12 @@ export const logIn = (data) => {
         type: CLEAR_RESPONSE
       });
     });
-  }
-}
+  };
+};
 
 export const register = (data) => {
   return async(dispatch) => {
-    await axios
-    .post("auth/register", data)
-    .then(res => {
+    await axios.post("auth/register", data).then(res => {
       dispatch(
         returnResponse(res.data, res.status, REGISTER_SUCCESS)
       );
@@ -64,22 +61,29 @@ export const register = (data) => {
     dispatch({
       type: CLEAR_RESPONSE
     });
-  }
-}
-
-export const logOut = () => {
-  return {
-    type: LOGOUT_SUCCESS
   };
 };
 
+export const logOut = () => {
+  return async(dispatch) => {
+    await axios.post("auth/logOut").then(res => {
+      dispatch({
+        type: LOGOUT_SUCCESS
+      });
+    })
+    .catch(error => {
+      dispatch({
+        type: LOGOUT_FAIL
+      });
+    });
+  }
+};
+
 export const loadUser = () =>{
-  return async (dispatch) => {
+  return async(dispatch) => {
     dispatch({ type: USER_LOADING });
   
-    await axios
-    .get("auth/user")
-    .then(res =>
+    await axios.get("auth/user").then(res =>
       dispatch({
         type: USER_LOADED,
         payload: res.data
@@ -98,5 +102,16 @@ export const loadUser = () =>{
         type: CLEAR_RESPONSE
       });
     });
-  }
-}
+  };
+};
+
+export const getUser = (data) => {
+  return async() => {
+    return await axios.post("users/getUser", data).then(res => {
+      return res.data;
+    })
+    .catch(error => {
+      console.log(error);
+    });
+  };
+};

@@ -1,10 +1,21 @@
 import "./sideBar.scss";
-import { PeopleAlt, RssFeed } from "@material-ui/icons";
+import {
+  PeopleAlt,
+  RssFeed,
+  ExitToApp 
+} from "@material-ui/icons";
 import { Link } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
+import { logOut } from "../../store/actions/authActions";
 
-const SideBard = () => {
-  const user = useSelector(store => store.auth.user);
+const SideBard = ({user, imageHref}) => {
+  const dispatch = useDispatch();
+
+  const logout = (event) => {
+    event.preventDefault();
+
+    dispatch(logOut());
+  }
 
   return (
     <div className="side-bar">
@@ -16,7 +27,7 @@ const SideBard = () => {
               className="item-link"
             >
               <img 
-                src="/assets/lion.jpg"
+                src={ imageHref }
                 alt="error"
                 className="image icon"
               />
@@ -46,6 +57,14 @@ const SideBard = () => {
                 Friends
               </span>
             </Link>
+          </li>
+          <li className="list-item" onClick={event => logout(event)}>
+            <div className="item-link">
+              <ExitToApp className="icon" />
+              <span className="item-text">
+                Exit
+              </span>
+            </div>
           </li>
         </ul>
         <hr className="wrapper-hr"/>

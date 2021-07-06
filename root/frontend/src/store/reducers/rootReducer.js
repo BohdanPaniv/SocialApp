@@ -1,12 +1,12 @@
 import { combineReducers } from "redux";
 import authReducer from "./authReducer";
-import userPostsReducer from "./userPostsReducer";
+import profilePostsReducer from "./profilePostsReducer";
 import responseReducer from "./responseReducer";
-import feedReducer from "./feedReducer";
+import feedReducer from "./feedPostsReducer";
 
 export const rootReducer = combineReducers({
   auth: authReducer,
   response: responseReducer,
-  userPosts: userPostsReducer,
-  feed: feedReducer
+  profilePosts: profilePostsReducer,
+  feedPosts: feedReducer
 });

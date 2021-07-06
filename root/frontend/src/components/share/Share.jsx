@@ -6,28 +6,33 @@ import {
 import { Button, TextField } from "@material-ui/core";
 import { useSelector, useDispatch } from "react-redux";
 import { useRef, useState } from "react";
-import { createPost } from "../../store/actions/userPostsActions";
+import { createPost } from "../../store/actions/postsActions";
 
-const Share = () => {
+const Share = ({ isHome }) => {
   const user = useSelector(store => store.auth.user);
   const dispatch = useDispatch();
   const [file, setFile] = useState();
   const description = useRef();
+  const path = process.env.REACT_APP_GET_FILE;
+  const imageHref = user.profilePicture ? path + user.profilePicture : "/assets/default-user.png";
 
   const sharePost = (event) => {
     event.preventDefault();
+    let text = description.current.value;
+    
+    if (text || file) {
+      const post = {
+        userId: user.id,
+        description: text,
+        imageName: file,
+        createdAt: Date.now()
+      };
 
-    const post = {
-      userId: user.id,
-      description: description.current.value,
-      image: file,
-      createdAt: Date.now()
-    };
-
-    dispatch(createPost(post));
-
-    setFile(null);
-    description.current.value = null;
+      dispatch(createPost({ post, isHome }));
+  
+      setFile(null);
+      description.current.value = null;
+    }
   }
 
   const ImageContainer = () => {
@@ -56,20 +61,20 @@ const Share = () => {
         <div className="form-top">
           <div className="form-content">
             <img
-              src="/assets/lion.jpg"
+              src={ imageHref }
               alt=""
               className="share-icon"
             />
           </div>
           <div className="form-control">
-          <TextField
-            id="filled-multiline-flexible"
-            label={`What's on your mind, ${user.name}?`}
-            multiline
-            variant="filled"
-            inputRef={ description }
-            className="form-input"
-          />
+            <TextField
+              id="filled-multiline-flexible"
+              label={`What's on your mind, ${user.name}?`}
+              multiline
+              variant="filled"
+              inputRef={ description }
+              className="form-input"
+            />
           </div>
         </div>
         {

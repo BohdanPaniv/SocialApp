@@ -4,7 +4,7 @@ import CheckEmailCard from "../../components/checkEmailCard/CheckEmailCard";
 
 const ChangePassword = () => {
   return (
-    <div className="change-password">
+    <div className="change-password-page">
       <h1 className="logo">
         SocialApp
       </h1>

@@ -1,10 +1,12 @@
 import {
   GET_FEED_LOADED,
   GET_FEED_LOADING,
-  FEED_ADDED,
+  FEED_POST_ADDED,
   GET_FEED_ERROR,
-  POST_LIKED,
-  POST_UNLIKED
+  FEED_POST_LIKED,
+  FEED_POST_UNLIKED,
+  FEED_COMMENT_ADDED,
+  LOGOUT_SUCCESS
 } from "../actions/types";
 
 const initialState = {
@@ -25,7 +27,7 @@ export default function feedReducer(state = initialState, action){
         feed: action.payload,
         isLoading: false
       };
-    case FEED_ADDED:
+    case FEED_POST_ADDED:
       return {
         ...state,
         feed: [action.payload, ...state.feed]
@@ -36,10 +38,27 @@ export default function feedReducer(state = initialState, action){
         isLoading: false,
         feed: null
       }
-    case POST_LIKED:
-    case POST_UNLIKED:
-      return{
-        ...state
+    case FEED_COMMENT_ADDED:
+    case FEED_POST_LIKED:
+    case FEED_POST_UNLIKED:
+      let feed = [...state.feed];
+      
+      feed = feed.map(post => {
+        if (post._id === action.payload._id) {
+          return action.payload;
+        }
+
+        return post;
+      });
+
+      return {
+        ...state,
+        feed: feed
+      }
+    case LOGOUT_SUCCESS:
+      return {
+        ...state,
+        feed: []
       };
     default:
       return state;

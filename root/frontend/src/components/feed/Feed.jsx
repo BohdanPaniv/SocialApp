@@ -1,26 +1,33 @@
 import "./feed.scss";
 import Share from "../share/Share";
 import Post from "../post/Post";
-import { getFeed } from "../../store/actions/feedActions";
+import { getFeed } from "../../store/actions/feedPostsActions";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
-const Feed = () => {
+const Feed = ({ user, isHome, owner }) => {
   const dispatch = useDispatch();
-  const user = useSelector(store => store.auth.user);
-  const feed = useSelector(store => store.feed?.feed);
+  const feed = useSelector(store => store.feedPosts?.feed);
 
   useEffect(() => {
-    dispatch(getFeed(user));
-  },[dispatch, user]);
+    dispatch(getFeed(owner));
+  }, [dispatch, owner]);
 
   return (
     <div className="feed">
       <div className="feed-wrapper">
-        <Share />
+        {
+          owner.id === user.id &&
+          <Share isHome/>
+        }
         {
           feed && feed.map(post => (
-            <Post key={post._id} post={post}/>
+            <Post
+              key={post._id}
+              post={post}
+              user={user}
+              isHome
+            />
           ))
         }
       </div>

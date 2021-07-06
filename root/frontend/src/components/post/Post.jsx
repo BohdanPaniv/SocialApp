@@ -1,33 +1,39 @@
 import "./post.scss";
-import { useSelector } from "react-redux";
 import {
-  MoreVert,
+  // MoreVert,
   ThumbUpAlt,
   ThumbUpAltOutlined
 } from "@material-ui/icons";
 import { useState, useEffect } from "react";
+import Comments from "../comments/Comments";
 import { useDispatch } from "react-redux";
-import { addLike, subtractLike } from "../../store/actions/userPostsActions";
+import { addLike, subtractLike } from "../../store/actions/postsActions";
+import { getUser } from "../../store/actions/authActions";
+import CircularProgress from '@material-ui/core/CircularProgress';
 
-const Post = ({ post }) => {
-  const user = useSelector(store => store.auth.user);
+const Post = ({ post, user, isHome }) => {
+  const [owner, setOwner] = useState();
   const [like, setLike] = useState(0);
   const [isLiked, setIsLiked] = useState(false);
+  const [isComments, setIsComments] = useState(false);
   const path = process.env.REACT_APP_GET_FILE;
   const date = new Date(post.createdAt).toLocaleString();
   const dispatch = useDispatch();
+  const defaultIcon = "/assets/default-user.png";
+  const imageHref = owner?.profilePicture ? path + owner.profilePicture : defaultIcon;
+  const commentCount = `${ post.comments.length } comment${ post.comments.length !== 1 ? "s" : "" }`;
 
   const likeHandler = () => {
+    setIsLiked(!isLiked);
+
     if (!isLiked) {
       setLike(like + 1);
-      setIsLiked(true);
-      dispatch(addLike({ user, post }));
+      dispatch(addLike({ user, post, isHome }));
       return;
     }
     
     setLike(like - 1);
-    setIsLiked(false);
-    dispatch(subtractLike({ user, post }));
+    dispatch(subtractLike({ user, post, isHome }));
   }
 
   useEffect(() => {
@@ -39,62 +45,95 @@ const Post = ({ post }) => {
     }
   }, [post, user]);
 
+  useEffect(() => {
+    const data = dispatch(getUser(post));
+    let isMount = true;
+
+    data.then(res => {
+      if (isMount) {
+        setOwner(res.user);
+      }
+    });
+
+    return () => {
+      isMount = false;
+    }
+  }, [dispatch, post]);
+
   return (
-    <div className="post">
-      <div className="post-wrapper">
-        <div className="post-top">
-          <div className="top-left">
-            <img
-              src="/assets/lion.jpg"
-              alt="error" 
-              className="post-icon"
-            />
-            <span className="user-name">
-              { user.name }
-            </span>
-            <span className="date">
-              { date }
-            </span>
-          </div>
-          <div className="top-right">
-           <MoreVert className="options"/>
-          </div>
-        </div>
-        <div className="post-center">
-          <span className="post-text">
-            { post.description }
-          </span>
-          {
-            post.imageName &&
-            (
-              <img
-                src={ path + post.imageName}
-                alt="error"
-                className="image"
-              />
-            )
-          }
-        </div>
-        <div className="post-bottom">
-          <div className="bottom-left" onClick={ likeHandler }>
-            {
-              isLiked ?
-              <ThumbUpAlt className="icon" />
-              :
-              <ThumbUpAltOutlined className="icon" />
-            }
-            <span className="like-counter">
-              { like }
-            </span>
-          </div>
-          <div className="bottom-right">
-            <div className="comment-text">
-              9 comments
+    <>
+    {
+      owner ? 
+        <div className="post">
+          <div className="post-wrapper">
+            <div className="post-top">
+              <div className="top-left">
+                <img
+                  src={ imageHref }
+                  alt="error" 
+                  className="post-icon"
+                />
+                <span className="user-name">
+                  { `${owner?.name} ${owner?.surname}` }
+                </span>
+                <span className="date">
+                  { date }
+                </span>
+              </div>
+              {/* <div className="top-right">
+              <MoreVert className="options"/>
+              </div> */}
             </div>
+            <div className="post-center">
+              <span className="post-text">
+                { post.description }
+              </span>
+              {
+                post.imageName &&
+                (
+                  <img
+                    src={ path + post.imageName}
+                    alt="error"
+                    className="image"
+                  />
+                )
+              }
+            </div>
+            <div className="post-bottom">
+              <div className="bottom-left" onClick={ likeHandler }>
+                {
+                  isLiked ?
+                  <ThumbUpAlt className="icon" />
+                  :
+                  <ThumbUpAltOutlined className="icon" />
+                }
+                <span className="like-counter">
+                  { like }
+                </span>
+              </div>
+              <div className="bottom-right">
+                <div
+                  className="comments-count"
+                  onClick={() => setIsComments(!isComments)}
+                >
+                  { commentCount }
+                </div>
+              </div>
+            </div>
+            {
+              isComments && 
+              <Comments
+                user={ user }
+                post={ post }
+                isHome
+              />
+            }
           </div>
         </div>
-      </div>
-    </div>
+      :
+      <CircularProgress />
+    }
+    </>
   );
 };
 

@@ -4,7 +4,7 @@ import { Search } from "@material-ui/icons";
 import { useRef } from "react";
 import { Link } from "react-router-dom";
 
-const TopBar = () => {
+const TopBar = ({ imageHref }) => {
   const user = useSelector(state => state.auth.user);
   const searchField = useRef();
 
@@ -50,7 +50,7 @@ const TopBar = () => {
           to={`/profile/${user.id}`}
         >
           <img
-            src="/assets/lion.jpg"
+            src={ imageHref }
             alt="error"
             className="image"
           />

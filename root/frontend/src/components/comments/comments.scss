@@ -1,0 +1,29 @@
+.comments {
+  border-top: 1px solid black;
+  margin-top: 10px;
+  padding-top: 10px;
+  padding-bottom: 10px;
+
+  .form-container {
+    display: flex;
+  }
+
+  .form-input {
+    margin-left: 10px;
+    width: 100%;
+    margin-right: 10px;
+  }
+
+  .add-btn {
+    padding: 7px;
+    background-color: green;
+    font-weight: 500;
+    color: white;
+    text-transform: none;
+    height: 47px;
+
+    &:hover {
+      background-color: green;
+    }
+  }
+}

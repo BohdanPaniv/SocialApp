@@ -1,0 +1,20 @@
+.comment-item {
+  margin-top: 20px;
+  display: flex;
+
+  .comment-input {
+    margin-left: 10px;
+    width: 100%;
+    overflow-wrap: anywhere;
+    align-self: center;
+  }
+  
+  .comment-text {
+    display: grid;
+  }
+
+  .user-name {
+    color: black;
+    text-decoration: none;
+  }
+}
