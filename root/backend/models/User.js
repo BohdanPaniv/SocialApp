@@ -3,20 +3,24 @@ const { Schema, model } = require("mongoose");
 const userSchema = new Schema({
 	surname: {
 		type: String,
-		require: true
+		require: true,
+		default: ""
 	},
 	name: {
 		type: String,
-		require: true
+		require: true,
+		default: ""
 	},
 	email: {
 		type: String,
 		require: true,
-		unique: true
+		unique: true,
+		default: ""
 	},
 	password: {
 		type: String,
 		require: true,
+		default: ""
 	},
 	profilePicture: {
 		type: String,
@@ -37,26 +41,22 @@ const userSchema = new Schema({
 	desc: {
 		type: String,
 		max: 50,
+		default: ""
 	},
 	city: {
 		type: String,
 		max: 50,
+		default: ""
 	},
 	from: {
 		type: String,
 		max: 50,
+		default: ""
 	},
 	relationship: {
 		type: Number,
 		enum: [1, 2, 3],
-	},
-	posts: {
-		type: Array,
-		default: []
-	},
-	feed: {
-		type: Array,
-		default: []
+		default: null
 	}
 });
 

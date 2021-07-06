@@ -1,34 +1,14 @@
 const router = require("express").Router();
 const bcrypt = require("bcryptjs");
 const jwtWebToken = require("jsonwebtoken");
+const User = require("../../models/User");
+const authValidators = require('./requestValidators');
 const { body, validationResult } = require("express-validator");
-const User = require("../models/User");
 
 // api/auth/register
-router.post(
-	"/register",
-	[
-		body("name", "Name is empty")
-			.notEmpty(),
-		body("surname", "Surname is empty")
-			.notEmpty(),
-		body("email")
-			.notEmpty()
-			.withMessage("Email is empty")
-			.isEmail()
-			.withMessage("Incorrect email")
-			.custom( async (email) => {
-				return await User.findOne({ email }).then(user => {
-					if (user) {
-						return Promise.reject("Email already in use");
-					}
-				});
-			}),
-		body("password", "Password is empty")
-			.notEmpty()
-	],
-	async (req, res) => {
-		try {
+router.post("/register", authValidators.registerRequestValidator, async (req, res) => {
+
+	try {
 			const errors = validationResult(req);
 
 			if (!errors.isEmpty()) {
@@ -58,19 +38,9 @@ router.post(
 );
 
 // api/auth/login
-router.post(
-	"/login",
-	[
-		body("email")
-			.notEmpty()
-			.withMessage("Email is empty")
-			.isEmail()
-			.withMessage("Email is incorrect"),
-		body("password", "Password is empty")
-			.notEmpty()
-	],
-	async (req, res) => {
-		try {
+router.post("/login", authValidators.loginRequestValidator, async (req, res) => {
+
+	try {
 			const errors = validationResult(req);
 
 			if (!errors.isEmpty()) {
@@ -83,17 +53,13 @@ router.post(
 			const foundUser = await User.findOne({ email });
 
 			if (!foundUser) {
-				return res.status(400).json({
-					message: "User not found"
-				});
+				return res.status(400).json({ message: "User not found" });
 			}
 
 			const isMatch = await bcrypt.compare(password, foundUser.password);
 
 			if (!isMatch) {
-				return res.status(400).json({
-					message: "User not found"
-				});
+				return res.status(400).json({ message: "User not found" });
 			}
 
 			const token = jwtWebToken.sign(
@@ -134,15 +100,14 @@ router.post(
 );
 
 // api/auth/user
-router.get(
-	"/user",
-	async (req, res) => {
-		try {
+router.get("/user", async (req, res) => {
+	
+	try {
 			const token = req.cookies?.token;
 
 			if (!token) {
-				return res.status(400).json({
-					message: "User does not exist"
+				return res.status(401).json({
+					message: "User is not authorized"
 				});
 			}
 
@@ -157,7 +122,7 @@ router.get(
 			const foundUser = await User.findById(decoded.userId);
 
 			if (!foundUser) {
-				return res.status(400).json({
+				return res.status(404).json({
 					message: "User not found"
 				});
 			}
@@ -179,6 +144,16 @@ router.get(
 				token,
 				user
 			});
+		} catch (error) {
+			res.status(500).json(error);
+		}
+	}
+);
+
+router.post("/logOut", async (req, res) => {
+		try {
+			res.clearCookie("token");
+			res.json({ message: "Cookie deleted"});
 		} catch (error) {
 			res.status(500).json(error);
 		}

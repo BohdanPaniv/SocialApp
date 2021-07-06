@@ -4,7 +4,7 @@
   "description": "node.js express",
   "main": "index.js",
   "scripts": {
-    "star": "node index.js",
+    "start": "node index.js",
     "backend": "nodemon index.js",
     "frontend": "npm --prefix ../frontend run start",
     "dev": "concurrently \"npm run backend\" \"npm run frontend\""
