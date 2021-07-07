@@ -2,7 +2,8 @@ import "./sideBar.scss";
 import {
   PeopleAlt,
   RssFeed,
-  ExitToApp 
+  ExitToApp ,
+  Settings
 } from "@material-ui/icons";
 import { Link } from "react-router-dom";
 import { useDispatch } from "react-redux";
@@ -23,7 +24,7 @@ const SideBard = ({user, imageHref}) => {
         <ul className="wrapper-list">
           <li className="list-item">
             <Link
-              to={`/profile/${user.id}`}
+              to={`/profile/${user._id}`}
               className="item-link"
             >
               <img 
@@ -57,6 +58,14 @@ const SideBard = ({user, imageHref}) => {
                 Friends
               </span>
             </Link>
+          </li>
+          <li className="list-item">
+            <div className="item-link">
+              <Settings className="icon" />
+              <span className="item-text">
+                Settings
+              </span>
+            </div>
           </li>
           <li className="list-item" onClick={event => logout(event)}>
             <div className="item-link">

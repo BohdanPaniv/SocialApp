@@ -7,7 +7,7 @@ import {
 import { useState, useEffect } from "react";
 import Comments from "../comments/Comments";
 import { useDispatch } from "react-redux";
-import { addLike, subtractLike } from "../../store/actions/postsActions";
+import { addLike, removeLike } from "../../store/actions/postsActions";
 import { getUser } from "../../store/actions/authActions";
 import CircularProgress from '@material-ui/core/CircularProgress';
 
@@ -16,29 +16,31 @@ const Post = ({ post, user, isHome }) => {
   const [like, setLike] = useState(0);
   const [isLiked, setIsLiked] = useState(false);
   const [isComments, setIsComments] = useState(false);
+  const dispatch = useDispatch();
   const path = process.env.REACT_APP_GET_FILE;
   const date = new Date(post.createdAt).toLocaleString();
-  const dispatch = useDispatch();
+  const profileStartPath = process.env.REACT_APP_URL;
+  const ownerLink = profileStartPath + `profile/${post.userId}`;
   const defaultIcon = "/assets/default-user.png";
   const imageHref = owner?.profilePicture ? path + owner.profilePicture : defaultIcon;
   const commentCount = `${ post.comments.length } comment${ post.comments.length !== 1 ? "s" : "" }`;
 
   const likeHandler = () => {
-    setIsLiked(!isLiked);
-
     if (!isLiked) {
       setLike(like + 1);
       dispatch(addLike({ user, post, isHome }));
+      setIsLiked(!isLiked);
       return;
     }
     
     setLike(like - 1);
-    dispatch(subtractLike({ user, post, isHome }));
+    dispatch(removeLike({ user, post, isHome }));
+    setIsLiked(!isLiked);
   }
 
   useEffect(() => {
     setLike(post.likes.length);
-    const isMatch = post.likes.find(value => value.userId === user.id);
+    const isMatch = post.likes.find(value => value.userId === user._id);
 
     if (isMatch) {
       setIsLiked(true);
@@ -46,8 +48,8 @@ const Post = ({ post, user, isHome }) => {
   }, [post, user]);
 
   useEffect(() => {
-    const data = dispatch(getUser(post));
     let isMount = true;
+    const data = dispatch(getUser(post));
 
     data.then(res => {
       if (isMount) {
@@ -68,26 +70,32 @@ const Post = ({ post, user, isHome }) => {
           <div className="post-wrapper">
             <div className="post-top">
               <div className="top-left">
-                <img
-                  src={ imageHref }
-                  alt="error" 
-                  className="post-icon"
-                />
-                <span className="user-name">
-                  { `${owner?.name} ${owner?.surname}` }
-                </span>
+                <a 
+                  href={ ownerLink }
+                  className="link-container">
+                  <img
+                    src={ imageHref }
+                    alt="error" 
+                    className="post-icon"
+                  />
+                  <span className="user-name">
+                    { `${owner?.name} ${owner?.surname}` }
+                  </span>
+                </a>
                 <span className="date">
-                  { date }
-                </span>
+                    { date }
+                  </span>
               </div>
               {/* <div className="top-right">
               <MoreVert className="options"/>
               </div> */}
             </div>
             <div className="post-center">
-              <span className="post-text">
-                { post.description }
-              </span>
+              <div className="post-text">
+                <span>
+                  { post.description }
+                </span>
+              </div>
               {
                 post.imageName &&
                 (

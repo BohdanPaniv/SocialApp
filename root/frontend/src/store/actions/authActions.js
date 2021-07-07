@@ -8,7 +8,11 @@ import {
   LOGIN_SUCCESS,
   LOGIN_FAIL,
   CLEAR_RESPONSE,
-  LOGOUT_FAIL
+  LOGOUT_FAIL,
+  FOLLOWING_ADDED,
+  FOLLOWING_ERROR,
+  FOLLOWING_REMOVED,
+  GET_USER_ERROR
 } from "./types";
 import axios from "./../../utils/API";
 import { returnResponse } from "./responseActions";
@@ -106,12 +110,47 @@ export const loadUser = () =>{
 };
 
 export const getUser = (data) => {
-  return async() => {
+  return async(dispatch) => {
     return await axios.post("users/getUser", data).then(res => {
       return res.data;
     })
     .catch(error => {
-      console.log(error);
+      dispatch({
+        type: GET_USER_ERROR
+      });
     });
   };
+};
+
+export const addFollowing = (data) => {
+  return async(dispatch) => {
+    await axios.post("users/addFollowing", data).then(res => {
+      dispatch({
+        type: FOLLOWING_ADDED,
+        payload: res.data.user
+      });
+    })
+    .catch(error => {
+      dispatch({
+        type: FOLLOWING_ERROR
+      });
+    });
+  }
+};
+
+export const removeFollowing = (data) => {
+  return async(dispatch) => {
+    await axios.post("users/removeFollowing", data).then(res => {
+      console.log(res.data);
+      dispatch({
+        type: FOLLOWING_REMOVED,
+        payload: res.data.user
+      });
+    })
+    .catch(error => {
+      dispatch({
+        type: FOLLOWING_ERROR
+      });
+    });
+  }
 };

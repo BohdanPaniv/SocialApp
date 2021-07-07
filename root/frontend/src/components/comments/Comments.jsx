@@ -8,6 +8,7 @@ import { addComment } from "../../store/actions/postsActions";
 const Comments = ({ user, post, isHome }) => {
   const comment = useRef();
   const path = process.env.REACT_APP_GET_FILE;
+  const userProfileImage = user.profilePicture? path + user.profilePicture : "assets/default-user.png";
   const dispatch = useDispatch();
 
   const addUserComment = (event) => {
@@ -18,7 +19,7 @@ const Comments = ({ user, post, isHome }) => {
     }
 
     const userComment = {
-      userId: user.id,
+      userId: user._id,
       comment: comment.current.value,
       date: Date.now()
     };
@@ -39,7 +40,7 @@ const Comments = ({ user, post, isHome }) => {
               onSubmit={event => addUserComment(event) }
           >
             <img
-                src={ path + user.profilePicture }
+                src={ userProfileImage }
                 alt="error" 
                 className="post-icon"
               />

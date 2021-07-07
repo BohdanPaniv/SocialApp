@@ -2,18 +2,18 @@ import "./profile.scss";
 import TopBar from "../../components/topBar/TopBar";
 import SideBar from "../../components/sideBar/SideBar";
 import Feed from "../../components/feed/Feed";
-import RightBar from "../../components/rightBar/RightBar";
 import { useSelector, useDispatch } from "react-redux";
 import { useParams } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { getUser } from "../../store/actions/authActions";
+import ProfileRightBar from "../../components/profileRightBar/ProfileRightBar";
 
 const Profile = () => {
   const user = useSelector(store => store.auth.user);
   const dispatch = useDispatch();
   const [owner, setOwner] = useState();
   const { id } = useParams();
-  const ownerName = `${owner?.name} ${owner?.surname}`;
+  const ownerName = owner && `${owner.name} ${owner.surname}`;
   const path = process.env.REACT_APP_GET_FILE;
   const defaultIcon = "/assets/default-user.png";
   const defaultBackground = "/assets/background.jpg";
@@ -41,49 +41,55 @@ const Profile = () => {
   }, [dispatch, id]);
   
   return (
-      <div className="profile-page">
-        <TopBar imageHref={ userImageHref }/>
-        <div className="profile-page-container">
-          <SideBar
-            user={ user }
-            imageHref={ userImageHref }
-          />
-          <div className="container-right">
-            <div className="right-top">
-              <div className="profile-cover">
-                <img 
-                  src={ backgroundHref }
-                  alt="" 
-                  className="cover-image"
-                />
-                <img 
-                  src={ ownerImageHref }
-                  alt="" 
-                  className="profile-image" 
-                />
-              </div>
-              <div className="profile-info">
-                <h2 className="name">
-                  { ownerName }
-                </h2>
-              </div>
+    <div className="profile-page">
+      <TopBar
+        imageHref={ userImageHref }
+        user={ user }
+      />
+      <div className="profile-page-container">
+        <SideBar
+          user={ user }
+          imageHref={ userImageHref }
+        />
+        <div className="container-right">
+          <div className="right-top">
+            <div className="profile-cover">
+              <img 
+                src={ backgroundHref }
+                alt="" 
+                className="cover-image"
+              />
+              <img 
+                src={ ownerImageHref }
+                alt="" 
+                className="profile-image" 
+              />
             </div>
-            <div className="right-bottom">
-              {
-                owner &&
-                <>
-                  <Feed
-                    user={ user }
-                    isHome={ true }
-                    owner={ owner }
-                  />
-                  <RightBar profile />
-                </>
-              }
+            <div className="profile-info">
+              <h2 className="name">
+                { ownerName }
+              </h2>
             </div>
+          </div>
+          <div className="right-bottom">
+            {
+              owner &&
+              <>
+                <Feed
+                  user={ user }
+                  isHome={ false }
+                  owner={ owner }
+                />
+                <ProfileRightBar 
+                  user={ user }
+                  owner={ owner }
+                />
+              </>
+            }
           </div>
         </div>
       </div>
+    </div>
   );
 };
 

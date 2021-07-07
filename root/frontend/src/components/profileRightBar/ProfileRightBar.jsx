@@ -1,34 +1,60 @@
 import "./profileRightBar.scss";
 import { Button } from "@material-ui/core";
-import { Add } from "@material-ui/icons";
-// import { useState } from "react";
+import { Add, Remove } from "@material-ui/icons";
+import { useState, useEffect } from "react";
+import { useDispatch } from "react-redux";
+import { addFollowing, removeFollowing } from "../../store/actions/authActions";
 
-const ProfileRightBar = () => {
-  // const [isFollow, setIsFollow] = useState(false);
+const ProfileRightBar = ({ user, owner }) => {
+  const [isFollow, setIsFollow] = useState(false);
+  const dispatch = useDispatch();
 
-  const Follower = () => {
+  const addFollowingHandle = () => {
+    if (isFollow) {
+      dispatch(removeFollowing({ user, owner }));
+    }
+    else {
+      dispatch(addFollowing({ user, owner }));
+    }
+
+    setIsFollow(!isFollow);
+  };
+
+  useEffect(() => {
+    const isMatch = user.following.find(item => item.userId === owner._id);
+
+    if (isMatch) {
+      setIsFollow(true);
+    }
+  }, [user, owner]);
+
+  const FollowButton = () => {
     return(
-      <div className="follower">
-        <img
-          src="/assets/default-user.png"
-          alt="error" 
-          className="follower-image"
-        />
-        <span className="follower-name">
-          John Cena
-        </span>
-      </div>
-    );
+      <Button 
+        variant="contained"
+        className="follow-btn"
+        onClick={ addFollowingHandle }
+      >
+        {
+          isFollow ?
+          <>
+            UnFollow <Remove />
+          </>
+          :
+          <>
+            Follow <Add/>
+          </>
+        }
+      </Button>
+    )
   };
 
   return(
     <div className="profile-right-bar">
-      <Button 
-        variant="contained"
-        className="follow-btn"
-      >
-        Follow <Add/>
-      </Button>
+      {
+        owner._id !== user._id &&
+        <FollowButton />
+      }
       <h2 className="title">
           User information
       </h2>
@@ -38,7 +64,7 @@ const ProfileRightBar = () => {
             City:
           </span>
           <span className="info-value">
-            New York
+            { user.city }
           </span>
         </div>
         <div className="info-item">
@@ -46,7 +72,7 @@ const ProfileRightBar = () => {
             From:
           </span>
           <span className="info-value">
-            Lviv
+            { user.from }
           </span>
         </div>
         <div className="info-item">
@@ -58,18 +84,12 @@ const ProfileRightBar = () => {
           </span>
         </div>
       </div>
-      <h2 className="title">
-          Friends
-      </h2>
-      <div className="followers">
-        <Follower />
-        <Follower />
-        <Follower />
-        <Follower />
-        <Follower />
-        <Follower />
-        <Follower />
-      </div>
+      <h3 className="link">
+          Followers { owner.followers.length }
+      </h3>
+      <h3 className="link">
+          Following { owner.following.length }
+      </h3>
     </div> 
   )
 }

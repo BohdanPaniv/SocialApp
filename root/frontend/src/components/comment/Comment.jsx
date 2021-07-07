@@ -6,11 +6,11 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 
 const Comment = ({ user, comment }) => {
   const path = process.env.REACT_APP_GET_FILE;
-  const startPath = process.env.REACT_APP_URL;
+  const profileStartPath = process.env.REACT_APP_URL;
   const dispatch = useDispatch();
   const [owner, setOwner] = useState();
   const date = new Date(comment.date).toLocaleString();
-  const ownerLink = startPath + `profile/${comment.userId}`;
+  const ownerLink = profileStartPath + `profile/${comment.userId}`;
 
   useEffect(() => {
     const data = dispatch(getUser(comment));

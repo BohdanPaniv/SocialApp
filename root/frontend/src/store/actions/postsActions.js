@@ -18,7 +18,7 @@ import {
 import axios from "../../utils/API";
 import { returnResponse } from "./responseActions";
 
-export const createPost = ({post, isHome}) => {
+export const createPost = ({ post, isHome }) => {
   return async(dispatch) => {
     let imageName = null;
 
@@ -101,9 +101,9 @@ export const addLike = ({ user, post, isHome }) => {
   };
 };
 
-export const subtractLike = ({ user, post, isHome }) => {
+export const removeLike = ({ user, post, isHome }) => {
   return async(dispatch) => {
-    await axios.post("posts/subtractLike", { user, post}).then(res => {
+    await axios.post("posts/removeLike", { user, post}).then(res => {
       if (isHome) {
         dispatch({
           type: FEED_POST_UNLIKED,

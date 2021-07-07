@@ -2,10 +2,10 @@ import "./home.scss";
 import TopBar from "../../components/topBar/TopBar";
 import SideBar from "../../components/sideBar/SideBar";
 import Feed from "../../components/feed/Feed";
-import RightBar from "../../components/rightBar/RightBar";
 import { useMessage } from "../../hooks/useMessage";
 import { useEffect } from "react";
 import { useSelector } from 'react-redux';
+import HomeRightBar from "../../components/homeRightBar/HomeRightBar";
 
 const Home = () => {
   const message = useMessage();
@@ -22,18 +22,21 @@ const Home = () => {
 
   return (
     <div className="home-page">
-      <TopBar imageHref={imageHref}/>
+      <TopBar 
+        imageHref={ imageHref }
+        user={ user }
+      />
       <div className="home-page-container">
         <SideBar
-          user={user} 
-          imageHref={imageHref}
+          user={ user } 
+          imageHref={ imageHref }
         />
         <Feed 
-          user={user} 
-          isHome={true} 
-          owner={user}
+          user={ user } 
+          isHome={ true } 
+          owner={ user }
         />
-        <RightBar />
+        <HomeRightBar user={ user }/>
       </div>
     </div>
   );

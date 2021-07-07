@@ -1,11 +1,9 @@
 import "./topBar.scss";
-import { useSelector } from "react-redux";
 import { Search } from "@material-ui/icons";
 import { useRef } from "react";
 import { Link } from "react-router-dom";
 
-const TopBar = ({ imageHref }) => {
-  const user = useSelector(state => state.auth.user);
+const TopBar = ({ imageHref, user }) => {
   const searchField = useRef();
 
   const search = (event) => {
@@ -47,7 +45,7 @@ const TopBar = ({ imageHref }) => {
       <div className="top-bar-right">
         <Link
           className="profile-menu"
-          to={`/profile/${user.id}`}
+          to={`/profile/${user?._id}`}
         >
           <img
             src={ imageHref }
@@ -55,7 +53,7 @@ const TopBar = ({ imageHref }) => {
             className="image"
           />
           <span className="name">
-            { user.name }
+            { user?.name }
           </span>
         </Link>
       </div>

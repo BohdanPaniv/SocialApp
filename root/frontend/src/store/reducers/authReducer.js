@@ -7,7 +7,10 @@ import {
   LOGOUT_SUCCESS,
   REGISTER_SUCCESS,
   REGISTER_FAIL,
-  LOGOUT_FAIL
+  LOGOUT_FAIL,
+  FOLLOWING_ADDED,
+  FOLLOWING_ERROR,
+  FOLLOWING_REMOVED
 } from '../actions/types';
 
 const initialState = {
@@ -31,6 +34,12 @@ export default function authReducer(state = initialState, action){
         isAuthenticated: true,
         isLoading: false,
       };
+    case FOLLOWING_ADDED:
+    case FOLLOWING_REMOVED:
+      return {
+        ...state,
+        user: action.payload
+      };
     case LOGIN_SUCCESS:
     case REGISTER_SUCCESS:
       return {
@@ -51,6 +60,7 @@ export default function authReducer(state = initialState, action){
         isLoading: false
       };
     case LOGOUT_FAIL:
+    case FOLLOWING_ERROR:
       return {
         ...state
       };

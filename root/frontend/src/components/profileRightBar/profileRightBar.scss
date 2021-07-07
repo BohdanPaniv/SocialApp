@@ -1,6 +1,11 @@
 $blue: #1877f2;
 
 .profile-right-bar {
+  flex: 3;
+  position: sticky;
+  top: 60px;
+  height: calc(100vh - 60px);
+  
   .follow-btn {
     padding: 7px;
     background-color: $blue;
@@ -31,22 +36,8 @@ $blue: #1877f2;
     margin-right: 10px;
   }
 
-  .followers {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: flex-start;
-  }
-
-  .follower-image {
-    height: 100px;
-    width: 100px;
-    object-fit: cover;
-    border-radius: 5px;
-  }
-
-  .follower {
-    display: grid;
-    margin: 0 25px 25px 0;
-    justify-items: center;
+  .link {
+    padding: 10px 0;
+    color: $blue;
   }
 }

@@ -13,6 +13,8 @@ const Share = ({ isHome }) => {
   const dispatch = useDispatch();
   const [file, setFile] = useState();
   const description = useRef();
+  const profileStartPath = process.env.REACT_APP_URL;
+  const ownerLink = profileStartPath + `profile/${user._id}`;
   const path = process.env.REACT_APP_GET_FILE;
   const imageHref = user.profilePicture ? path + user.profilePicture : "/assets/default-user.png";
 
@@ -22,7 +24,7 @@ const Share = ({ isHome }) => {
     
     if (text || file) {
       const post = {
-        userId: user.id,
+        userId: user._id,
         description: text,
         imageName: file,
         createdAt: Date.now()
@@ -56,15 +58,20 @@ const Share = ({ isHome }) => {
       <form
         className="share-form"
         noValidate 
-        onSubmit={event => sharePost(event)}
+        onSubmit={ event => sharePost(event) }
       >
         <div className="form-top">
           <div className="form-content">
-            <img
-              src={ imageHref }
-              alt=""
-              className="share-icon"
-            />
+            <a  
+              href={ownerLink}
+              className="link-container"
+            >
+              <img
+                src={ imageHref }
+                alt=""
+                className="share-icon"
+              />
+            </a>
           </div>
           <div className="form-control">
             <TextField

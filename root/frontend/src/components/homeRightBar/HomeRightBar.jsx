@@ -1,26 +1,21 @@
 import "./homeRightBar.scss";
 import Contact from "../contact/Contact";
 
-const HomeRightBar = () => {
-
-  const contact = {
-    surname: "Cena",
-    name: "John",
-    image: "/assets/default-user.png", 
-  };
-
+const HomeRightBar = ({ user }) => {
   return(
     <div className="home-right-bar">
       <h2 className="title">
-          Contacts
+          Following
       </h2>
       <ul className="frient-list">
-        <Contact contact={ contact } />
-        <Contact contact={ contact } />
-        <Contact contact={ contact } />
-        <Contact contact={ contact } />
-        <Contact contact={ contact } />
-        <Contact contact={ contact } />
+        {
+          user.following.map((user, id) => (
+            <Contact
+              key={ id }
+              contact={ user }
+            />
+          ))
+        }
       </ul>
     </div>
   )
