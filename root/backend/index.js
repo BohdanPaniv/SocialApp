@@ -6,7 +6,7 @@ dotenv.config();
 const cookieParser = require("cookie-parser");
 const dbConnection = require("./connection");
 
-const authRoute = require("./routes/authantication/authentication");
+const authRoute = require("./routes/authentication/authentication");
 const postsRouter = require("./routes/posts/posts");
 const userRouter = require("./routes/users/users");
 const filesRouter = require("./routes/files/files");
@@ -19,7 +19,7 @@ const app = express();
 dbConnection();
 
 app.use(cookieParser());
-app.use(express.json({extended: true, limit: '50mb'}));
+app.use(express.json({ extended: true, limit: '50mb' }));
 app.use("/api/auth", authRoute);
 app.use("/api/posts", postsRouter);
 app.use("/api/users", userRouter);

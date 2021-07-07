@@ -3,13 +3,15 @@ const bcrypt = require("bcryptjs");
 const jwtWebToken = require("jsonwebtoken");
 const User = require("../../models/User");
 const authValidators = require('./requestValidators');
-const { body, validationResult } = require("express-validator");
+const { validationResult } = require("express-validator");
 
 // api/auth/register
 router.post("/register", authValidators.registerRequestValidator, async (req, res) => {
 
-	try {
+		try {
 			const errors = validationResult(req);
+
+			console.log(errors)
 
 			if (!errors.isEmpty()) {
 				return res.status(400).json({
@@ -40,7 +42,7 @@ router.post("/register", authValidators.registerRequestValidator, async (req, re
 // api/auth/login
 router.post("/login", authValidators.loginRequestValidator, async (req, res) => {
 
-	try {
+		try {
 			const errors = validationResult(req);
 
 			if (!errors.isEmpty()) {
@@ -75,18 +77,8 @@ router.post("/login", authValidators.loginRequestValidator, async (req, res) => 
 				httpOnly: true
 			});
 
-			const user = {
-				id: foundUser.id,
-				surname: foundUser.surname,
-				name: foundUser.name,
-				email: foundUser.email,
-				profilePicture: foundUser.profilePicture,
-				coverPicture: foundUser.coverPicture,
-				desc: foundUser.desc,
-				city: foundUser.city,
-				from: foundUser.from,
-				relationship: foundUser.relationship
-			};
+			const user = foundUser.toObject();
+			delete user.password;
 
 			res.json({
 				token,
@@ -102,7 +94,7 @@ router.post("/login", authValidators.loginRequestValidator, async (req, res) => 
 // api/auth/user
 router.get("/user", async (req, res) => {
 	
-	try {
+		try {
 			const token = req.cookies?.token;
 
 			if (!token) {
@@ -119,7 +111,7 @@ router.get("/user", async (req, res) => {
 				});
 			}
 
-			const foundUser = await User.findById(decoded.userId);
+			const foundUser = await User.findById(decoded.userId).select("-password");
 
 			if (!foundUser) {
 				return res.status(404).json({
@@ -127,22 +119,9 @@ router.get("/user", async (req, res) => {
 				});
 			}
 
-			const user = {
-				id: foundUser.id,
-				surname: foundUser.surname,
-				name: foundUser.name,
-				email: foundUser.email,
-				profilePicture: foundUser.profilePicture,
-				coverPicture: foundUser.coverPicture,
-				desc: foundUser.desc,
-				city: foundUser.city,
-				from: foundUser.from,
-				relationship: foundUser.relationship
-			};
-
 			res.json({
 				token,
-				user
+				user: foundUser
 			});
 		} catch (error) {
 			res.status(500).json(error);

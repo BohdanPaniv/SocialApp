@@ -34,14 +34,9 @@ const userSchema = new Schema({
 		type: Array,
 		default: [],
 	},
-	followings: {
+	following: {
 		type: Array,
 		default: [],
-	},
-	desc: {
-		type: String,
-		max: 50,
-		default: ""
 	},
 	city: {
 		type: String,

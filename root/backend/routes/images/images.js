@@ -17,7 +17,7 @@ router.get("/file/:filename", async (req, res) => {
 		const readStream = gridFSBucket.createReadStream(file.filename);
 		readStream.pipe(res);
 	} catch (error) {
-		res.json({ message: "not found"});
+		res.json({ message: "Not found"});
 	}
 });
 

@@ -5,7 +5,8 @@ async function connection() {
     const connectionParams = {
       useNewUrlParser: true,
 			useUnifiedTopology: true,
-			useCreateIndex: true
+			useCreateIndex: true,
+			useFindAndModify: false
     };
 
 		await mongoose.connect(process.env.MONGO_URL, connectionParams);
