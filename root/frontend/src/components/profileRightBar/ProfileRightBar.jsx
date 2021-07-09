@@ -3,7 +3,7 @@ import { Button } from "@material-ui/core";
 import { Add, Remove } from "@material-ui/icons";
 import { useState, useEffect } from "react";
 import { useDispatch } from "react-redux";
-import { addFollowing, removeFollowing } from "../../store/actions/authActions";
+import { addFollowing, removeFollowing } from "../../store/actions/userActions";
 
 const ProfileRightBar = ({ user, owner }) => {
   const [isFollow, setIsFollow] = useState(false);
@@ -35,16 +35,16 @@ const ProfileRightBar = ({ user, owner }) => {
         className="follow-btn"
         onClick={ addFollowingHandle }
       >
-        {
-          isFollow ?
-          <>
-            UnFollow <Remove />
-          </>
-          :
-          <>
-            Follow <Add/>
-          </>
-        }
+      {
+        isFollow ?
+        <>
+          UnFollow <Remove />
+        </>
+        :
+        <>
+          Follow <Add/>
+        </>
+      }
       </Button>
     )
   };

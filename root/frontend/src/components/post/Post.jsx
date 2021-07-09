@@ -8,7 +8,7 @@ import { useState, useEffect } from "react";
 import Comments from "../comments/Comments";
 import { useDispatch } from "react-redux";
 import { addLike, removeLike } from "../../store/actions/postsActions";
-import { getUser } from "../../store/actions/authActions";
+import { getUser } from "../../store/actions/userActions";
 import CircularProgress from '@material-ui/core/CircularProgress';
 
 const Post = ({ post, user, isHome }) => {
@@ -70,8 +70,8 @@ const Post = ({ post, user, isHome }) => {
           <div className="post-wrapper">
             <div className="post-top">
               <div className="top-left">
-                <a 
-                  href={ ownerLink }
+                <a
+                 href={ ownerLink }
                   className="link-container">
                   <img
                     src={ imageHref }

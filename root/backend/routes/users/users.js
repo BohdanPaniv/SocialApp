@@ -1,7 +1,10 @@
 const router = require("express").Router();
 const User = require("../../models/User");
+const userValidators = require('./requestValidators');
+const { validationResult } = require("express-validator");
 
 router.post("/getUser", [], async (req, res) => {
+	
 	try {
 		const { userId } = req.body;
 		const foundUser = await User.findById(userId);
@@ -60,6 +63,65 @@ router.post("/removeFollowing", [], async (req, res) => {
 		);
 
 		res.json({ message: "Following removed", user: changedUser})
+	} catch (error) {
+		res.status(500).json(error);
+	}
+});
+
+router.post("/changeName", userValidators.changeNameRequestValidator, async (req, res) => {
+	
+	try {
+		const errors = validationResult(req);
+
+		if (!errors.isEmpty()) {
+			return res.status(400).json({
+				message: errors.array()
+			});
+		}
+
+		const { name, surname, userId } = req.body;
+
+		const changedUser = await User.findOneAndUpdate(
+			{ _id: userId },
+			{ $set: { name: name, surname: surname }},
+			{ new: true }
+		).select("-password");
+
+		res.json({ message: "Name changed", user: changedUser });
+	} catch (error) {
+		res.status(500).json(error);
+	}
+});
+
+router.post("/changeProfilePicture", [], async (req, res) => {
+	
+	try {
+		const { image, userId } = req.body;
+
+		const changedUser = await User.findOneAndUpdate(
+			{ _id: userId },
+			{ $set: { profilePicture: image }},
+			{ new: true }
+		).select("-password");
+
+		res.json({ message: "Profile picture changed", user: changedUser });
+	} catch (error) {
+		res.status(500).json(error);
+	}
+});
+
+router.post("/changeCoverPicture", [], async (req, res) => {
+	
+	try {
+		const { image, userId } = req.body;
+
+		const changedUser = await User.findOneAndUpdate(
+			{ _id: userId },
+			{ $set: { coverPicture: image }},
+			{ new: true }
+		).select("-password");
+
+		res.json({ message: "Cover picture changed", user: changedUser });
 	} catch (error) {
 		res.status(500).json(error);
 	}

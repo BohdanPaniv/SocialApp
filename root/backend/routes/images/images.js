@@ -11,25 +11,26 @@ conn.once("open", function () {
 	gridFSBucket.collection("photos");
 });
 
-router.get("/file/:filename", async (req, res) => {
+router.get("/get/:filename", async (req, res) => {
 	try {
 		const file = await gridFSBucket.files.findOne({ filename: req.params.filename });
 		const readStream = gridFSBucket.createReadStream(file.filename);
 		readStream.pipe(res);
 	} catch (error) {
-		res.json({ message: "Not found"});
+		res.status(404).json({ message: "Not found"});
 	}
 });
 
-// TODO will handler later
-// router.delete("/file/:filename", async (req, res) => {
-// 	try {
-// 		await gridFSBucket.files.deleteOne({ filename: req.params.filename });
-// 		res.send("success");
-// 	} catch (error) {
-// 		console.log(error);
-// 		res.json({ message: "An error occured"});
-// 	}
-// });
+router.delete("/delete/:filename", async (req, res) => {
+	try {
+		const foundImage = await gridFSBucket.files.findOne({ filename: req.params.filename });
+		await gridFSBucket.remove({ _id: req.params.filename, root: "photos" });
+		
+		res.json({ message:"Old image deleted" });
+	} catch (error) {
+		console.log(error);
+		res.json({ message: "An error occured"});
+	}
+});
 
 module.exports = router;

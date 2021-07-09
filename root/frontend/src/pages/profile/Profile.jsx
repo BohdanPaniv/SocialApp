@@ -5,7 +5,7 @@ import Feed from "../../components/feed/Feed";
 import { useSelector, useDispatch } from "react-redux";
 import { useParams } from "react-router-dom";
 import { useState, useEffect } from "react";
-import { getUser } from "../../store/actions/authActions";
+import { getUser } from "../../store/actions/userActions";
 import ProfileRightBar from "../../components/profileRightBar/ProfileRightBar";
 
 const Profile = () => {

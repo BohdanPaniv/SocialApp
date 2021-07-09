@@ -9,10 +9,8 @@ import {
   LOGIN_FAIL,
   CLEAR_RESPONSE,
   LOGOUT_FAIL,
-  FOLLOWING_ADDED,
-  FOLLOWING_ERROR,
-  FOLLOWING_REMOVED,
-  GET_USER_ERROR
+  PASSWORD_CHANGED,
+  CHANGE_PASSWORD_ERROR
 } from "./types";
 import axios from "./../../utils/API";
 import { returnResponse } from "./responseActions";
@@ -80,7 +78,7 @@ export const logOut = () => {
         type: LOGOUT_FAIL
       });
     });
-  }
+  };
 };
 
 export const loadUser = () =>{
@@ -94,63 +92,39 @@ export const loadUser = () =>{
       })
     )
     .catch(err => {
-      dispatch(
-        returnResponse(err.response.data, err.response.status)
-      );
-      
       dispatch({
         type: AUTH_ERROR
       });
-
-      dispatch({
-        type: CLEAR_RESPONSE
-      });
     });
   };
 };
 
-export const getUser = (data) => {
+export const changePassword = ({ data, setIsChangePassword }) => {
   return async(dispatch) => {
-    return await axios.post("users/getUser", data).then(res => {
-      return res.data;
+    await axios.post("auth/changePassword", data).then(res => {
+      dispatch(
+        returnResponse(res.data, res.status, PASSWORD_CHANGED)
+      );
+
+      dispatch({
+        type: PASSWORD_CHANGED,
+        payload: res.data.user
+      });
+
+      setIsChangePassword(false);
     })
     .catch(error => {
+      dispatch(
+        returnResponse(error.response.data, error.response.status, CHANGE_PASSWORD_ERROR)
+      );
+
       dispatch({
-        type: GET_USER_ERROR
+        type: CHANGE_PASSWORD_ERROR
       });
+    });
+
+    dispatch({
+      type: CLEAR_RESPONSE
     });
   };
-};
-
-export const addFollowing = (data) => {
-  return async(dispatch) => {
-    await axios.post("users/addFollowing", data).then(res => {
-      dispatch({
-        type: FOLLOWING_ADDED,
-        payload: res.data.user
-      });
-    })
-    .catch(error => {
-      dispatch({
-        type: FOLLOWING_ERROR
-      });
-    });
-  }
-};
-
-export const removeFollowing = (data) => {
-  return async(dispatch) => {
-    await axios.post("users/removeFollowing", data).then(res => {
-      console.log(res.data);
-      dispatch({
-        type: FOLLOWING_REMOVED,
-        payload: res.data.user
-      });
-    })
-    .catch(error => {
-      dispatch({
-        type: FOLLOWING_ERROR
-      });
-    });
-  }
 };

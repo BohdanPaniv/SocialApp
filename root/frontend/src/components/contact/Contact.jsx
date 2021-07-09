@@ -2,14 +2,14 @@ import "./contact.scss";
 import { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { useState } from "react";
-import { getUser } from "../../store/actions/authActions";
+import { getUser } from "../../store/actions/userActions";
+import { Link } from "react-router-dom";
 
 const Contact = ({ contact }) => {
   const dispatch = useDispatch();
   const [owner, setOwner] = useState();
   const path = process.env.REACT_APP_GET_FILE;
-  const profileStartPath = process.env.REACT_APP_URL;
-  const ownerLink = profileStartPath + `profile/${contact.userId}`;
+  const ownerLink = `profile/${contact.userId}`;
   const contractInfo = `${ owner?.name } ${ owner?.surname }`;
   const contactImageHref = owner ? path + owner.profilePicture : "/assets/default-user.png";
 
@@ -33,8 +33,10 @@ const Contact = ({ contact }) => {
     {
       owner &&
       <li className="contact">
-        <a
-          href={ ownerLink }
+        <Link
+          to={{
+            pathname: ownerLink
+          }}
           className="link-container"
         >
           <div className="image-container">
@@ -47,7 +49,7 @@ const Contact = ({ contact }) => {
           <span className="user-name">
             { contractInfo }
           </span>
-        </a>
+        </Link>
     </li>
     }
     </>

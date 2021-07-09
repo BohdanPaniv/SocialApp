@@ -1,4 +1,4 @@
-const { body, validationResult } = require("express-validator");
+const { body } = require("express-validator");
 const User = require("../../models/User");
 
 const registerRequestValidator = [
@@ -28,4 +28,20 @@ const loginRequestValidator = [
   body("password", "Password is empty").notEmpty()
 ];
 
-module.exports = { registerRequestValidator, loginRequestValidator };
+const changePasswordRequestValidator = [
+  body("password", "Password is empty").notEmpty(),
+  body("confirmPassword")
+    .notEmpty()
+    .withMessage("Confirm Password is empty")
+    .custom( async (value, { req }) => {
+      if (value !== req.body.password) {
+        return Promise.reject("Password confirmation does not match password");
+      }
+    })
+];
+
+module.exports = {
+  registerRequestValidator, 
+  loginRequestValidator,
+  changePasswordRequestValidator
+};

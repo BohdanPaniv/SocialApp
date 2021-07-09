@@ -1,7 +1,7 @@
 import "./comment.scss";
 import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
-import { getUser } from "../../store/actions/authActions";
+import { getUser } from "../../store/actions/userActions";
 import CircularProgress from '@material-ui/core/CircularProgress';
 
 const Comment = ({ user, comment }) => {

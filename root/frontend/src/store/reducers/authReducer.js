@@ -10,7 +10,17 @@ import {
   LOGOUT_FAIL,
   FOLLOWING_ADDED,
   FOLLOWING_ERROR,
-  FOLLOWING_REMOVED
+  FOLLOWING_REMOVED,
+  USER_NAME_CHANGED,
+  CHANGE_USER_NAME_ERROR,
+  CHANGE_PROFILE_PICTURE_ERROR,
+  PROFILE_PICTURE_CHANGED,
+  COVER_PICTURE_CHANGED,
+  CHANGE_COVER_PICTURE_ERROR,
+  DELETE_OLD_PROFILE_PICTURE_ERROR,
+  DELETE_OLD_COVER_PICTURE_ERROR,
+  PASSWORD_CHANGED,
+  CHANGE_PASSWORD_ERROR
 } from '../actions/types';
 
 const initialState = {
@@ -36,6 +46,9 @@ export default function authReducer(state = initialState, action){
       };
     case FOLLOWING_ADDED:
     case FOLLOWING_REMOVED:
+    case USER_NAME_CHANGED:
+    case PROFILE_PICTURE_CHANGED:
+    case COVER_PICTURE_CHANGED:
       return {
         ...state,
         user: action.payload
@@ -61,6 +74,13 @@ export default function authReducer(state = initialState, action){
       };
     case LOGOUT_FAIL:
     case FOLLOWING_ERROR:
+    case CHANGE_USER_NAME_ERROR:
+    case CHANGE_PROFILE_PICTURE_ERROR:
+    case CHANGE_COVER_PICTURE_ERROR:
+    case DELETE_OLD_PROFILE_PICTURE_ERROR:
+    case DELETE_OLD_COVER_PICTURE_ERROR:
+    case PASSWORD_CHANGED:
+    case CHANGE_PASSWORD_ERROR:
       return {
         ...state
       };

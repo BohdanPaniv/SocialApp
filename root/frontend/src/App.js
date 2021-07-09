@@ -11,6 +11,7 @@ import { useEffect } from "react";
 import { loadUser } from "./store/actions/authActions";
 import { useDispatch, useSelector } from "react-redux";
 import Profile from "./pages/profile/Profile";
+import Settings from "./pages/settings/Settings";
 
 const App = () => {
   const dispatch = useDispatch();
@@ -36,6 +37,9 @@ const App = () => {
               </Route>
               <Route path="/profile/:id">
                 <Profile />
+              </Route>
+              <Route path="/settings">
+                <Settings />
               </Route>
               <Redirect to="/"/>
             </Switch>

@@ -35,7 +35,7 @@ const Share = ({ isHome }) => {
       setFile(null);
       description.current.value = null;
     }
-  }
+  };
 
   const ImageContainer = () => {
     return(
@@ -51,7 +51,13 @@ const Share = ({ isHome }) => {
         />
       </div>
     );
-  }
+  };
+
+  const setPostImage = (event) => {
+    event.preventDefault();
+    setFile(event.target.files[0]);
+    event.target.value = null;
+  };
 
   return (
     <div className="share">
@@ -106,7 +112,7 @@ const Share = ({ isHome }) => {
                   className="file"
                   id="file"
                   accept=".png,.jpeg,.jpg"
-                  onChange={event => setFile(event.target.files[0])}
+                  onChange={event => setPostImage(event)}
                 />
               </label>
             </div>

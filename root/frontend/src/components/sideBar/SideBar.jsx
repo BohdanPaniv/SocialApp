@@ -60,12 +60,15 @@ const SideBard = ({user, imageHref}) => {
             </Link>
           </li>
           <li className="list-item">
-            <div className="item-link">
+            <Link
+              className="item-link"
+              to="/settings"
+            >
               <Settings className="icon" />
               <span className="item-text">
                 Settings
               </span>
-            </div>
+            </Link>
           </li>
           <li className="list-item" onClick={event => logout(event)}>
             <div className="item-link">
