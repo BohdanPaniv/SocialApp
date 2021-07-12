@@ -27,14 +27,12 @@ export const getFeed = (data) => {
   };
 };
 
-export const seacrhForFeed = (data) => {
+export const searchForFeed = (data) => {
   return async(dispatch) => {
-
     await axios.post("posts/getFeed", data).then(res => {
       dispatch({
         type: GET_FILTERED_FEED,
-        payload: res.data.posts
-        .sort((a, b) => b.createdAt - a.createdAt)
+        payload: res.data.posts.sort((a, b) => b.createdAt - a.createdAt)
       });
     })
     .catch(err => {

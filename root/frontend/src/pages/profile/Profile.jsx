@@ -45,6 +45,9 @@ const Profile = () => {
       <TopBar
         imageHref={ userImageHref }
         user={ user }
+        location="Profile"
+        owner={ owner }
+        search
       />
       <div className="profile-page-container">
         <SideBar

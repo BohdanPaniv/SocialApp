@@ -25,7 +25,9 @@ const Home = () => {
       <TopBar 
         imageHref={ imageHref }
         user={ user }
+        owner={ user }
         location="Home"
+        search
       />
       <div className="home-page-container">
         <SideBar

@@ -1,30 +1,9 @@
 import "./topBar.scss";
-import { Search } from "@material-ui/icons";
-import { useRef } from "react";
 import { Link } from "react-router-dom";
-import { useDispatch  } from "react-redux";
-import { seacrhForFeed } from "../../store/actions/feedPostsActions";
+import SearchBar from "./searchBar/SearchBar";
 
-const TopBar = ({ imageHref, user, location }) => {
-  const search = useRef();
-  const dispatch = useDispatch();
+const TopBar = ({ imageHref, user, location, owner, search, setSearch, switchingCounter }) => {
   const ownerLink = `/profile/${user?._id}`;
-
-  const searchForPosts = (event) => {
-    event.preventDefault();
-
-    switch (location) {
-      case "Home":
-        const data = {
-          _id: user._id,
-          search: search.current.value
-        };
-        dispatch(seacrhForFeed(data))
-        break;
-      default:
-        break;
-    }
-  }
 
   return (
     <div className="top-bar-container">
@@ -36,28 +15,15 @@ const TopBar = ({ imageHref, user, location }) => {
         </Link>
       </div>
       <div className="top-bar-center">
-        <form
-          className="search-form" 
-          noValidate 
-          onSubmit={ event => searchForPosts(event) }
-        >
-          <div className="form-action">
-            <button
-              type="submit"
-              className="search-btn"
-            >
-              <Search className="seacrh-icon" />
-            </button>
-          </div>
-          <div className="form-control">
-            <input
-              type="text"
-              placeholder="Search for friends, posts"
-              className="search-input"
-              ref={ search }
-            />
-          </div>
-        </form>
+        {
+          search &&
+          <SearchBar 
+            owner={ owner }
+            location={ location }
+            setSearch={ setSearch }
+            switchingCounter={ switchingCounter }
+          />
+        }
       </div>
       <div className="top-bar-right">
         <Link

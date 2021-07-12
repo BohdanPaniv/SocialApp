@@ -3,33 +3,57 @@ import { useState, useEffect } from "react";
 import { AppBar, Tabs, Tab } from "@material-ui/core";
 import ContactItem from "./contactItem/ContactItem";
 import { useDispatch } from "react-redux";
-import { getPossibleFollowing } from "../../store/actions/userActions";
+import { getPossibleFollowing, getFollowers, getFollowing } from "../../store/actions/userActions";
 
-const ContactsBar = ({ user }) => {
+const ContactsBar = ({ user, search, setSearch, setSwitchingCounter, switchingCounter }) => {
   const [tabIndex, setTabIndex] = useState(0);
   const [contacts, setContacts] = useState();
   const dispatch = useDispatch();
 
   const handleChange = (event, newValue) => {
     setTabIndex(newValue);
+    setSearch(null);
+    setSwitchingCounter(switchingCounter + 1);
   };
 
   useEffect(() => {
     let isMount = true;
 
+    const data ={
+      _id: user._id,
+      search: search
+    };
+
     switch (tabIndex) {
       case 0:
-        setContacts(user.followers);
+        const followers = dispatch(getFollowers(data));
+        
+        followers.then(value => {
+          if (isMount) {
+            setContacts(value.data.followers);
+          }
+        });
         break;
       case 1:
-        setContacts(user.following);
+        const following = dispatch(getFollowing(data));
+        
+        following.then(value => {
+          if (isMount) {
+            setContacts(value.data.following);
+          }
+        });;
         break;
       case 2:
         setContacts(null);
-        const result = dispatch(getPossibleFollowing(user));
+
+        const newData = {
+          user: user,
+          search: search
+        };
+        const result = dispatch(getPossibleFollowing(newData));
         
         result.then(res => {
-          if (isMount && res) {
+          if (isMount) {
             setContacts(res.data.users);
           }
         });
@@ -40,8 +64,8 @@ const ContactsBar = ({ user }) => {
 
     return () => {
       isMount = false;
-    }
-  }, [tabIndex, user, dispatch]);
+    };
+  }, [tabIndex, user, dispatch, search, setSearch]);
 
   return (
     <div className="contacts-bar">

@@ -22,9 +22,10 @@ const Settings = () => {
 
   return (
     <div className="settings-page">
-      <TopBar 
+      <TopBar
         imageHref={ imageHref }
         user={ user }
+        location="Settings"
       />
       <div className="settings-page-container">
         <SideBar

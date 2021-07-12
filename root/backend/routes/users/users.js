@@ -155,13 +155,11 @@ router.post("/changeCoverPicture", [], async (req, res) => {
 router.post("/getPossibleFollowing", [], async (req, res) => {
 	
 	try {
-		const user = req.body;
-
+		const { user, search } = req.body;
 		const users = await User.find({ _id: { $ne: user._id }});
-
 		const filteredUsers = [];
 
-		users.forEach(currentUser => {
+		for (const currentUser of users) {
 			let isMatch = false;
 			
 			user.following.forEach(following => {
@@ -171,11 +169,88 @@ router.post("/getPossibleFollowing", [], async (req, res) => {
 			});
 
 			if (!isMatch) {
-				filteredUsers.push({ userId: currentUser._id });
+				if (search) {
+					const following = await User.findById(currentUser._id);
+					const regex = new RegExp(`${search}`, "i");
+					const followingName = `${following.name} ${following.surname}`;
+					console.log(followingName)
+
+					if (regex.test(followingName)) {
+						filteredUsers.push({ userId: currentUser._id });
+					}
+				} else {
+					filteredUsers.push({ userId: currentUser._id });
+				}
 			}
-		});
+		}
 
 		res.json({ users: filteredUsers });
+	} catch (error) {
+		res.status(500).json(error);
+	}
+});
+
+router.post("/getFollowers", [], async (req, res) => {
+	
+	try {
+		const { _id, search } = req.body;
+		const foundUser = await User.findById(_id);
+
+		if (!foundUser) {
+			return res.status(400).json({
+				message: "User not found"
+			});
+		}
+
+		let followers = [];
+
+		if (search) {
+			const regex = new RegExp(`${search}`, "i");
+
+			for (const follower of foundUser.followers) {
+				const user = await User.findById(follower.userId);
+				const userName = `${user.name} ${user.surname}`;
+				
+				if (regex.test(userName)) {
+					followers.push(follower);
+				}
+			}
+		}
+
+		res.json({ followers: search ? followers : foundUser.followers });
+	} catch (error) {
+		res.status(500).json(error);
+	}
+});
+
+router.post("/getFollowing", [], async (req, res) => {
+	
+	try {
+		const { _id, search } = req.body;
+		const foundUser = await User.findById(_id);
+
+		if (!foundUser) {
+			return res.status(400).json({
+				message: "User not found"
+			});
+		}
+
+		let following = [];
+
+		if (search) {
+			const regex = new RegExp(`${search}`, "i");
+
+			for (const follower of foundUser.following) {
+				const user = await User.findById(follower.userId);
+				const userName = `${user.name} ${user.surname}`;
+				
+				if (regex.test(userName)) {
+					following.push(follower);
+				}
+			}
+		}
+
+		res.json({ following: search ? following : foundUser.following });
 	} catch (error) {
 		res.status(500).json(error);
 	}

@@ -24,31 +24,6 @@
     flex: 5;
   }
 
-  .search-form {
-    width: 100%;
-    height: 40px;
-    background-color: white;
-    border-radius: 30px;
-    display: flex;
-    align-items: center;
-  }
-
-  .seacrh-icon {
-    font-size: 30px!important;
-    margin-left: 10px;
-  }
-
-  .search-input {
-    margin-right: 10px;
-    font-size: 17px;
-    border: none;
-    width: 100%;
-
-    &:focus {
-      outline: none;
-    }
-  }
-
   .top-bar-right {
     flex: 3;
     display: flex;
@@ -104,17 +79,6 @@
 
   .name {
     padding: 0 10px;
-  }
-
-  .form-control {
-    width: 100%;
-    margin-right: 10px;
-  }
-
-  .search-btn{
-    background-color: transparent;
-    border: none;
-    cursor: pointer;
   }
 
   .href {

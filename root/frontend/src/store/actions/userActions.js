@@ -217,3 +217,15 @@ export const getPossibleFollowing = (data) => {
     return await axios.post("users/getPossibleFollowing", data);
   };
 };
+
+export const getFollowers = (data) => {
+  return async(dispatch) => {
+    return await axios.post("users/getFollowers", data);
+  };
+};
+
+export const getFollowing = (data) => {
+  return async(dispatch) => {
+    return await axios.post("users/getFollowing", data);
+  };
+};

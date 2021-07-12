@@ -8,7 +8,10 @@ import {
   LOGOUT_SUCCESS,
   GET_PROFILE_POSTS_LOADING,
   GET_PROFILE_POSTS_LOADED,
-  PROFILE_COMMENT_ADDED
+  PROFILE_COMMENT_ADDED,
+  GET_FILTERED_PROFILE_POSTS,
+  GET_PROFILE_POSTS_ERROR,
+  FILTERING_PROFILE_POSTS_ERROR
 } from "../actions/types";
 
 const initialState = {
@@ -24,6 +27,7 @@ export default function profilePostsReducer(state = initialState, action){
         isLoading: true
       };
     case GET_PROFILE_POSTS_LOADED:
+    case GET_FILTERED_PROFILE_POSTS:
       return {
         ...state,
         posts: action.payload,
@@ -60,6 +64,13 @@ export default function profilePostsReducer(state = initialState, action){
       return {
         ...state
       };
+    case GET_PROFILE_POSTS_ERROR:
+    case FILTERING_PROFILE_POSTS_ERROR:
+      return {
+        ...state,
+        isLoading: false,
+        posts: null
+      }
     case LOGOUT_SUCCESS:
       return {
         ...state,

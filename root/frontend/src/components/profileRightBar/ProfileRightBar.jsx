@@ -67,7 +67,7 @@ const ProfileRightBar = ({ user, owner }) => {
             City:
           </span>
           <span className="info-value">
-            { user.city }
+            { owner.city }
           </span>
         </div>
         <div className="info-item">
@@ -75,7 +75,7 @@ const ProfileRightBar = ({ user, owner }) => {
             From:
           </span>
           <span className="info-value">
-            { user.from }
+            { owner.from }
           </span>
         </div>
         <div className="info-item">
@@ -83,7 +83,7 @@ const ProfileRightBar = ({ user, owner }) => {
             Relationship:
           </span>
           <span className="info-value">
-            { relationshipType[user.relationship]}
+            { relationshipType[owner.relationship]}
           </span>
         </div>
       </div>

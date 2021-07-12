@@ -15,6 +15,8 @@ const Contacts = () => {
   const { id } = useParams();
   const path = process.env.REACT_APP_GET_FILE;
   const imageHref = user.profilePicture ? path + user.profilePicture : "/assets/default-user.png";
+  const [search, setSearch] = useState();
+  const [switchingCounter, setSwitchingCounter] = useState(0);
 
   useEffect(() => {
     const data = dispatch(getUser({ userId: id }));
@@ -28,16 +30,20 @@ const Contacts = () => {
 
     return () => {
       isMount = false;
-    }
+    };
   }, [dispatch, id]);
 
   return (
     <div className="contacts-page">
-      <TopBar 
+      <TopBar
         imageHref={ imageHref }
         user={ user }
+        owner={ owner }
+        search
+        setSearch={ setSearch }
+        switchingCounter={ switchingCounter }
       />
-      <div className="contracts-page-container">
+      <div className="contacts-page-container">
         <SideBar
           user={ user } 
           imageHref={ imageHref }
@@ -45,7 +51,13 @@ const Contacts = () => {
         <div className="contacts-container">
         {
           owner && 
-          <ContactsBar user={ owner }/>
+          <ContactsBar 
+            user={ owner }
+            search={ search }
+            setSearch={ setSearch }
+            setSwitchingCounter={ setSwitchingCounter}
+            switchingCounter={ switchingCounter }
+          />
         }
         </div>
       </div>

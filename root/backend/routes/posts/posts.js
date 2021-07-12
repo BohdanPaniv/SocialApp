@@ -4,7 +4,7 @@ const User = require("../../models/User");
 
 router.post("/getProfilePosts", [], async (req, res) => {
 	try {
-		const { _id } = req.body;
+		const { _id, search } = req.body;
 		const foundUser = await User.findById(_id);
 
 		if (!foundUser) {
@@ -14,9 +14,21 @@ router.post("/getProfilePosts", [], async (req, res) => {
 		}
 
 		const userPosts = await Post.find({ userId: _id });
+		let filteredPosts = [];
 
-		res.json({ posts: userPosts});
+		if (search) {
+			const regex = new RegExp(`${search}`, "i");
 
+			filteredPosts = userPosts.filter(post => {
+				if (regex.test(post.description)) {
+					return true;
+				}
+
+				return false;
+			});
+		}
+
+		res.json({ posts: search ? filteredPosts : userPosts});
 	} catch (error) {
 		res.status(500).json(error);
 	}
@@ -90,6 +102,7 @@ router.post("/getFeed", [], async (req, res) => {
 
 		const foundUser = await User.findById(_id);
 		let feed = [];
+		let filteredFeed = [];
 
 		for (const user of foundUser.following) {
 			const following = await Post.find({ userId: user.userId});
@@ -108,18 +121,19 @@ router.post("/getFeed", [], async (req, res) => {
 		}
 
 		if (search) {
-			const regex = new RegExp(`${search}`);
+			const regex = new RegExp(`${search}`, "i");
 
-			feed = feed.filter(post => {
-				if (regex.test(post.description)) {
-					return true;
+			for (const post of feed) {
+				const user = await User.findById(post.userId);
+				const userName = `${user.name} ${user.surname}`;
+
+				if (regex.test(userName) || regex.test(post.description)) {
+					filteredFeed.push(post);
 				}
-
-				return false;
-			});
+			}
 		}
 
-		res.json({ posts: feed});
+		res.json({ posts: search ? filteredFeed : feed });
 	} catch (error) {
 		res.status(500).json(error);
 	}
