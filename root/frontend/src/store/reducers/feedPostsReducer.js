@@ -6,7 +6,9 @@ import {
   FEED_POST_LIKED,
   FEED_POST_UNLIKED,
   FEED_COMMENT_ADDED,
-  LOGOUT_SUCCESS
+  LOGOUT_SUCCESS,
+  GET_FILTERED_FEED,
+  FILTERING_FEED_ERROR
 } from "../actions/types";
 
 const initialState = {
@@ -22,6 +24,7 @@ export default function feedReducer(state = initialState, action){
         isLoading: true
       };
     case GET_FEED_LOADED:
+    case GET_FILTERED_FEED:
       return {
         ...state,
         feed: action.payload,
@@ -33,6 +36,7 @@ export default function feedReducer(state = initialState, action){
         feed: [action.payload, ...state.feed]
       };
     case GET_FEED_ERROR:
+    case FILTERING_FEED_ERROR:
       return {
         ...state,
         isLoading: false,

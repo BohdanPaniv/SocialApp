@@ -9,8 +9,9 @@ import { Link } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { logOut } from "../../store/actions/authActions";
 
-const SideBard = ({user, imageHref}) => {
+const SideBard = ({ user, imageHref }) => {
   const dispatch = useDispatch();
+  const contactsLink = `/contacts/${ user._id }`;
 
   const logout = (event) => {
     event.preventDefault();
@@ -50,12 +51,12 @@ const SideBard = ({user, imageHref}) => {
           </li>
           <li className="list-item">
             <Link
-              to="/"
+              to={ contactsLink }
               className="item-link"
             >
               <PeopleAlt className="icon" />
               <span className="item-text">
-                Friends
+                Contacts
               </span>
             </Link>
           </li>

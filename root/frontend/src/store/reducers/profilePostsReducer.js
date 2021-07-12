@@ -7,7 +7,8 @@ import {
   LIKE_POST_ERROR,
   LOGOUT_SUCCESS,
   GET_PROFILE_POSTS_LOADING,
-  GET_PROFILE_POSTS_LOADED
+  GET_PROFILE_POSTS_LOADED,
+  PROFILE_COMMENT_ADDED
 } from "../actions/types";
 
 const initialState = {
@@ -33,6 +34,11 @@ export default function profilePostsReducer(state = initialState, action){
         ...state
       };
     case PROFILE_POST_ADDED:
+      return {
+        ...state,
+        posts: [action.payload, ...state.posts]
+      };
+    case PROFILE_COMMENT_ADDED:
     case PROFILE_POST_LIKED:
     case PROFILE_POST_UNLIKED:
       let profilePosts = [...state.posts];

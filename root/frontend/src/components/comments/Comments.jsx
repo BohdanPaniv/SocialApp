@@ -4,11 +4,13 @@ import { useRef } from "react";
 import Comment from "../comment/Comment";
 import { useDispatch } from "react-redux";
 import { addComment } from "../../store/actions/postsActions";
+import { Link } from "react-router-dom";
 
 const Comments = ({ user, post, isHome }) => {
   const comment = useRef();
   const path = process.env.REACT_APP_GET_FILE;
   const userProfileImage = user.profilePicture? path + user.profilePicture : "assets/default-user.png";
+  const userLink =  `/profile/${user._id}`;
   const dispatch = useDispatch();
 
   const addUserComment = (event) => {
@@ -39,11 +41,16 @@ const Comments = ({ user, post, isHome }) => {
               noValidate
               onSubmit={event => addUserComment(event) }
           >
-            <img
+            <Link
+              to={ userLink } 
+              className="link"
+            >
+              <img
                 src={ userProfileImage }
                 alt="error" 
-                className="post-icon"
+                className="comments-icon"
               />
+            </Link>
             <TextField
               id="filled-multiline-flexible"
               multiline

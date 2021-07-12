@@ -3,11 +3,14 @@ import { Button } from "@material-ui/core";
 import { Add, Remove } from "@material-ui/icons";
 import { useState, useEffect } from "react";
 import { useDispatch } from "react-redux";
+import { Link } from "react-router-dom";
 import { addFollowing, removeFollowing } from "../../store/actions/userActions";
 
 const ProfileRightBar = ({ user, owner }) => {
   const [isFollow, setIsFollow] = useState(false);
   const dispatch = useDispatch();
+  const ownerLink = `/contacts/${owner._id}`;
+  const relationshipType = ["", "Single", "In a relationship", "Married"];
 
   const addFollowingHandle = () => {
     if (isFollow) {
@@ -80,16 +83,18 @@ const ProfileRightBar = ({ user, owner }) => {
             Relationship:
           </span>
           <span className="info-value">
-            Single
+            { relationshipType[user.relationship]}
           </span>
         </div>
       </div>
-      <h3 className="link">
+      <div className="links">
+        <Link to={ ownerLink } className="link">
           Followers { owner.followers.length }
-      </h3>
-      <h3 className="link">
-          Following { owner.following.length }
-      </h3>
+        </Link>
+        <Link to={ ownerLink } className="link">
+            Following { owner.following.length }
+        </Link>
+      </div>
     </div> 
   )
 }

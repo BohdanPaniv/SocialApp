@@ -5,14 +5,17 @@ import { Button } from "@material-ui/core";
 import { useDispatch } from "react-redux";
 import { changePicture } from "../../store/actions/userActions";
 import ChangePassword from "./changePassword/ChangePassword";
+import ChangeUserInfo from "./changeUserInfo/ChangeUserInfo";
 
 const SettingsBar = ({ user, imageHref, coverPictureHref }) => {
-  const userName = `${ user.name } ${ user.surname}`;
   const [isChangeName, setIsChangeName] = useState(false);
   const [isChangePassword, setIsChangePassword] = useState(false);
-  const dispatch = useDispatch();
+  const [isChangeUserInfo, setIsChangeUserInfo] = useState(false);
   const [profilePicture, setProfilePicture] = useState();
   const [coverPicture, setCoverPicture] = useState();
+  const relationshipType = ["", "Single", "In a relationship", "Married"];
+  const dispatch = useDispatch();
+  const userName = `${ user.name } ${ user.surname}`;
   const PROFILE = "PROFILE";
   const COVER = "COVER";
 
@@ -177,6 +180,38 @@ const SettingsBar = ({ user, imageHref, coverPictureHref }) => {
             />
           </label>
         </div>
+      </div>
+      <div className="setting">
+        <span className="name">
+          User info
+        </span>
+        {
+          isChangeUserInfo === false ?
+          <div className="setting-container">
+            <div className="info-container">
+              <span className="value">
+                City: { user.city }
+              </span>
+              <span className="value info">
+                From: { user.from }
+              </span>
+              <span className="value info">
+                Relationship: { relationshipType[user.relationship] }
+              </span>
+            </div>
+            <span
+              className="edit"
+              onClick={() => setIsChangeUserInfo(true)}
+            >
+              Edit
+            </span>
+          </div>
+          :
+          <ChangeUserInfo
+           user={ user }
+           setIsChangeUserInfo={ setIsChangeUserInfo }
+          />
+        }
       </div>
       <div className="setting">
         <span className="name">

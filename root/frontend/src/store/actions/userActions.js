@@ -15,7 +15,9 @@ import {
   COVER_PICTURE_CHANGED,
   CHANGE_COVER_PICTURE_ERROR,
   DELETE_OLD_COVER_PICTURE_ERROR,
-  OLD_COVER_PICTURE_DELETED
+  OLD_COVER_PICTURE_DELETED,
+  USER_INFO_CHANGED,
+  CHANGE_USER_INFO_ERROR
 } from "./types";
 import axios from "./../../utils/API";
 import { returnResponse } from "./responseActions";
@@ -95,6 +97,36 @@ export const changeName = ({ data, setIsChangeName }) => {
   };
 };
 
+export const changeUserInfo = ({ data, setIsChangeUserInfo }) => {
+  return async(dispatch) => {
+    await axios.post("users/changeUserInfo", data).then(res => {
+      dispatch(
+        returnResponse(res.data, res.status, USER_INFO_CHANGED)
+      );
+
+      dispatch({
+        type: USER_INFO_CHANGED,
+        payload: res.data.user
+      });
+
+      setIsChangeUserInfo(false);
+    })
+    .catch(error => {
+      dispatch(
+        returnResponse(error.response.data, error.response.status, CHANGE_USER_INFO_ERROR)
+      );
+
+      dispatch({
+        type: CHANGE_USER_INFO_ERROR
+      });
+    });
+
+    dispatch({
+      type: CLEAR_RESPONSE
+    });
+  };
+};
+
 export const changePicture = ({ data, type }) => {
   return async(dispatch) => {
     const formData = new FormData();
@@ -164,16 +196,24 @@ export const changePicture = ({ data, type }) => {
       type: CLEAR_RESPONSE
     });
 
-    await axios.delete(`/image/delete/${data.oldImage}`).then(res => {
-      dispatch({
-        type: type === "PROFILE" ? OLD_PROFILE_PICTURE_DELETED : OLD_COVER_PICTURE_DELETED,
-        payload: res.data.user
+    if (data.oldImage) {
+      await axios.delete(`/image/delete/${data.oldImage}`).then(res => {
+        dispatch({
+          type: type === "PROFILE" ? OLD_PROFILE_PICTURE_DELETED : OLD_COVER_PICTURE_DELETED,
+          payload: res.data.user
+        });
+      })
+      .catch(error => {
+        dispatch({
+          type: type === "PROFILE" ? DELETE_OLD_PROFILE_PICTURE_ERROR : DELETE_OLD_COVER_PICTURE_ERROR
+        });
       });
-    })
-    .catch(error => {
-      dispatch({
-        type: type === "PROFILE" ? DELETE_OLD_PROFILE_PICTURE_ERROR : DELETE_OLD_COVER_PICTURE_ERROR
-      });
-    });
+    }
+  };
+};
+
+export const getPossibleFollowing = (data) => {
+  return async(dispatch) => {
+    return await axios.post("users/getPossibleFollowing", data);
   };
 };

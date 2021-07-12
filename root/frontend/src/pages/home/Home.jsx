@@ -25,6 +25,7 @@ const Home = () => {
       <TopBar 
         imageHref={ imageHref }
         user={ user }
+        location="Home"
       />
       <div className="home-page-container">
         <SideBar
@@ -40,6 +41,6 @@ const Home = () => {
       </div>
     </div>
   );
-}
+};
 
 export default Home;

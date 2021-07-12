@@ -50,8 +50,16 @@ const userSchema = new Schema({
 	},
 	relationship: {
 		type: Number,
-		enum: [1, 2, 3],
-		default: null
+		enum: [0, 1, 2, 3],
+		default: 0
+	},
+	resetToken: {
+		type: String,
+		default: ""
+	},
+	expireToken: {
+		type: Number,
+		default: 0
 	}
 });
 

@@ -93,6 +93,31 @@ router.post("/changeName", userValidators.changeNameRequestValidator, async (req
 	}
 });
 
+router.post("/changeUserInfo", userValidators.changeUserInfoRequestValidator, async (req, res) => {
+	
+	try {
+		const errors = validationResult(req);
+
+		if (!errors.isEmpty()) {
+			return res.status(400).json({
+				message: errors.array()
+			});
+		}
+
+		const { city, from, relationship, userId } = req.body;
+
+		const changedUser = await User.findOneAndUpdate(
+			{ _id: userId },
+			{ $set: { city: city, from: from, relationship: relationship }},
+			{ new: true }
+		).select("-password");
+
+		res.json({ message: "User info changed", user: changedUser });
+	} catch (error) {
+		res.status(500).json(error);
+	}
+});
+
 router.post("/changeProfilePicture", [], async (req, res) => {
 	
 	try {
@@ -122,6 +147,35 @@ router.post("/changeCoverPicture", [], async (req, res) => {
 		).select("-password");
 
 		res.json({ message: "Cover picture changed", user: changedUser });
+	} catch (error) {
+		res.status(500).json(error);
+	}
+});
+
+router.post("/getPossibleFollowing", [], async (req, res) => {
+	
+	try {
+		const user = req.body;
+
+		const users = await User.find({ _id: { $ne: user._id }});
+
+		const filteredUsers = [];
+
+		users.forEach(currentUser => {
+			let isMatch = false;
+			
+			user.following.forEach(following => {
+				if (following.userId == currentUser._id) {
+					isMatch = true;
+				}
+			});
+
+			if (!isMatch) {
+				filteredUsers.push({ userId: currentUser._id });
+			}
+		});
+
+		res.json({ users: filteredUsers });
 	} catch (error) {
 		res.status(500).json(error);
 	}

@@ -1,6 +1,5 @@
 import "./post.scss";
 import {
-  // MoreVert,
   ThumbUpAlt,
   ThumbUpAltOutlined
 } from "@material-ui/icons";
@@ -10,6 +9,7 @@ import { useDispatch } from "react-redux";
 import { addLike, removeLike } from "../../store/actions/postsActions";
 import { getUser } from "../../store/actions/userActions";
 import CircularProgress from '@material-ui/core/CircularProgress';
+import { Link } from "react-router-dom";
 
 const Post = ({ post, user, isHome }) => {
   const [owner, setOwner] = useState();
@@ -19,8 +19,7 @@ const Post = ({ post, user, isHome }) => {
   const dispatch = useDispatch();
   const path = process.env.REACT_APP_GET_FILE;
   const date = new Date(post.createdAt).toLocaleString();
-  const profileStartPath = process.env.REACT_APP_URL;
-  const ownerLink = profileStartPath + `profile/${post.userId}`;
+  const ownerLink = `/profile/${post.userId}`;
   const defaultIcon = "/assets/default-user.png";
   const imageHref = owner?.profilePicture ? path + owner.profilePicture : defaultIcon;
   const commentCount = `${ post.comments.length } comment${ post.comments.length !== 1 ? "s" : "" }`;
@@ -70,8 +69,8 @@ const Post = ({ post, user, isHome }) => {
           <div className="post-wrapper">
             <div className="post-top">
               <div className="top-left">
-                <a
-                 href={ ownerLink }
+                <Link
+                  to={ ownerLink }
                   className="link-container">
                   <img
                     src={ imageHref }
@@ -81,14 +80,11 @@ const Post = ({ post, user, isHome }) => {
                   <span className="user-name">
                     { `${owner?.name} ${owner?.surname}` }
                   </span>
-                </a>
+                </Link>
                 <span className="date">
                     { date }
                   </span>
               </div>
-              {/* <div className="top-right">
-              <MoreVert className="options"/>
-              </div> */}
             </div>
             <div className="post-center">
               <div className="post-text">
@@ -133,7 +129,7 @@ const Post = ({ post, user, isHome }) => {
               <Comments
                 user={ user }
                 post={ post }
-                isHome
+                isHome={ isHome }
               />
             }
           </div>

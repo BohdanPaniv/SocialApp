@@ -1,6 +1,6 @@
+import "./changeName.scss";
 import { TextField, Button } from '@material-ui/core';
 import { useRef } from 'react';
-import "./changeName.scss";
 import { changeName } from "../../../store/actions/userActions";
 import { useDispatch } from "react-redux";
 

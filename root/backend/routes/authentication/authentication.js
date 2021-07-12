@@ -2,8 +2,16 @@ const router = require("express").Router();
 const bcrypt = require("bcryptjs");
 const jwtWebToken = require("jsonwebtoken");
 const User = require("../../models/User");
-const authValidators = require('./requestValidators');
+const authValidators = require("./requestValidators");
 const { validationResult } = require("express-validator");
+const sendgridTransport = require("nodemailer-sendgrid-transport");
+const nodemailer = require("nodemailer");
+
+const transporter = nodemailer.createTransport(sendgridTransport({
+	auth:{
+		api_key:process.env.SENDGRID_API
+	}
+}));
 
 // api/auth/register
 router.post("/register", authValidators.registerRequestValidator, async (req, res) => {
@@ -146,12 +154,100 @@ router.post("/changePassword", authValidators.changePasswordRequestValidator, as
 			});
 		}
 		
-		const { password, confirmPassword, userId } = req.body;
+		const { password, userId } = req.body;
 
 		const salt = await bcrypt.genSalt(10);
 		const hashedPassword = await bcrypt.hash(password, salt);
 
 		await User.findByIdAndUpdate(userId, { password: hashedPassword });
+
+		res.json({ message: "Password changed" });
+	} catch (error) {
+		res.status(500).json(error);
+	}
+});
+
+router.post("/sendToEmail", authValidators.sendToEmailRequestValidator, async (req, res) => {
+
+	try {
+		const errors = validationResult(req);
+
+		if (!errors.isEmpty()) {
+			return res.status(400).json({
+				message: errors.array()
+			});
+		}
+
+		const { email } = req.body;
+
+		const foundUser = await User.findOne({ email });
+
+		if (!foundUser) {
+			return res.status(404).json({
+				message: "User don't exists with that email"
+			});
+		}
+
+		const token = jwtWebToken.sign(
+			{ userId: foundUser.email },
+			process.env.jwtSecret
+		);
+
+		let time = 1000 * 60 * 15;
+		let expiresDate = new Date(new Date().getTime() + time);
+
+		foundUser.resetToken = token;
+		foundUser.expireToken = expiresDate;
+		foundUser.save();
+
+		transporter.sendMail({
+			to: foundUser.email,
+			from: process.env.SENDGRID_EMAIL,
+			subject: "Password reset",
+			html: `
+			<p>You requested for password reset.</p>
+			<h3>Click in this <a href="${ process.env.RESET_PASSWORD_URL }/${ token }">link</a> to reset password.</h3>`
+		});
+		
+		res.json({ message: "Check your email" });
+	} catch (error) {
+		res.status(500).json(error);
+	}
+});
+
+router.post("/resetPassword", authValidators.changePasswordRequestValidator, async (req, res) => {
+
+	try {
+		const errors = validationResult(req);
+
+		if (!errors.isEmpty()) {
+			return res.status(400).json({
+				message: errors.array()
+			});
+		}
+		
+		const { password, resetToken } = req.body;
+		const foundUser = await User.findOne({ resetToken });
+
+		if (!foundUser) {
+			return res.status(404).json({
+				message: "User not found"
+			});
+		}
+
+		if (foundUser.expireToken < Date.now()) {
+			return res.status(404).json({
+				message: "Session expired. Try again"
+			});
+		}
+
+		const salt = await bcrypt.genSalt(10);
+		const hashedPassword = await bcrypt.hash(password, salt);
+
+		foundUser.password = hashedPassword;
+		foundUser.expireToken = 0;
+		foundUser.resetToken = "";
+		foundUser.save();
 
 		res.json({ message: "Password changed" });
 	} catch (error) {

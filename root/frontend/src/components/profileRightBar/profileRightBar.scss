@@ -36,8 +36,17 @@ $blue: #1877f2;
     margin-right: 10px;
   }
 
+  .links {
+    display: flex;
+    flex-direction: column;
+  }
+
   .link {
     padding: 10px 0;
     color: $blue;
+    font-size: 20px;
+    font-weight: 700;
+    text-decoration: none;
+    width: max-content;
   }
 }

@@ -26,4 +26,15 @@
       background-color: green;
     }
   }
+
+  .comments-icon {
+    height: 40px;
+    width: 40px;
+    border-radius: 50%;
+    object-fit: cover;
+  }
+
+  .link {
+    align-self: center;
+  }
 }

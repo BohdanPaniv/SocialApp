@@ -1,0 +1,19 @@
+$blue-color: #1877f2;
+
+.contacts-bar {
+  .tab-panel {
+    margin: 20px auto auto auto;
+    width: max-content;
+  }
+
+  .tabs {
+    background-color: $blue-color;
+  }
+
+  .contacts {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+    padding: 20px;
+  }
+}

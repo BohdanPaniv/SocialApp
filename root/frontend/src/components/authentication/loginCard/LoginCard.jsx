@@ -71,11 +71,11 @@ const LoginCard = ({
           </div>
           <div className="form-content">
             <Link
-              to="/changePassword"
+              to="/resetPassword"
               className="link"
             >
               <span className="change-password-link">
-              Forgot Password?
+                Forgot Password?
               </span>
             </Link>
           </div>

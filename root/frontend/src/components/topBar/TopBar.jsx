@@ -2,14 +2,28 @@ import "./topBar.scss";
 import { Search } from "@material-ui/icons";
 import { useRef } from "react";
 import { Link } from "react-router-dom";
+import { useDispatch  } from "react-redux";
+import { seacrhForFeed } from "../../store/actions/feedPostsActions";
 
-const TopBar = ({ imageHref, user }) => {
-  const searchField = useRef();
+const TopBar = ({ imageHref, user, location }) => {
+  const search = useRef();
+  const dispatch = useDispatch();
+  const ownerLink = `/profile/${user?._id}`;
 
-  const search = (event) => {
+  const searchForPosts = (event) => {
     event.preventDefault();
 
-    console.log(`Seacrh: ${searchField.current.value}`);
+    switch (location) {
+      case "Home":
+        const data = {
+          _id: user._id,
+          search: search.current.value
+        };
+        dispatch(seacrhForFeed(data))
+        break;
+      default:
+        break;
+    }
   }
 
   return (
@@ -22,12 +36,15 @@ const TopBar = ({ imageHref, user }) => {
         </Link>
       </div>
       <div className="top-bar-center">
-        <form className="search-form" noValidate>
+        <form
+          className="search-form" 
+          noValidate 
+          onSubmit={ event => searchForPosts(event) }
+        >
           <div className="form-action">
             <button
               type="submit"
               className="search-btn"
-              onClick={event => search(event) }
             >
               <Search className="seacrh-icon" />
             </button>
@@ -35,9 +52,9 @@ const TopBar = ({ imageHref, user }) => {
           <div className="form-control">
             <input
               type="text"
-              placeholder="Search for friends, posts or video"
+              placeholder="Search for friends, posts"
               className="search-input"
-              ref={ searchField }
+              ref={ search }
             />
           </div>
         </form>
@@ -45,7 +62,7 @@ const TopBar = ({ imageHref, user }) => {
       <div className="top-bar-right">
         <Link
           className="profile-menu"
-          to={`/profile/${user?._id}`}
+          to={ ownerLink }
         >
           <img
             src={ imageHref }

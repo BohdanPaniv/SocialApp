@@ -5,4 +5,13 @@ const changeNameRequestValidator = [
   body("surname", "Surname is empty").notEmpty()
 ];
 
-module.exports = { changeNameRequestValidator };
+const changeUserInfoRequestValidator = [
+  body("city", "City is empty").notEmpty(),
+  body("from", "'From' is empty").notEmpty(),
+  body("relationship", "Relationship is empty").notEmpty()
+];
+
+module.exports = {
+  changeNameRequestValidator, 
+  changeUserInfoRequestValidator
+};

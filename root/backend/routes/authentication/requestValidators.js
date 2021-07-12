@@ -40,8 +40,17 @@ const changePasswordRequestValidator = [
     })
 ];
 
+const sendToEmailRequestValidator = [
+  body("email")
+    .notEmpty()
+    .withMessage("Email is empty")
+    .isEmail()
+    .withMessage("Email is incorrect")
+];
+
 module.exports = {
   registerRequestValidator, 
   loginRequestValidator,
-  changePasswordRequestValidator
+  changePasswordRequestValidator,
+  sendToEmailRequestValidator
 };

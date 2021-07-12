@@ -28,7 +28,7 @@ const Feed = ({ user, isHome, owner }) => {
       <div className="feed-wrapper">
         {
           owner._id === user._id &&
-          <Share isHome/>
+          <Share isHome={ isHome }/>
         }
         {
           isHome ?
@@ -37,7 +37,7 @@ const Feed = ({ user, isHome, owner }) => {
               key={ post._id }
               post={ post }
               user={ user }
-              isHome
+              isHome={ isHome }
             />
           ))
           :
@@ -46,7 +46,7 @@ const Feed = ({ user, isHome, owner }) => {
               key={ post._id }
               post={ post }
               user={ user }
-              isHome
+              isHome={ isHome }
             />
           ))
         }

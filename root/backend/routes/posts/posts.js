@@ -86,7 +86,7 @@ router.post("/createPost", async (req, res) => {
 
 router.post("/getFeed", [], async (req, res) => {
 	try {
-		const { _id } = req.body;
+		const { _id, search } = req.body;
 
 		const foundUser = await User.findById(_id);
 		let feed = [];
@@ -105,6 +105,18 @@ router.post("/getFeed", [], async (req, res) => {
 
 		for (const post of userPosts) {
 			feed.push(post);
+		}
+
+		if (search) {
+			const regex = new RegExp(`${search}`);
+
+			feed = feed.filter(post => {
+				if (regex.test(post.description)) {
+					return true;
+				}
+
+				return false;
+			});
 		}
 
 		res.json({ posts: feed});
@@ -128,6 +140,5 @@ router.post("/addComment", [], async (req, res) => {
 		res.status(500).json(error);
 	}
 });
-
 
 module.exports = router;
