@@ -5,6 +5,20 @@
   }
 
   .contacts-container {
-    flex: 9;
+    flex: 10;
+  }
+}
+
+@media (max-width: 900px) {
+  .contacts-page {
+    .side-bar {
+      display: none;
+    }
+  }
+
+  @media (max-width: 600px) {
+    .profile-menu {
+      display: none!important;
+    }
   }
 }

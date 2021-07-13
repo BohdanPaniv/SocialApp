@@ -10,6 +10,7 @@
 
   .top-bar-left {
     flex: 3;
+    min-width: 150px;
   }
 
   .logo {
@@ -83,5 +84,52 @@
 
   .href {
     text-decoration: none;
+  }
+
+  .menu-bar {
+    display: none;
+    margin: 0 20px;
+  }
+
+  .logo-image {
+    margin: 0 20px;
+    display: none;
+  }
+}
+
+@media (max-width: 900px) {
+  .top-bar-container {
+    .menu-bar {
+      display: flex;
+    }
+  }
+
+  @media (max-width: 600px) {
+    .top-bar-container {
+      .top-bar-left {
+        max-width: max-content;
+        min-width: max-content;
+      }
+  
+      .logo-image {
+        display: flex;
+      }
+  
+      .logo {
+        display: none;
+      }
+  
+      .name {
+        display: none;
+      }
+  
+      .top-bar-right {
+        flex: 1;
+      }
+  
+      .menu-bar {
+        margin-right: 0;
+      }
+    }
   }
 }

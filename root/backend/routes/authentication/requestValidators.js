@@ -29,7 +29,20 @@ const loginRequestValidator = [
 ];
 
 const changePasswordRequestValidator = [
-  body("password", "Password is empty").notEmpty(),
+  body("currentPassword", "currentPassword is empty").notEmpty(),
+  body("newPassword", "New Password is empty").notEmpty(),
+  body("confirmPassword")
+    .notEmpty()
+    .withMessage("Confirm Password is empty")
+    .custom( async (value, { req }) => {
+      if (value !== req.body.newPassword) {
+        return Promise.reject("Password confirmation does not match password");
+      }
+    })
+];
+
+const resetPasswordRequestValidator = [
+  body("password", "New Password is empty").notEmpty(),
   body("confirmPassword")
     .notEmpty()
     .withMessage("Confirm Password is empty")
@@ -52,5 +65,6 @@ module.exports = {
   registerRequestValidator, 
   loginRequestValidator,
   changePasswordRequestValidator,
-  sendToEmailRequestValidator
+  sendToEmailRequestValidator,
+  resetPasswordRequestValidator
 };

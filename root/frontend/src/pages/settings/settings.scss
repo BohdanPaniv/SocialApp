@@ -4,3 +4,33 @@
     width: 100%;
   }
 }
+
+@media (max-width: 900px) {
+  .settings-page {
+    .side-bar {
+      display: none;
+    }
+  }
+
+  @media (max-width: 600px) {
+    .settings-page {
+      .settings-bar {
+        padding: 20px 0 0 0;
+
+        .setting {
+          margin: 0;
+        }
+      }
+
+      .title {
+        align-items: center;
+        display: flex;
+        flex-direction: column;
+      }
+
+      .save-btn {
+        margin-bottom: 10px;
+      }
+    }
+  }
+}

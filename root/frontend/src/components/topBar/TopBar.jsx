@@ -1,9 +1,12 @@
 import "./topBar.scss";
-import { Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 import SearchBar from "./searchBar/SearchBar";
+import { IconButton } from '@material-ui/core';
+import MenuIcon from '@material-ui/icons/Menu';
 
 const TopBar = ({ imageHref, user, location, owner, search, setSearch, switchingCounter }) => {
   const ownerLink = `/profile/${user?._id}`;
+  const history = useHistory();
 
   return (
     <div className="top-bar-container">
@@ -12,6 +15,11 @@ const TopBar = ({ imageHref, user, location, owner, search, setSearch, switching
           <span className="logo">
             Social App
           </span>
+          <img 
+            src="/favicon/android-chrome-192x192.png" 
+            alt="error" 
+            className="image logo-image"
+          />
         </Link>
       </div>
       <div className="top-bar-center">
@@ -26,7 +34,17 @@ const TopBar = ({ imageHref, user, location, owner, search, setSearch, switching
         }
       </div>
       <div className="top-bar-right">
-        <Link
+        <div className="menu-bar">
+          <IconButton
+            edge="start" 
+            color="inherit" 
+            aria-label="menu"
+            onClick={() => history.push("/bookmarks") }
+          >
+            <MenuIcon />
+          </IconButton>
+        </div>
+        <Link 
           className="profile-menu"
           to={ ownerLink }
         >

@@ -2,7 +2,7 @@ $green-color: rgb(33, 185, 33);
 $blue-color: #1877f2;
 
 .settings-bar {
-  flex: 9;
+  flex: 10;
   padding: 20px 20px;
 
   .title {
@@ -36,6 +36,8 @@ $blue-color: #1877f2;
   .name {
     flex: 3;
     font-weight: 600;
+    margin-right: 10px;
+    overflow-wrap: anywhere;
   }
 
   .profile-picture {
@@ -90,5 +92,12 @@ $blue-color: #1877f2;
 
   .info {
     margin-top: 20px;
+  }
+}
+
+@media (max-width: 600px) {
+  .setting {
+    border-radius: 0!important;
+    padding: 10px!important;
   }
 }

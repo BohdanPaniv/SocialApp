@@ -84,7 +84,7 @@ const Share = ({ isHome }) => {
           <div className="form-control">
             <TextField
               id="filled-multiline-flexible"
-              label={`What's on your mind, ${user.name}?`}
+              label="What's up?"
               multiline
               variant="filled"
               inputRef={ description }

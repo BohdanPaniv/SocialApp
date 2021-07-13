@@ -39,8 +39,6 @@ const SearchBar = ({ owner, location, setSearch, switchingCounter }) => {
     searchField.current.value = "";
   }, [switchingCounter]);
 
-  console.log(switchingCounter)
-
   return (
     <form
       className="search-form" 
@@ -58,7 +56,7 @@ const SearchBar = ({ owner, location, setSearch, switchingCounter }) => {
       <div className="form-control">
         <input
           type="text"
-          placeholder="Search for contacts, posts"
+          placeholder="Search"
           className="search-input"
           ref={ searchField }
         />

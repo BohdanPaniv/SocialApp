@@ -23,7 +23,7 @@ const Contacts = () => {
     let isMount = true;
 
     data.then(res => {
-      if (isMount) {
+      if (isMount && res) {
         setOwner(res.user);
       }
     });
@@ -51,8 +51,9 @@ const Contacts = () => {
         <div className="contacts-container">
         {
           owner && 
-          <ContactsBar 
-            user={ owner }
+          <ContactsBar
+            user={ user }
+            owner={ owner }
             search={ search }
             setSearch={ setSearch }
             setSwitchingCounter={ setSwitchingCounter}

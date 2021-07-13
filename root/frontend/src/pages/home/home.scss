@@ -1,4 +1,34 @@
-.home-page-container {
-  display: flex;
-  width: 100%;
+.home-page {
+  .home-page-container {
+    display: flex;
+    width: 100%;
+  }
+}
+
+@media (max-width: 900px) {
+  .home-page {
+    .side-bar {
+      display: none;
+    }
+  }
+
+  @media (max-width: 600px) {
+    .home-page {
+      .home-right-bar {
+        display: none;
+      }
+
+      .feed-wrapper {
+        padding: 20px 0!important;
+      }
+      
+      .post {
+        border-radius: 0;
+      }
+
+      .share {
+        border-radius: 0;
+      }
+    }
+  }
 }

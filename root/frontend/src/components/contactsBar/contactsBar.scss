@@ -1,9 +1,13 @@
 $blue-color: #1877f2;
 
 .contacts-bar {
-  .tab-panel {
+  .tab-container {
     margin: 20px auto auto auto;
     width: max-content;
+    align-items: center;
+    justify-content: center;
+    justify-items: center;
+    justify-self: center;
   }
 
   .tabs {
@@ -15,5 +19,23 @@ $blue-color: #1877f2;
     flex-wrap: wrap;
     justify-content: flex-start;
     padding: 20px;
+  }
+
+  .title {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+  }
+}
+
+@media (max-width: 600px) {
+  .contacts-bar {
+    .MuiTabs-flexContainer {
+      flex-direction: column;
+    }
+
+    .contacts {
+      justify-content: center;
+    }
   }
 }

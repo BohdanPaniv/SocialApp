@@ -10,11 +10,11 @@
     background-color: transparent;
     border: none;
     cursor: pointer;
+    display: flex;
   }
 
   .seacrh-icon {
     font-size: 30px!important;
-    margin-left: 10px;
   }
 
   .form-control {
@@ -30,6 +30,18 @@
 
     &:focus {
       outline: none;
+    }
+  }
+}
+
+@media (max-width: 600px) {
+  .search-form {
+    .form-action {
+      display: none;
+    }
+  
+    .form-control {
+      margin-left: 10px;
     }
   }
 }

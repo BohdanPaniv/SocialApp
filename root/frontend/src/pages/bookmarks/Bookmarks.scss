@@ -1,0 +1,20 @@
+.bookmarks-page {
+  .bookmarks-page-container {
+    display: flex;
+    width: 100%;
+  }
+
+  .menu-bar {
+    display: none;
+  }
+
+  .top-bar-center {
+    display: none;
+  }
+
+  .profile-menu {
+    .name {
+      display: none;
+    }
+  }
+}

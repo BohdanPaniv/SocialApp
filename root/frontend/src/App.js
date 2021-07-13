@@ -13,6 +13,7 @@ import { useDispatch, useSelector } from "react-redux";
 import Profile from "./pages/profile/Profile";
 import Settings from "./pages/settings/Settings";
 import Contacts from "./pages/contacts/Contacts";
+import Bookmarks from "./pages/bookmarks/Bookmarks";
 
 const App = () => {
   const dispatch = useDispatch();
@@ -33,7 +34,7 @@ const App = () => {
               <Route exact path="/">
                 <Home />
               </Route>
-              <Route path="/profile/:id">
+              <Route exact path="/profile/:id">
                 <Profile />
               </Route>
               <Route path="/settings">
@@ -41,6 +42,9 @@ const App = () => {
               </Route>
               <Route path="/contacts/:id">
                 <Contacts />
+              </Route>
+              <Route path="/bookmarks/">
+                <Bookmarks />
               </Route>
               <Redirect to="/" />
             </Switch>

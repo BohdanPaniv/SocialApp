@@ -154,12 +154,24 @@ router.post("/changePassword", authValidators.changePasswordRequestValidator, as
 			});
 		}
 		
-		const { password, userId } = req.body;
+		const { currentPassword, newPassword, userId } = req.body;
+		const foundUser = await User.findById(userId);
+
+		if (!foundUser) {
+			return res.status(400).json({ message: "User not found" });
+		}
+
+		const isMatch = await bcrypt.compare(currentPassword, foundUser.password);
+
+		if (!isMatch) {
+			return res.status(400).json({ message: "User not found" });
+		}
 
 		const salt = await bcrypt.genSalt(10);
-		const hashedPassword = await bcrypt.hash(password, salt);
+		const hashedPassword = await bcrypt.hash(newPassword, salt);
 
-		await User.findByIdAndUpdate(userId, { password: hashedPassword });
+		foundUser.password = hashedPassword;
+		await foundUser.save();
 
 		res.json({ message: "Password changed" });
 	} catch (error) {
@@ -198,7 +210,7 @@ router.post("/sendToEmail", authValidators.sendToEmailRequestValidator, async (r
 
 		foundUser.resetToken = token;
 		foundUser.expireToken = expiresDate;
-		foundUser.save();
+		await foundUser.save();
 
 		transporter.sendMail({
 			to: foundUser.email,
@@ -215,7 +227,7 @@ router.post("/sendToEmail", authValidators.sendToEmailRequestValidator, async (r
 	}
 });
 
-router.post("/resetPassword", authValidators.changePasswordRequestValidator, async (req, res) => {
+router.post("/resetPassword", authValidators.resetPasswordRequestValidator, async (req, res) => {
 
 	try {
 		const errors = validationResult(req);
@@ -247,7 +259,7 @@ router.post("/resetPassword", authValidators.changePasswordRequestValidator, asy
 		foundUser.password = hashedPassword;
 		foundUser.expireToken = 0;
 		foundUser.resetToken = "";
-		foundUser.save();
+		await foundUser.save();
 
 		res.json({ message: "Password changed" });
 	} catch (error) {

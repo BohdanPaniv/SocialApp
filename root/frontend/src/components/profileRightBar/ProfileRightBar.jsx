@@ -9,7 +9,8 @@ import { addFollowing, removeFollowing } from "../../store/actions/userActions";
 const ProfileRightBar = ({ user, owner }) => {
   const [isFollow, setIsFollow] = useState(false);
   const dispatch = useDispatch();
-  const ownerLink = `/contacts/${owner._id}`;
+  const ownerFollowers = `/contacts/${owner._id}/followers`;
+  const ownerFollowing = `/contacts/${owner._id}/following`;
   const relationshipType = ["", "Single", "In a relationship", "Married"];
 
   const addFollowingHandle = () => {
@@ -88,10 +89,10 @@ const ProfileRightBar = ({ user, owner }) => {
         </div>
       </div>
       <div className="links">
-        <Link to={ ownerLink } className="link">
+        <Link to={ ownerFollowers } className="link">
           Followers { owner.followers.length }
         </Link>
-        <Link to={ ownerLink } className="link">
+        <Link to={ ownerFollowing } className="link">
             Following { owner.following.length }
         </Link>
       </div>

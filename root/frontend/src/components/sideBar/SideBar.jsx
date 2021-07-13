@@ -71,7 +71,7 @@ const SideBard = ({ user, imageHref }) => {
               </span>
             </Link>
           </li>
-          <li className="list-item" onClick={event => logout(event)}>
+          <li className="list-item" onClick={ event => logout(event) }>
             <div className="item-link">
               <ExitToApp className="icon" />
               <span className="item-text">

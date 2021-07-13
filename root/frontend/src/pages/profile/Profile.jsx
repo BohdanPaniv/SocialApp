@@ -30,7 +30,7 @@ const Profile = () => {
     let isMount = true;
     
     data.then(res => {
-      if (isMount) {
+      if (isMount && res) {
         setOwner(res.user);
       }
     });

@@ -51,7 +51,7 @@ const Post = ({ post, user, isHome }) => {
     const data = dispatch(getUser(post));
 
     data.then(res => {
-      if (isMount) {
+      if (isMount && res) {
         setOwner(res.user);
       }
     });

@@ -1,14 +1,17 @@
 import "./contactsBar.scss";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { AppBar, Tabs, Tab } from "@material-ui/core";
 import ContactItem from "./contactItem/ContactItem";
 import { useDispatch } from "react-redux";
+import { useLocation } from "react-router-dom";
 import { getPossibleFollowing, getFollowers, getFollowing } from "../../store/actions/userActions";
 
-const ContactsBar = ({ user, search, setSearch, setSwitchingCounter, switchingCounter }) => {
+const ContactsBar = ({ owner, search, setSearch, setSwitchingCounter, switchingCounter, user }) => {
   const [tabIndex, setTabIndex] = useState(0);
+  const location = useLocation();
   const [contacts, setContacts] = useState();
   const dispatch = useDispatch();
+  const ownerName = `${ owner.name } ${ owner.surname }`;
 
   const handleChange = (event, newValue) => {
     setTabIndex(newValue);
@@ -16,11 +19,22 @@ const ContactsBar = ({ user, search, setSearch, setSwitchingCounter, switchingCo
     setSwitchingCounter(switchingCounter + 1);
   };
 
+  const getCurrentLocation = useCallback(() => {
+    const lastSegment = location.pathname.split("/").pop();
+    if (lastSegment === "following") {
+      setTabIndex(1);
+    }
+  }, [location]);
+
+  useEffect(() => {
+    getCurrentLocation();
+  }, [getCurrentLocation])
+
   useEffect(() => {
     let isMount = true;
 
     const data ={
-      _id: user._id,
+      _id: owner._id,
       search: search
     };
 
@@ -29,7 +43,7 @@ const ContactsBar = ({ user, search, setSearch, setSwitchingCounter, switchingCo
         const followers = dispatch(getFollowers(data));
         
         followers.then(value => {
-          if (isMount) {
+          if (isMount && value) {
             setContacts(value.data.followers);
           }
         });
@@ -38,7 +52,7 @@ const ContactsBar = ({ user, search, setSearch, setSwitchingCounter, switchingCo
         const following = dispatch(getFollowing(data));
         
         following.then(value => {
-          if (isMount) {
+          if (isMount && value) {
             setContacts(value.data.following);
           }
         });;
@@ -47,13 +61,13 @@ const ContactsBar = ({ user, search, setSearch, setSwitchingCounter, switchingCo
         setContacts(null);
 
         const newData = {
-          user: user,
+          user: owner,
           search: search
         };
         const result = dispatch(getPossibleFollowing(newData));
         
         result.then(res => {
-          if (isMount) {
+          if (isMount && res) {
             setContacts(res.data.users);
           }
         });
@@ -65,28 +79,46 @@ const ContactsBar = ({ user, search, setSearch, setSwitchingCounter, switchingCo
     return () => {
       isMount = false;
     };
-  }, [tabIndex, user, dispatch, search, setSearch]);
+  }, [tabIndex, owner, dispatch, search, setSearch, location]);
 
   return (
     <div className="contacts-bar">
-      <div className="tab-panel">
-        <AppBar position="static">
+      <h2 className="title">
+        { ownerName }
+      </h2>
+      <div className="tab-container">
+        <AppBar position="static" className="tabs">
           <Tabs
             value={ tabIndex } 
             onChange={ handleChange }
             className="tabs"
           >
-            <Tab label="Followers" value={ 0 }  />
-            <Tab label="Following" value={ 1 }  />
-            <Tab label="Possible following" value={ 2 }  />
+            <Tab
+              label={`Followers`}
+              className="tab"
+              value={ 0 }
+            />
+            <Tab
+             label={`Following`}
+             className="tab"
+             value={ 1 }  
+            />
+            {
+              owner._id === user._id &&
+              <Tab 
+                label="Possible following"
+                className="tab"
+                value={ 2 }  
+              />
+            }
           </Tabs>
         </AppBar>
       </div>
       <div className="contacts">
         {
-          contacts && contacts.map((item, id) => {
+          contacts && contacts.map((item, index) => {
             return(
-              <ContactItem key={ id }  contact={ item }/>
+              <ContactItem key={ index }  contact={ item }/>
             )
           })
         }

@@ -6,7 +6,8 @@ import { useDispatch } from "react-redux";
 
 const ChangePassword = ({ user, setIsChangePassword }) => {
   const dispatch = useDispatch();
-  const password = useRef();
+  const currentPassword = useRef();
+  const newPassword = useRef();
   const confirmPassword = useRef();
 
   const changeUserPassword = (event) => {
@@ -14,7 +15,8 @@ const ChangePassword = ({ user, setIsChangePassword }) => {
 
     const data = {
       userId: user._id,
-      password: password.current.value,
+      currentPassword: currentPassword.current.value,
+      newPassword: newPassword.current.value,
       confirmPassword: confirmPassword.current.value
     };
 
@@ -29,9 +31,18 @@ const ChangePassword = ({ user, setIsChangePassword }) => {
     >
       <div className="form-control">
         <TextField
+          id="standard-basic2" 
+          label="Current Password"
+          inputRef={ currentPassword }
+          type="password"
+          autoComplete="on"
+        />
+      </div>
+      <div className="form-control">
+        <TextField
           id="standard-basic1" 
           label="New Password"
-          inputRef={ password }
+          inputRef={ newPassword }
           type="password"
           autoComplete="on"
         />
