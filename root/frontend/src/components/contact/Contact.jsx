@@ -9,7 +9,7 @@ const Contact = ({ contact }) => {
   const dispatch = useDispatch();
   const [owner, setOwner] = useState();
   const path = process.env.REACT_APP_GET_FILE;
-  const ownerLink = `profile/${contact.userId}`;
+  const ownerLink = `profile/${ contact.userId }`;
   const contractInfo = `${ owner?.name } ${ owner?.surname }`;
   const contactImageHref = owner && owner.profilePicture ? path + owner.profilePicture : "/assets/default-user.png";
 
