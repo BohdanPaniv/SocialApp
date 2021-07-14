@@ -16,7 +16,11 @@ const registerRequestValidator = [
         }
       });
     }),
-  body("password", "Password is empty").notEmpty()
+  body("password")
+    .notEmpty()
+    .withMessage("Password is empty")
+    .isLength({ min: 6 })
+    .withMessage("Minimum password length is 6 characters")
 ];
 
 const loginRequestValidator = [
@@ -25,27 +29,47 @@ const loginRequestValidator = [
     .withMessage("Email is empty")
     .isEmail()
     .withMessage("Email is incorrect"),
-  body("password", "Password is empty").notEmpty()
+  body("password")
+    .notEmpty()
+    .withMessage("Password is empty")
+    .isLength({ min: 6 })
+    .withMessage("Minimum password length is 6 characters")
 ];
 
 const changePasswordRequestValidator = [
-  body("currentPassword", "currentPassword is empty").notEmpty(),
-  body("newPassword", "New Password is empty").notEmpty(),
+  body("currentPassword")
+    .notEmpty()
+    .withMessage("currentPassword is empty")
+    .isLength({ min: 6 })
+    .withMessage("Minimum current Password length is 6 characters"),
+  body("newPassword")
+    .notEmpty()
+    .withMessage("newPassword is empty")
+    .isLength({ min: 6 })
+    .withMessage("Minimum new Password length is 6 characters"),
   body("confirmPassword")
     .notEmpty()
     .withMessage("Confirm Password is empty")
+    .isLength({ min: 6 })
+    .withMessage("Minimum confirmPassword length is 6 characters")
     .custom( async (value, { req }) => {
       if (value !== req.body.newPassword) {
-        return Promise.reject("Password confirmation does not match password");
+        return Promise.reject("Password confirmation does not match new Password");
       }
     })
 ];
 
 const resetPasswordRequestValidator = [
-  body("password", "New Password is empty").notEmpty(),
+  body("password")
+    .notEmpty()
+    .withMessage("Password is empty")
+    .isLength({ min: 6 })
+    .withMessage("Minimum password length is 6 characters"),
   body("confirmPassword")
     .notEmpty()
     .withMessage("Confirm Password is empty")
+    .isLength({ min: 6 })
+    .withMessage("Minimum confirmPassword length is 6 characters")
     .custom( async (value, { req }) => {
       if (value !== req.body.password) {
         return Promise.reject("Password confirmation does not match password");

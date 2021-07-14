@@ -31,7 +31,7 @@ const ChangePassword = ({ user, setIsChangePassword }) => {
     >
       <div className="form-control">
         <TextField
-          id="standard-basic2" 
+          id="standard-basic1" 
           label="Current Password"
           inputRef={ currentPassword }
           type="password"
@@ -40,7 +40,7 @@ const ChangePassword = ({ user, setIsChangePassword }) => {
       </div>
       <div className="form-control">
         <TextField
-          id="standard-basic1" 
+          id="standard-basic2" 
           label="New Password"
           inputRef={ newPassword }
           type="password"
@@ -49,7 +49,7 @@ const ChangePassword = ({ user, setIsChangePassword }) => {
       </div>
       <div className="form-control">
         <TextField
-          id="standard-basic2" 
+          id="standard-basic3" 
           label="Confirm Password"
           inputRef={ confirmPassword }
           type="password"

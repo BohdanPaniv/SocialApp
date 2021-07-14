@@ -4,10 +4,12 @@
   "description": "node.js express",
   "main": "index.js",
   "scripts": {
-    "start": "node index.js",
+    "start": "cross-env NODE_ENV=production node index.js",
     "backend": "nodemon index.js",
     "frontend": "npm --prefix ../frontend run start",
-    "dev": "concurrently \"npm run backend\" \"npm run frontend\""
+    "frontend:install": "npm install --prefix ../frontend",
+    "frontend:build": "npm run build --prefix ../frontend",
+    "dev": "cross-env NODE_ENV=development concurrently \"npm run backend\" \"npm run frontend\""
   },
   "author": "Bohdan Paniv <bohdan.paniv@gmail.com>",
   "license": "ISC",
@@ -27,6 +29,7 @@
   },
   "devDependencies": {
     "concurrently": "^6.2.0",
+    "cross-env": "^7.0.3",
     "nodemon": "^2.0.7"
   }
 }

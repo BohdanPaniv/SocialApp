@@ -21,8 +21,6 @@ const Share = ({ isHome }) => {
   const sharePost = (event) => {
     event.preventDefault();
     let text = description.current.value;
-
-    console.log( isHome )
     
     if (text || file) {
       const post = {
