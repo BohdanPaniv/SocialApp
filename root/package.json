@@ -1,0 +1,16 @@
+{
+  "name": "root",
+  "version": "1.0.0",
+  "description": "social app",
+  "main": "index.js",
+  "scripts": {
+    "start": "npm  --prefix backend/ run start",
+    "backend": "npm --prefix backend/ run backend",
+    "frontend": "npm --prefix backend/ run frontend",
+    "frontend:install": "npm --prefix backend/ run frontend:install",
+    "frontend:build": "npm --prefix backend/ run frontend:build",
+    "dev": "npm --prefix backend/ run dev"
+  },
+  "author": "Bohdan Paniv <bohdan.paniv@gmail.com>",
+  "license": "ISC"
+}
