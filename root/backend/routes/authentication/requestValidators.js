@@ -9,6 +9,8 @@ const registerRequestValidator = [
     .withMessage("Email is empty")
     .isEmail()
     .withMessage("Incorrect email")
+    .isLowercase()
+    .withMessage("Email: need small letters")
     .custom( async (email) => {
       return await User.findOne({ email }).then(user => {
         if (user) {
@@ -28,7 +30,9 @@ const loginRequestValidator = [
     .notEmpty()
     .withMessage("Email is empty")
     .isEmail()
-    .withMessage("Email is incorrect"),
+    .withMessage("Email is incorrect")
+    .isLowercase()
+    .withMessage("Email: need small letters"),
   body("password")
     .notEmpty()
     .withMessage("Password is empty")
@@ -83,6 +87,8 @@ const sendToEmailRequestValidator = [
     .withMessage("Email is empty")
     .isEmail()
     .withMessage("Email is incorrect")
+    .isLowercase()
+    .withMessage("Email: need small letters")
 ];
 
 module.exports = {
