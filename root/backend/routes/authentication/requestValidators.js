@@ -5,6 +5,7 @@ const registerRequestValidator = [
   body("name", "Name is empty").notEmpty(),
   body("surname", "Surname is empty").notEmpty(),
   body("email")
+    .trim()
     .notEmpty()
     .withMessage("Email is empty")
     .isEmail()
@@ -19,6 +20,7 @@ const registerRequestValidator = [
       });
     }),
   body("password")
+    .trim()
     .notEmpty()
     .withMessage("Password is empty")
     .isLength({ min: 6 })
@@ -27,6 +29,7 @@ const registerRequestValidator = [
 
 const loginRequestValidator = [
   body("email")
+    .trim()
     .notEmpty()
     .withMessage("Email is empty")
     .isEmail()
@@ -34,6 +37,7 @@ const loginRequestValidator = [
     .isLowercase()
     .withMessage("Email: need small letters"),
   body("password")
+    .trim()
     .notEmpty()
     .withMessage("Password is empty")
     .isLength({ min: 6 })
@@ -42,16 +46,19 @@ const loginRequestValidator = [
 
 const changePasswordRequestValidator = [
   body("currentPassword")
+    .trim()
     .notEmpty()
     .withMessage("currentPassword is empty")
     .isLength({ min: 6 })
     .withMessage("Minimum current Password length is 6 characters"),
   body("newPassword")
+    .trim()
     .notEmpty()
     .withMessage("newPassword is empty")
     .isLength({ min: 6 })
     .withMessage("Minimum new Password length is 6 characters"),
   body("confirmPassword")
+    .trim()
     .notEmpty()
     .withMessage("Confirm Password is empty")
     .isLength({ min: 6 })
@@ -65,11 +72,13 @@ const changePasswordRequestValidator = [
 
 const resetPasswordRequestValidator = [
   body("password")
+    .trim()
     .notEmpty()
     .withMessage("Password is empty")
     .isLength({ min: 6 })
     .withMessage("Minimum password length is 6 characters"),
   body("confirmPassword")
+    .trim()
     .notEmpty()
     .withMessage("Confirm Password is empty")
     .isLength({ min: 6 })
@@ -83,6 +92,7 @@ const resetPasswordRequestValidator = [
 
 const sendToEmailRequestValidator = [
   body("email")
+    .trim()
     .notEmpty()
     .withMessage("Email is empty")
     .isEmail()
