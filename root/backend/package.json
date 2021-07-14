@@ -4,32 +4,14 @@
   "description": "node.js express",
   "main": "index.js",
   "scripts": {
-    "start": "cross-env NODE_ENV=production node index.js",
+    "start": "node index.js",
     "backend": "nodemon index.js",
     "frontend": "npm --prefix ../frontend run start",
     "frontend:install": "npm install --prefix ../frontend",
     "frontend:build": "npm run build --prefix ../frontend",
-    "dev": "cross-env NODE_ENV=development concurrently \"npm run backend\" \"npm run frontend\""
+    "dev": "concurrently \"npm run backend\" \"npm run frontend\"",
+    "heroku-postbuild": "NPM_CONFIG_PRODUCTION=false npm install --prefix ../frontend && npm run build --prefix ../frontend"
   },
   "author": "Bohdan Paniv <bohdan.paniv@gmail.com>",
-  "license": "ISC",
-  "dependencies": {
-    "bcryptjs": "^2.4.3",
-    "cookie-parser": "^1.4.5",
-    "dotenv": "^10.0.0",
-    "express": "^4.17.1",
-    "express-validator": "^6.12.0",
-    "gridfs-stream": "^1.1.1",
-    "jsonwebtoken": "^8.5.1",
-    "mongoose": "^5.12.14",
-    "multer": "^1.4.2",
-    "multer-gridfs-storage": "^5.0.0",
-    "nodemailer": "^6.6.2",
-    "nodemailer-sendgrid-transport": "^0.2.0"
-  },
-  "devDependencies": {
-    "concurrently": "^6.2.0",
-    "cross-env": "^7.0.3",
-    "nodemon": "^2.0.7"
-  }
+  "license": "ISC"
 }

@@ -11,8 +11,10 @@ const ContactItem = ({ contact }) => {
   const [owner, setOwner] = useState();
   const path = process.env.REACT_APP_GET_FILE;
   const contractInfo = `${ owner?.name } ${ owner?.surname }`;
-  const contactImageHref = owner ? path + owner.profilePicture : "/assets/default-user.png";
+  const contactImageHref = owner && owner.profilePicture ? path + owner.profilePicture : "/assets/default-user.png";
   const ownerLink = owner && `/profile/${owner._id}`;
+
+  console.log(owner?.profilePicture)
 
   useEffect(() => {
     const data = dispatch(getUser(contact));

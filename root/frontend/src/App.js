@@ -62,7 +62,7 @@ const App = () => {
                 <ResetPassword />
               </Route>
               <Redirect to="/"/>
-          </Switch>
+            </Switch>
           )
         )
       }
