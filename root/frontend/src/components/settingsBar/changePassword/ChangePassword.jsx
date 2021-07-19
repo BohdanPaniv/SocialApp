@@ -33,7 +33,7 @@ const ChangePassword = ({ user, setIsChangePassword }) => {
         <TextField
           id="standard-basic1" 
           label="Current Password"
-          inputRef={ currentPassword }
+          inputRef={currentPassword}
           type="password"
           autoComplete="on"
         />
@@ -42,7 +42,7 @@ const ChangePassword = ({ user, setIsChangePassword }) => {
         <TextField
           id="standard-basic2" 
           label="New Password"
-          inputRef={ newPassword }
+          inputRef={newPassword}
           type="password"
           autoComplete="on"
         />
@@ -51,7 +51,7 @@ const ChangePassword = ({ user, setIsChangePassword }) => {
         <TextField
           id="standard-basic3" 
           label="Confirm Password"
-          inputRef={ confirmPassword }
+          inputRef={confirmPassword}
           type="password"
           autoComplete="on"
         />
@@ -69,7 +69,7 @@ const ChangePassword = ({ user, setIsChangePassword }) => {
           variant="contained" 
           color="primary"
           className="cancel-btn"
-          onClick={ () => setIsChangePassword(false) }
+          onClick={() => setIsChangePassword(false)}
         >
           Cancel
         </Button>

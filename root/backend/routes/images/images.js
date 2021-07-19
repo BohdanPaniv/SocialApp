@@ -1,21 +1,19 @@
 const express = require("express");
 const router = express.Router();
 const mongoose = require("mongoose");
-const Grid = require("gridfs-stream");
-
-let gridFSBucket;
 const conn = mongoose.connection;
+var bucket;
 
 conn.once("open", function () {
-	gridFSBucket = Grid(conn.db, mongoose.mongo);
-	gridFSBucket.collection("photos");
+	bucket = new mongoose.mongo.GridFSBucket(mongoose.connection.db, {
+    bucketName: "photos"
+  });
 });
 
 router.get("/get/:filename", async (req, res) => {
 	try {
-		const file = await gridFSBucket.files.findOne({ filename: req.params.filename });
-		const readStream = gridFSBucket.createReadStream(file.filename);
-		readStream.pipe(res);
+		const downStream = bucket.openDownloadStreamByName(req.params.filename);
+		downStream.pipe(res);
 	} catch (error) {
 		res.status(404).json({ message: "Not found"});
 	}
@@ -23,9 +21,13 @@ router.get("/get/:filename", async (req, res) => {
 
 router.delete("/delete/:filename", async (req, res) => {
 	try {
-		const foundImage = await gridFSBucket.files.findOne({ filename: req.params.filename });
-		await gridFSBucket.remove({ _id: req.params.filename, root: "photos" });
+		const document = await bucket.find({ filename: req.params.filename}).toArray();
 		
+		if (document.length === 0) {
+			return res.status(400).json({ message: "Image not found" });
+		}
+
+		await bucket.delete(document[0]._id);
 		res.json({ message:"Old image deleted" });
 	} catch (error) {
 		console.log(error);

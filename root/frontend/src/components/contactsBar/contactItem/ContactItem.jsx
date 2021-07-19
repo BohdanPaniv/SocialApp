@@ -1,57 +1,26 @@
 import "./contactItem.scss";
-import { useEffect } from "react";
-import { useDispatch } from "react-redux";
-import { useState } from "react";
-import { getUser } from "../../../store/actions/userActions";
-import CircularProgress from '@material-ui/core/CircularProgress';
 import { Link } from "react-router-dom";
 
 const ContactItem = ({ contact }) => {
-  const dispatch = useDispatch();
-  const [owner, setOwner] = useState();
   const path = process.env.REACT_APP_GET_FILE;
-  const contractInfo = `${ owner?.name } ${ owner?.surname }`;
-  const contactImageHref = owner && owner.profilePicture ? path + owner.profilePicture : "/assets/default-user.png";
-  const ownerLink = owner && `/profile/${owner._id}`;
-
-  console.log(owner?.profilePicture)
-
-  useEffect(() => {
-    const data = dispatch(getUser(contact));
-    let isMount = true;
-
-    data.then(res => {
-      if (isMount && res) {
-        setOwner(res.user);
-      }
-    });
-
-    return () => {
-      isMount = false;
-    }
-  }, [dispatch, contact]);
+  const contractInfo = `${ contact.name } ${ contact.surname }`;
+  const profilePictureName = contact.profilePictureName ? path + contact.profilePictureName : "/assets/default-user.png";
+  const ownerLink = `/profile/${contact.userId}`;
 
   return (
-    <>
-    {
-      owner ? 
-      <Link
-        className="contact-item" 
-        to={ ownerLink }
-      >
-        <img
-          src={ contactImageHref }
-          alt="error"
-          className="image"
-        />
-        <span className="contact-name">
-          { contractInfo }
-        </span>
-      </Link>
-      :
-      <CircularProgress />
-    }
-    </>
+    <Link
+      className="contact-item" 
+      to={ownerLink}
+    >
+      <img
+        src={profilePictureName}
+        alt="error"
+        className="image"
+      />
+      <span className="contact-name">
+        {contractInfo}
+      </span>
+    </Link>
   );
 };
 

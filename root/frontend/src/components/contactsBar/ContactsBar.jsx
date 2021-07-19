@@ -33,14 +33,9 @@ const ContactsBar = ({ owner, search, setSearch, setSwitchingCounter, switchingC
   useEffect(() => {
     let isMount = true;
 
-    const data ={
-      _id: owner._id,
-      search: search
-    };
-
     switch (tabIndex) {
       case 0:
-        const followers = dispatch(getFollowers(data));
+        const followers = dispatch(getFollowers({ followers: owner.followers, search }));
         
         followers.then(value => {
           if (isMount && value) {
@@ -49,7 +44,7 @@ const ContactsBar = ({ owner, search, setSearch, setSwitchingCounter, switchingC
         });
         break;
       case 1:
-        const following = dispatch(getFollowing(data));
+        const following = dispatch(getFollowing({ following: owner.following, search }));
         
         following.then(value => {
           if (isMount && value) {
@@ -79,49 +74,48 @@ const ContactsBar = ({ owner, search, setSearch, setSwitchingCounter, switchingC
     return () => {
       isMount = false;
     };
-  }, [tabIndex, owner, dispatch, search, setSearch, location]);
+  }, [tabIndex, owner, dispatch, search, setSearch, location, user.following]);
 
   return (
     <div className="contacts-bar">
       <h2 className="title">
-        { ownerName }
+        {ownerName}
       </h2>
       <div className="tab-container">
         <AppBar position="static" className="tabs">
           <Tabs
-            value={ tabIndex } 
-            onChange={ handleChange }
+            value={tabIndex} 
+            onChange={handleChange}
             className="tabs"
           >
             <Tab
               label={`Followers`}
               className="tab"
-              value={ 0 }
+              value={0}
             />
             <Tab
              label={`Following`}
              className="tab"
-             value={ 1 }  
+             value={1}  
             />
-            {
-              owner._id === user._id &&
+            {owner._id === user._id && (
               <Tab 
-                label="Possible following"
-                className="tab"
-                value={ 2 }  
-              />
-            }
+              label="Possible following"
+              className="tab"
+              value={2}  
+            />)}
           </Tabs>
         </AppBar>
       </div>
       <div className="contacts">
-        {
-          contacts && contacts.map((item, index) => {
-            return(
-              <ContactItem key={ index }  contact={ item }/>
-            )
-          })
-        }
+        {contacts && contacts.map((item, index) => {
+          return(
+            <ContactItem
+              key={item.userId}  
+              contact={item}
+            />
+          )
+        })}
       </div>
     </div>
   );

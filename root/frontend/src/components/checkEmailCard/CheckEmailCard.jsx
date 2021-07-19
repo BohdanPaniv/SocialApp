@@ -24,7 +24,7 @@ const CheckEmailCard = () => {
         <form
           className="check-email-form" 
           noValidate 
-          onSubmit={event => sendToUserMail(event) }
+          onSubmit={event => sendToUserMail(event)}
         >
           <div className="form-text">
             <span>
@@ -37,14 +37,14 @@ const CheckEmailCard = () => {
               className="form-input"
               label="Email"
               variant="outlined"
-              inputRef={ email }
+              inputRef={email}
             />
           </div>
           <div className="form-btn-block">
             <Button
               variant="contained" 
               className="cancel-button"
-              onClick={ () => history.push("/") }
+              onClick={() => history.push("/")}
               color="primary"
             >
               Cancel

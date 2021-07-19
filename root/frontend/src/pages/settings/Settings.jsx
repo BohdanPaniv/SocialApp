@@ -9,8 +9,8 @@ import { useEffect } from "react";
 const Settings = () => {
   const user = useSelector(store => store.auth.user);
   const path = process.env.REACT_APP_GET_FILE;
-  const imageHref = user.profilePicture ? path + user.profilePicture : "/assets/default-user.png";
-  const coverPictureHref = user.coverPicture ? path + user.coverPicture : "/assets/background.jpg";
+  const profilePictureName = user.profilePictureName ? path + user.profilePictureName : "/assets/default-user.png";
+  const coverPictureHref = user.coverPictureName ? path + user.coverPictureName : "/assets/background.jpg";
   const message = useMessage();
   const response = useSelector(state => state.response);
 
@@ -23,19 +23,19 @@ const Settings = () => {
   return (
     <div className="settings-page">
       <TopBar
-        imageHref={ imageHref }
-        user={ user }
+        profilePictureName={profilePictureName}
+        user={user}
         location="Settings"
       />
       <div className="settings-page-container">
         <SideBar
-          user={ user } 
-          imageHref={ imageHref }
+          user={user} 
+          profilePictureName={profilePictureName}
         />
         <SettingsBar
-          user={ user }
-          imageHref={ imageHref }
-          coverPictureHref={ coverPictureHref }
+          user={user}
+          profilePictureName={profilePictureName}
+          coverPictureHref={coverPictureHref}
         />
       </div>
     </div>

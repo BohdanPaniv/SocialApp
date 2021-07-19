@@ -7,24 +7,28 @@ const postSchema = new Schema(
       required: true,
     },
     description: {
-      type: String
+      type: String,
+      default: ""
     },
-    imageName: {
-      type: String
+    postImageName: {
+      type: String,
+      default: ""
     },
     likes: {
       type: Array,
-      default: [],
+      default: []
     },
     comments: {
       type: Array,
-      default: [],
+      default: []
     },
     createdAt: {
-      type: Number
+      type: Number,
+      default: 0
     },
     updatedAt: {
-      type: Number
+      type: Number,
+      default: 0
     }
   }
 );

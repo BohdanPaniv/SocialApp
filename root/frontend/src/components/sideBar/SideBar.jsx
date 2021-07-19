@@ -9,7 +9,7 @@ import { Link } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { logOut } from "../../store/actions/authActions";
 
-const SideBard = ({ user, imageHref }) => {
+const SideBard = ({ user, profilePictureName }) => {
   const dispatch = useDispatch();
   const contactsLink = `/contacts/${ user._id }`;
 
@@ -29,7 +29,7 @@ const SideBard = ({ user, imageHref }) => {
               className="item-link"
             >
               <img 
-                src={ imageHref }
+                src={profilePictureName}
                 alt="error"
                 className="image icon"
               />
@@ -51,7 +51,7 @@ const SideBard = ({ user, imageHref }) => {
           </li>
           <li className="list-item">
             <Link
-              to={ contactsLink }
+              to={contactsLink}
               className="item-link"
             >
               <PeopleAlt className="icon" />
@@ -71,7 +71,7 @@ const SideBard = ({ user, imageHref }) => {
               </span>
             </Link>
           </li>
-          <li className="list-item" onClick={ event => logout(event) }>
+          <li className="list-item" onClick={event => logout(event)}>
             <div className="item-link">
               <ExitToApp className="icon" />
               <span className="item-text">

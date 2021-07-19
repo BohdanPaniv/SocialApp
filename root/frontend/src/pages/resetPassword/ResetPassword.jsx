@@ -20,12 +20,11 @@ const ResetPassword = ({ confirmed }) => {
       <h1 className="logo">
         SocialApp
       </h1>
-      {
-        confirmed ?
+      {confirmed ? (
         <ResetPasswordCard />
-        :
+      ) : (
         <CheckEmailCard />
-      }
+      )}
     </div>
   );
 };

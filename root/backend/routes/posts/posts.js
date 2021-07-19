@@ -28,7 +28,7 @@ router.post("/getProfilePosts", [], async (req, res) => {
 			});
 		}
 
-		res.json({ posts: search ? filteredPosts : userPosts});
+		res.json({ posts: search ? filteredPosts : userPosts });
 	} catch (error) {
 		res.status(500).json(error);
 	}
@@ -42,13 +42,13 @@ router.post("/addLike", [], async (req, res) => {
 			userId: user._id
 		};
 
-		const changedPost = await Post.findOneAndUpdate(
+		await Post.findOneAndUpdate(
 			{ _id: postId },
 			{ $push: { likes: userId } },
 			{ new: true }
 		);
 
-		res.json({ message: "Post liked", post: changedPost });
+		res.json({ message: "Post liked", likes: userId, postId });
 	} catch (error) {
 		res.status(500).json(error);
 	}
@@ -62,13 +62,13 @@ router.post("/removeLike", [], async (req, res) => {
 			userId: user._id
 		};
 
-		const changedPost = await Post.findOneAndUpdate(
+		await Post.findOneAndUpdate(
 			{ _id: postId },
-			{ $pull: { likes: { userId: user._id }}},
+			{ $pull: { likes: userId }},
 			{ new: true }
 		);
 
-		res.json({ message: "Post unliked", post: changedPost });
+		res.json({ message: "Post unliked", likes: userId, postId });
 	} catch (error) {
 		res.status(500).json(error);
 	}
@@ -76,11 +76,11 @@ router.post("/removeLike", [], async (req, res) => {
 
 router.post("/createPost", async (req, res) => {
 	try {
-		const { userId, description, imageName, createdAt } = req.body;
+		const { userId, description, postImageName, createdAt } = req.body;
 
 		const post = new Post({
 			userId,
-			imageName,
+			postImageName,
 			description,
 			createdAt
 		});
@@ -101,31 +101,39 @@ router.post("/getFeed", [], async (req, res) => {
 		const { _id, search } = req.body;
 
 		const foundUser = await User.findById(_id);
-		let feed = [];
-		let filteredFeed = [];
+		const feed = [];
+		const filteredFeed = [];
 
 		for (const user of foundUser.following) {
-			const following = await Post.find({ userId: user.userId});
+			const posts = await Post.find({ userId: user.userId});
 
-			if (following) {
-				following.forEach(item => {
-					feed.push(item);
-				});
+			if (posts) {
+				for (const post of posts) {
+					const currentUser = await User.findById(user.userId);
+					let currentPost = post.toObject();
+
+					currentPost.profilePictureName = currentUser.profilePictureName;
+					currentPost.userName = currentUser.name;
+					currentPost.userSurname = currentUser.surname;
+					feed.push(currentPost);
+				}
 			}
 		}
 
 		const userPosts = await Post.find({ userId: _id });
 
-		for (const post of userPosts) {
-			feed.push(post);
+		for (let post of userPosts) {
+			let currentPost = post.toObject();
+			currentPost.userName = foundUser.name;
+			currentPost.userSurname = foundUser.surname;
+			feed.push(currentPost);
 		}
 
 		if (search) {
-			const regex = new RegExp(`${search}`, "i");
+			const regex = new RegExp(search, "i");
 
 			for (const post of feed) {
-				const user = await User.findById(post.userId);
-				const userName = `${user.name} ${user.surname}`;
+				const userName = `${ post.userName } ${ post.userSurname }`;
 
 				if (regex.test(userName) || regex.test(post.description)) {
 					filteredFeed.push(post);
@@ -143,13 +151,36 @@ router.post("/addComment", [], async (req, res) => {
 	try {
 		const { userComment, postId } = req.body;
 
-		const changedPost = await Post.findOneAndUpdate(
+		let post = await Post.findOneAndUpdate(
 			{ _id: postId },
 			{ $push: { comments: userComment } },
 			{ new: true }
 		);
 
-		res.json({ message: "Comment added", post: changedPost });
+		const user = await User.findById(userComment.userId);
+
+		userComment.userName = user.name;
+		userComment.userSurname = user.surname;
+		userComment.profilePictureName = user.profilePictureName;
+
+		res.json({ message: "Comment added", comment: userComment, postId });
+	} catch (error) {
+		res.status(500).json(error);
+	}
+});
+
+router.post("/getComments", [], async (req, res) => {
+	try {
+		const { post } = req.body;
+
+		for (let comment of post.comments) {
+			const user = await User.findById(comment.userId);
+			comment.userName = user.name;
+			comment.userSurname = user.surname;
+			comment.profilePictureName = user.profilePictureName;
+		}
+
+		res.json({ post })
 	} catch (error) {
 		res.status(500).json(error);
 	}

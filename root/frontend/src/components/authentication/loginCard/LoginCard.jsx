@@ -9,10 +9,7 @@ import Card from "../../card/Card";
 import { useDispatch } from "react-redux";
 import { logIn } from "../../../store/actions/authActions";
 
-const LoginCard = ({
-  isLogin,
-  setIsLogin
-}) => {
+const LoginCard = ({ isLogin, setIsLogin }) => {
   const email = useRef();
   const password = useRef();
   const dispatch = useDispatch();
@@ -38,12 +35,12 @@ const LoginCard = ({
         <form 
           className="login-form" 
           noValidate 
-          onSubmit={event => signIn(event) }
+          onSubmit={event => signIn(event)}
         >
           <div className="form-control">
             <TextField
               type="email"
-              inputRef={ email }
+              inputRef={email}
               className="form-input"
               label="Email"
               variant="outlined"
@@ -52,7 +49,7 @@ const LoginCard = ({
           <div className="form-control">
             <TextField 
               type="password"
-              inputRef={ password }
+              inputRef={password}
               autoComplete="on"
               className="form-input"
               label="Password" 
@@ -84,7 +81,7 @@ const LoginCard = ({
               variant="contained" 
               className="create-button"
               color="primary"
-              onClick={ changeIsLogin }
+              onClick={changeIsLogin}
             >
               Create New Account
             </Button>

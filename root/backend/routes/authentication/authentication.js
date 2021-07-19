@@ -8,9 +8,7 @@ const sendgridTransport = require("nodemailer-sendgrid-transport");
 const nodemailer = require("nodemailer");
 
 const transporter = nodemailer.createTransport(sendgridTransport({
-	auth:{
-		api_key:process.env.SENDGRID_API
-	}
+	auth:{ api_key:process.env.SENDGRID_API }
 }));
 
 // api/auth/register
@@ -191,7 +189,6 @@ router.post("/sendToEmail", authValidators.sendToEmailRequestValidator, async (r
 		}
 
 		const { email } = req.body;
-
 		const foundUser = await User.findOne({ email });
 
 		if (!foundUser) {

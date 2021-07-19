@@ -22,11 +22,11 @@ const userSchema = new Schema({
 		require: true,
 		default: ""
 	},
-	profilePicture: {
+	profilePictureName: {
 		type: String,
 		default: "",
 	},
-	coverPicture: {
+	coverPictureName: {
 		type: String,
 		default: "",
 	},

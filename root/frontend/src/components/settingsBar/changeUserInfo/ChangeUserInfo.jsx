@@ -36,22 +36,22 @@ const ChangeUserInfo = ({ user, setIsChangeUserInfo }) => {
     <form
      className="change-user-info"
      noValidate
-     onSubmit={event => changeUserName(event) }
+     onSubmit={event => changeUserName(event)}
     >
       <div className="form-control">
         <TextField
           id="standard-basic" 
           label="City"
-          inputRef={ city }
-          defaultValue={ user.city }
+          inputRef={city}
+          defaultValue={user.city}
         />
       </div>
       <div className="form-control">
         <TextField
           id="standard-basic" 
           label="From"
-          inputRef={ from }
-          defaultValue={ user.from }
+          inputRef={from}
+          defaultValue={user.from}
         />
       </div>
       <FormControl className="form-control">
@@ -61,8 +61,8 @@ const ChangeUserInfo = ({ user, setIsChangeUserInfo }) => {
         <Select
           labelId="demo-simple-select-label"
           id="demo-simple-select"
-          value={ relationshipIndex }
-          onChange={ handleChange }
+          value={relationshipIndex}
+          onChange={handleChange}
         >
           <MenuItem value={0}>
             No info
@@ -91,7 +91,7 @@ const ChangeUserInfo = ({ user, setIsChangeUserInfo }) => {
           variant="contained" 
           color="primary"
           className="cancel-btn"
-          onClick={ () => setIsChangeUserInfo(false) }
+          onClick={() => setIsChangeUserInfo(false)}
         >
           Cancel
         </Button>

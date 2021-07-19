@@ -11,7 +11,9 @@ import {
   PROFILE_COMMENT_ADDED,
   GET_FILTERED_PROFILE_POSTS,
   GET_PROFILE_POSTS_ERROR,
-  FILTERING_PROFILE_POSTS_ERROR
+  FILTERING_PROFILE_POSTS_ERROR,
+  PROFILE_COMMENTS_RECEIVED,
+  GET_PROFILE_COMMENTS_ERROR
 } from "../actions/types";
 
 const initialState = {
@@ -20,6 +22,8 @@ const initialState = {
 };
 
 export default function profilePostsReducer(state = initialState, action){
+  let profilePosts = [...state.posts];
+
   switch (action.type) {
     case GET_PROFILE_POSTS_LOADING:
       return {
@@ -43,10 +47,19 @@ export default function profilePostsReducer(state = initialState, action){
         posts: [action.payload, ...state.posts]
       };
     case PROFILE_COMMENT_ADDED:
-    case PROFILE_POST_LIKED:
-    case PROFILE_POST_UNLIKED:
-      let profilePosts = [...state.posts];
-      
+      profilePosts.forEach(post => {
+        if (post._id === action.payload.postId) {
+          return post.comments.push(action.payload.comment);
+        }
+
+        return post;
+      });
+
+      return {
+        ...state,
+        posts: profilePosts
+      }
+    case PROFILE_COMMENTS_RECEIVED:
       profilePosts = profilePosts.map(post => {
         if (post._id === action.payload._id) {
           return action.payload;
@@ -59,6 +72,32 @@ export default function profilePostsReducer(state = initialState, action){
         ...state,
         posts: profilePosts
       }
+    case PROFILE_POST_LIKED:
+      profilePosts.forEach(post => {
+        if (post._id === action.payload.postId) {
+          return post.likes.push(action.payload.likes);
+        }
+      });
+
+      return {
+        ...state,
+        posts: profilePosts
+      };
+    case PROFILE_POST_UNLIKED:
+      profilePosts.forEach(post => {
+        if (post._id === action.payload.postId) {
+          post.likes.forEach((like, index) => {
+            if (like.userId === action.payload.likes.userId) {
+              post.likes.splice(index, 1);
+            }
+          });
+        }
+      });
+
+      return {
+        ...state,
+        posts: profilePosts
+      };
     case UNLIKE_POST_ERROR:
     case LIKE_POST_ERROR:
       return {
@@ -76,6 +115,8 @@ export default function profilePostsReducer(state = initialState, action){
         ...state,
         posts: []
       };
+    case GET_PROFILE_COMMENTS_ERROR:
+      return state;
     default:
       return state;
   }

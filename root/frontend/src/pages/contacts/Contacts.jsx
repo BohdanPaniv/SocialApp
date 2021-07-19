@@ -14,52 +14,55 @@ const Contacts = () => {
   const [owner, setOwner] = useState();
   const { id } = useParams();
   const path = process.env.REACT_APP_GET_FILE;
-  const imageHref = user.profilePicture ? path + user.profilePicture : "/assets/default-user.png";
+  const profilePictureName = user.profilePictureName ? path + user.profilePictureName : "/assets/default-user.png";
   const [search, setSearch] = useState();
   const [switchingCounter, setSwitchingCounter] = useState(0);
 
   useEffect(() => {
-    const data = dispatch(getUser({ userId: id }));
-    let isMount = true;
+    if (id !== user._id) {
+      const data = dispatch(getUser({ userId: id }));
+      let isMount = true;
 
-    data.then(res => {
-      if (isMount && res) {
-        setOwner(res.user);
-      }
-    });
+      data.then(res => {
+        if (isMount && res) {
+          setOwner(res.user);
+        }
+      });
 
-    return () => {
-      isMount = false;
-    };
-  }, [dispatch, id]);
+      return () => {
+        isMount = false;
+      };
+    }
+
+    setOwner(user);
+  }, [dispatch, id, user]);
 
   return (
     <div className="contacts-page">
       <TopBar
-        imageHref={ imageHref }
-        user={ user }
-        owner={ owner }
+        profilePictureName={profilePictureName}
+        user={user}
+        owner={owner}
         search
-        setSearch={ setSearch }
-        switchingCounter={ switchingCounter }
+        setSearch={setSearch}
+        switchingCounter={switchingCounter}
       />
       <div className="contacts-page-container">
         <SideBar
-          user={ user } 
-          imageHref={ imageHref }
+          user={user} 
+          profilePictureName={profilePictureName}
         />
         <div className="contacts-container">
-        {
-          owner && 
+        {owner && (
           <ContactsBar
-            user={ user }
-            owner={ owner }
-            search={ search }
-            setSearch={ setSearch }
-            setSwitchingCounter={ setSwitchingCounter}
-            switchingCounter={ switchingCounter }
+            user={user}
+            owner={owner}
+            search={search}
+            setSearch={setSearch}
+            setSwitchingCounter={setSwitchingCounter}
+            switchingCounter={switchingCounter}
           />
-        }
+        )}
         </div>
       </div>
     </div>

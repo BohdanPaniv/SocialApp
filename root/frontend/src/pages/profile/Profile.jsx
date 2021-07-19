@@ -5,21 +5,24 @@ import Feed from "../../components/feed/Feed";
 import { useSelector, useDispatch } from "react-redux";
 import { useParams } from "react-router-dom";
 import { useState, useEffect } from "react";
+import { useMessage } from "../../hooks/useMessage";
 import { getUser } from "../../store/actions/userActions";
 import ProfileRightBar from "../../components/profileRightBar/ProfileRightBar";
 
 const Profile = () => {
   const user = useSelector(store => store.auth.user);
+  const message = useMessage();
   const dispatch = useDispatch();
   const [owner, setOwner] = useState();
+  const response = useSelector(state => state.response);
   const { id } = useParams();
   const ownerName = owner && `${owner.name} ${owner.surname}`;
   const path = process.env.REACT_APP_GET_FILE;
   const defaultIcon = "/assets/default-user.png";
   const defaultBackground = "/assets/background.jpg";
-  const userImageHref = user?.profilePicture ? path + user.profilePicture : defaultIcon;
-  const ownerImageHref = owner?.profilePicture ? path + owner.profilePicture : defaultIcon;
-  const backgroundHref = owner?.coverPicture ? path + owner.coverPicture : defaultBackground;
+  const profilePictureName = user?.profilePictureName ? path + user.profilePictureName : defaultIcon;
+  const ownerImageHref = owner?.profilePictureName ? path + owner.profilePictureName : defaultIcon;
+  const backgroundHref = owner?.coverPictureName ? path + owner.coverPictureName : defaultBackground;
 
   useEffect(() => {
     const userInfo = {
@@ -37,58 +40,64 @@ const Profile = () => {
 
     return () => {
       isMount = false;
-    }
+    };
   }, [dispatch, id]);
+
+  useEffect(() => {
+    if (response.id){
+      message(response);
+    }
+  }, [response, message]);
   
   return (
     <div className="profile-page">
       <TopBar
-        imageHref={ userImageHref }
-        user={ user }
+        profilePictureName={profilePictureName}
+        user={user}
         location="Profile"
-        owner={ owner }
+        owner={owner}
         search
       />
       <div className="profile-page-container">
         <SideBar
-          user={ user }
-          imageHref={ userImageHref }
+          user={user}
+          profilePictureName={profilePictureName}
         />
         <div className="container-right">
           <div className="right-top">
             <div className="profile-cover">
               <img 
-                src={ backgroundHref }
+                src={backgroundHref}
                 alt="" 
                 className="cover-image"
               />
               <img 
-                src={ ownerImageHref }
+                src={ownerImageHref}
                 alt="" 
                 className="profile-image" 
               />
             </div>
             <div className="profile-info">
               <h2 className="name">
-                { ownerName }
+                {ownerName}
               </h2>
             </div>
           </div>
           <div className="right-bottom">
-            {
-              owner &&
+            {owner && (
               <>
                 <Feed
-                  user={ user }
-                  isHome={ false }
-                  owner={ owner }
+                  user={user}
+                  isHome={false}
+                  owner={owner}
+                  profilePictureName={profilePictureName}
                 />
                 <ProfileRightBar 
-                  user={ user }
-                  owner={ owner }
+                  user={user}
+                  owner={owner}
                 />
               </>
-            }
+            )}
           </div>
         </div>
       </div>

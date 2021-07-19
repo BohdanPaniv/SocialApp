@@ -39,26 +39,24 @@ const ProfileRightBar = ({ user, owner }) => {
         className="follow-btn"
         onClick={ addFollowingHandle }
       >
-      {
-        isFollow ?
+      {isFollow ? (
         <>
           UnFollow <Remove />
         </>
-        :
+      ) : (
         <>
           Follow <Add/>
         </>
-      }
+      )}
       </Button>
     )
   };
 
   return(
     <div className="profile-right-bar">
-      {
-        owner._id !== user._id &&
-        <FollowButton />
-      }
+      {owner._id !== user._id && (
+          <FollowButton />
+      )}
       <h2 className="title">
           User information
       </h2>
@@ -68,7 +66,7 @@ const ProfileRightBar = ({ user, owner }) => {
             City:
           </span>
           <span className="info-value">
-            { owner.city }
+            {owner.city}
           </span>
         </div>
         <div className="info-item">
@@ -76,7 +74,7 @@ const ProfileRightBar = ({ user, owner }) => {
             From:
           </span>
           <span className="info-value">
-            { owner.from }
+            {owner.from}
           </span>
         </div>
         <div className="info-item">
@@ -84,16 +82,16 @@ const ProfileRightBar = ({ user, owner }) => {
             Relationship:
           </span>
           <span className="info-value">
-            { relationshipType[owner.relationship]}
+            {relationshipType[owner.relationship]}
           </span>
         </div>
       </div>
       <div className="links">
-        <Link to={ ownerFollowers } className="link">
-          Followers { owner.followers.length }
+        <Link to={ownerFollowers} className="link">
+          Followers {owner.followers.length}
         </Link>
-        <Link to={ ownerFollowing } className="link">
-            Following { owner.following.length }
+        <Link to={ownerFollowing} className="link">
+            Following {owner.following.length}
         </Link>
       </div>
     </div> 

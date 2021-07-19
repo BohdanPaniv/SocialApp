@@ -4,7 +4,7 @@ import SearchBar from "./searchBar/SearchBar";
 import { IconButton } from '@material-ui/core';
 import MenuIcon from '@material-ui/icons/Menu';
 
-const TopBar = ({ imageHref, user, location, owner, search, setSearch, switchingCounter }) => {
+const TopBar = ({ profilePictureName, user, location, owner, search, setSearch, switchingCounter }) => {
   const ownerLink = `/profile/${user?._id}`;
   const history = useHistory();
 
@@ -23,15 +23,14 @@ const TopBar = ({ imageHref, user, location, owner, search, setSearch, switching
         </Link>
       </div>
       <div className="top-bar-center">
-        {
-          search &&
+        {search && (
           <SearchBar 
-            owner={ owner }
-            location={ location }
-            setSearch={ setSearch }
-            switchingCounter={ switchingCounter }
+            owner={owner}
+            location={location}
+            setSearch={setSearch}
+            switchingCounter={switchingCounter}
           />
-        }
+        )}
       </div>
       <div className="top-bar-right">
         <div className="menu-bar">
@@ -39,22 +38,22 @@ const TopBar = ({ imageHref, user, location, owner, search, setSearch, switching
             edge="start" 
             color="inherit" 
             aria-label="menu"
-            onClick={() => history.push("/bookmarks") }
+            onClick={() => history.push("/bookmarks")}
           >
             <MenuIcon />
           </IconButton>
         </div>
         <Link 
           className="profile-menu"
-          to={ ownerLink }
+          to={ownerLink}
         >
           <img
-            src={ imageHref }
+            src={profilePictureName}
             alt="error"
             className="image"
           />
           <span className="name">
-            { user?.name }
+            {user?.name}
           </span>
         </Link>
       </div>

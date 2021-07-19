@@ -43,7 +43,7 @@ const SearchBar = ({ owner, location, setSearch, switchingCounter }) => {
     <form
       className="search-form" 
       noValidate 
-      onSubmit={ event => searchForPosts(event) }
+      onSubmit={event => searchForPosts(event)}
     >
       <div className="form-action">
         <button
@@ -58,7 +58,7 @@ const SearchBar = ({ owner, location, setSearch, switchingCounter }) => {
           type="text"
           placeholder="Search"
           className="search-input"
-          ref={ searchField }
+          ref={searchField}
         />
       </div>
     </form>

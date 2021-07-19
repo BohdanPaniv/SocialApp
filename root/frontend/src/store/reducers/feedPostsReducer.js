@@ -8,7 +8,9 @@ import {
   FEED_COMMENT_ADDED,
   LOGOUT_SUCCESS,
   GET_FILTERED_FEED,
-  FILTERING_FEED_ERROR
+  FILTERING_FEED_ERROR,
+  FEED_COMMENTS_RECEIVED,
+  GET_FEED_COMMENTS_ERROR
 } from "../actions/types";
 
 const initialState = {
@@ -17,6 +19,8 @@ const initialState = {
 };
 
 export default function feedReducer(state = initialState, action){
+  let feed = [...state.feed];
+
   switch (action.type) {
     case GET_FEED_LOADING:
       return {
@@ -42,11 +46,46 @@ export default function feedReducer(state = initialState, action){
         isLoading: false,
         feed: null
       }
-    case FEED_COMMENT_ADDED:
     case FEED_POST_LIKED:
+      feed.forEach(post => {
+        if (post._id === action.payload.postId) {
+          return post.likes.push(action.payload.likes);
+        }
+      });
+
+      return {
+        ...state,
+        feed
+      };
     case FEED_POST_UNLIKED:
-      let feed = [...state.feed];
-      
+      feed.forEach(post => {
+        if (post._id === action.payload.postId) {
+          post.likes.forEach((like, index) => {
+            if (like.userId === action.payload.likes.userId) {
+              post.likes.splice(index, 1);
+            }
+          });
+        }
+      });
+
+      return {
+        ...state,
+        feed
+      };
+    case FEED_COMMENT_ADDED:
+      feed.forEach(post => {
+        if (post._id === action.payload.postId) {
+          return post.comments.push(action.payload.comment);
+        }
+
+        return post;
+      });
+
+      return {
+        ...state,
+        feed
+      }
+    case FEED_COMMENTS_RECEIVED:
       feed = feed.map(post => {
         if (post._id === action.payload._id) {
           return action.payload;
@@ -57,12 +96,16 @@ export default function feedReducer(state = initialState, action){
 
       return {
         ...state,
-        feed: feed
+        feed
       }
     case LOGOUT_SUCCESS:
       return {
         ...state,
         feed: []
+      };
+    case GET_FEED_COMMENTS_ERROR:
+      return {
+        state
       };
     default:
       return state;

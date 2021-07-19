@@ -25,22 +25,22 @@ const ChangeName = ({ user, setIsChangeName }) => {
     <form
      className="change-name"
      noValidate
-     onSubmit={event => changeUserName(event) }
+     onSubmit={event => changeUserName(event)}
     >
       <div className="form-control">
         <TextField
           id="standard-basic" 
           label="First Name"
-          inputRef={ name }
-          defaultValue={ user.name }
+          inputRef={name}
+          defaultValue={user.name}
         />
       </div>
       <div className="form-control">
         <TextField
           id="standard-basic" 
           label="Surname"
-          inputRef={ surname }
-          defaultValue={ user.surname }
+          inputRef={surname}
+          defaultValue={user.surname}
         />
       </div>
       <div className="form-action">
@@ -56,7 +56,7 @@ const ChangeName = ({ user, setIsChangeName }) => {
           variant="contained" 
           color="primary"
           className="cancel-btn"
-          onClick={ () => setIsChangeName(false) }
+          onClick={() => setIsChangeName(false)}
         >
           Cancel
         </Button>

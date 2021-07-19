@@ -38,7 +38,7 @@ const ResetPasswordCard = () => {
         <form
           className="reset-password-form" 
           noValidate
-          onSubmit={ resetUserPassword }
+          onSubmit={resetUserPassword}
         >
           <div className="form-text">
             <span>
@@ -52,7 +52,7 @@ const ResetPasswordCard = () => {
               className="form-input"
               label="New Password"
               variant="outlined"
-              inputRef={ password }
+              inputRef={password}
             />
           </div>
           <div className="form-control">
@@ -62,14 +62,14 @@ const ResetPasswordCard = () => {
               className="form-input"
               label="Confirm Password"
               variant="outlined"
-              inputRef={ confirmPassword}
+              inputRef={confirmPassword}
             />
           </div>
           <div className="form-control execute-button last-element">
             <Button
               variant="contained" 
               className="cancel-button"
-              onClick={ () => history.push("/") }
+              onClick={() => history.push("/")}
               color="primary"
             >
               Cancel

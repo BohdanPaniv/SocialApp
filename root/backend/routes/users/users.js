@@ -125,7 +125,7 @@ router.post("/changeProfilePicture", [], async (req, res) => {
 
 		const changedUser = await User.findOneAndUpdate(
 			{ _id: userId },
-			{ $set: { profilePicture: image }},
+			{ $set: { profilePictureName: image }},
 			{ new: true }
 		).select("-password");
 
@@ -142,7 +142,7 @@ router.post("/changeCoverPicture", [], async (req, res) => {
 
 		const changedUser = await User.findOneAndUpdate(
 			{ _id: userId },
-			{ $set: { coverPicture: image }},
+			{ $set: { coverPictureName: image }},
 			{ new: true }
 		).select("-password");
 
@@ -156,10 +156,10 @@ router.post("/getPossibleFollowing", [], async (req, res) => {
 	
 	try {
 		const { user, search } = req.body;
-		const users = await User.find({ _id: { $ne: user._id }});
+		const users = await User.find({ _id: { $ne: user._id }}).select("-password");
 		const filteredUsers = [];
 
-		for (const currentUser of users) {
+		for (let currentUser of users) {
 			let isMatch = false;
 			
 			user.following.forEach(following => {
@@ -168,18 +168,25 @@ router.post("/getPossibleFollowing", [], async (req, res) => {
 				}
 			});
 
+			const following = {
+				userId: currentUser._id,
+				name: currentUser.name,
+				surname: currentUser.surname,
+				profilePictureName: currentUser.profilePictureName
+			};
+
+			console.log(following)
+
 			if (!isMatch) {
 				if (search) {
-					const following = await User.findById(currentUser._id);
 					const regex = new RegExp(`${search}`, "i");
 					const followingName = `${following.name} ${following.surname}`;
-					console.log(followingName)
 
 					if (regex.test(followingName)) {
-						filteredUsers.push({ userId: currentUser._id });
+						filteredUsers.push(following);
 					}
 				} else {
-					filteredUsers.push({ userId: currentUser._id });
+					filteredUsers.push(following);
 				}
 			}
 		}
@@ -193,31 +200,31 @@ router.post("/getPossibleFollowing", [], async (req, res) => {
 router.post("/getFollowers", [], async (req, res) => {
 	
 	try {
-		const { _id, search } = req.body;
-		const foundUser = await User.findById(_id);
+		const { followers, search } = req.body;
 
-		if (!foundUser) {
-			return res.status(400).json({
-				message: "User not found"
-			});
+		const newFollowers = [];
+		const filteredFollowers = [];
+
+		for (let follower of followers) {
+			const user = await User.findById(follower.userId);
+			follower.profilePictureName = user.profilePictureName;
+			follower.name = user.name;
+			follower.surname = user.surname;
+			newFollowers.push(follower); 
 		}
-
-		let followers = [];
 
 		if (search) {
 			const regex = new RegExp(`${search}`, "i");
 
-			for (const follower of foundUser.followers) {
-				const user = await User.findById(follower.userId);
-				const userName = `${user.name} ${user.surname}`;
+			for (const follower of newFollowers) {
+				const userName = `${follower.name} ${follower.surname}`;
 				
 				if (regex.test(userName)) {
-					followers.push(follower);
+					filteredFollowers.push(follower);
 				}
 			}
 		}
-
-		res.json({ followers: search ? followers : foundUser.followers });
+		res.json({ followers: search ? filteredFollowers : newFollowers });
 	} catch (error) {
 		res.status(500).json(error);
 	}
@@ -226,31 +233,32 @@ router.post("/getFollowers", [], async (req, res) => {
 router.post("/getFollowing", [], async (req, res) => {
 	
 	try {
-		const { _id, search } = req.body;
-		const foundUser = await User.findById(_id);
+		const { following, search } = req.body;
 
-		if (!foundUser) {
-			return res.status(400).json({
-				message: "User not found"
-			});
+		const newFollowing = [];
+		const filteredFollowing = [];
+
+		for (let currentFollowing of following) {
+			const user = await User.findById(currentFollowing.userId);
+			currentFollowing.profilePictureName = user.profilePictureName;
+			currentFollowing.name = user.name;
+			currentFollowing.surname = user.surname;
+			newFollowing.push(currentFollowing); 
 		}
 
-		let following = [];
-
 		if (search) {
-			const regex = new RegExp(`${search}`, "i");
+			const regex = new RegExp(search, "i");
 
-			for (const follower of foundUser.following) {
-				const user = await User.findById(follower.userId);
-				const userName = `${user.name} ${user.surname}`;
+			for (const currentFollowing of newFollowing) {
+				const userName = `${currentFollowing.name} ${currentFollowing.surname}`;
 				
 				if (regex.test(userName)) {
-					following.push(follower);
+					filteredFollowing.push(currentFollowing);
 				}
 			}
 		}
 
-		res.json({ following: search ? following : foundUser.following });
+		res.json({ following: search ? filteredFollowing : newFollowing });
 	} catch (error) {
 		res.status(500).json(error);
 	}

@@ -14,24 +14,28 @@ import {
   ADD_COMMENT_ERROR,
   FEED_COMMENT_ADDED,
   PROFILE_COMMENT_ADDED,
+  FEED_COMMENTS_RECEIVED,
+  GET_FEED_COMMENTS_ERROR,
+  PROFILE_COMMENTS_RECEIVED,
+  GET_PROFILE_COMMENTS_ERROR,
 } from "./types";
 import axios from "../../utils/API";
 import { returnResponse } from "./responseActions";
 
 export const createPost = ({ post, isHome }) => {
   return async(dispatch) => {
-    let imageName = null;
+    let postImageName = null;
 
-    if (post.imageName) {
+    if (post.postImageName) {
       const formData = new FormData();
-      formData.append("file", post.imageName);
+      formData.append("file", post.postImageName);
 
       await axios.post("file/upload", formData).then(res => {
         dispatch({
           type: IMAGE_SAVED
         });
 
-        imageName = res.data.filename;
+        postImageName = res.data.filename;
       })
       .catch(err => {
         dispatch({
@@ -40,7 +44,7 @@ export const createPost = ({ post, isHome }) => {
       });
     }
 
-    post.imageName = imageName;
+    post.postImageName = postImageName;
 
     await axios.post("posts/createPost", post).then(res => {
       if (isHome) {
@@ -48,9 +52,11 @@ export const createPost = ({ post, isHome }) => {
           type: FEED_POST_ADDED,
           payload: res.data.post
         });
+
         dispatch(
           returnResponse(res.data, res.status, FEED_POST_ADDED)
         );
+        
         return;
       }
 
@@ -83,14 +89,15 @@ export const addLike = ({ user, post, isHome }) => {
       if (isHome) {
         dispatch({
           type: FEED_POST_LIKED,
-          payload: res.data.post
+          payload: res.data
         });
+
         return;
       }
 
       dispatch({
         type: PROFILE_POST_LIKED,
-        payload: res.data.post
+        payload: res.data
       });
     })
     .catch(error => {
@@ -103,18 +110,18 @@ export const addLike = ({ user, post, isHome }) => {
 
 export const removeLike = ({ user, post, isHome }) => {
   return async(dispatch) => {
-    await axios.post("posts/removeLike", { user, post}).then(res => {
+    await axios.post("posts/removeLike", { user, post }).then(res => {
       if (isHome) {
         dispatch({
           type: FEED_POST_UNLIKED,
-          payload: res.data.post
+          payload: res.data
         });
         return;
       }
 
       dispatch({
         type: PROFILE_POST_UNLIKED,
-        payload: res.data.post
+        payload: res.data
       });
     })
     .catch(error => {
@@ -129,16 +136,15 @@ export const addComment = ({ userComment, postId, isHome }) => {
   return async(dispatch) => {
     await axios.post("posts/addComment", { userComment, postId }).then(res => {
       if (isHome) {
-        dispatch({
+        return dispatch({
           type: FEED_COMMENT_ADDED,
-          payload: res.data.post
+          payload: res.data
         });
-        return;
       }
 
       dispatch({
         type: PROFILE_COMMENT_ADDED,
-        payload: res.data.post
+        payload: res.data
       });
     })
     .catch(error => {
@@ -148,3 +154,32 @@ export const addComment = ({ userComment, postId, isHome }) => {
     });
   };
 };
+
+export const getComments = ({ post, isHome }) => {
+  return async(dispatch) => {
+    await axios.post("posts/getComments", { post }).then(res => {
+      if (isHome) {
+        return dispatch({
+          type: FEED_COMMENTS_RECEIVED,
+          payload: res.data.post
+        });
+      }
+
+      dispatch({
+        type: PROFILE_COMMENTS_RECEIVED,
+        payload: res.data.post
+      });
+    })
+    .catch(error => {
+      if (isHome) {
+        return dispatch({
+          type: GET_FEED_COMMENTS_ERROR
+        });
+      }
+
+      dispatch({
+        type: GET_PROFILE_COMMENTS_ERROR
+      });
+    });
+  };
+}

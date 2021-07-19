@@ -28,18 +28,17 @@ const Authentication = () => {
           </span>
         </div>
         <div className="auth-right">
-          {
-            isLogin ? 
-              <LoginCard
-                isLogin={ isLogin }
-                setIsLogin={ setIsLogin }
-              /> 
-              : 
-              <RegisterCard
-                isLogin={ isLogin }
-                setIsLogin={ setIsLogin }
-              />
-          }
+          {isLogin ? (
+            <LoginCard
+              isLogin={ isLogin }
+              setIsLogin={ setIsLogin }
+            /> 
+          ) : (
+            <RegisterCard
+              isLogin={ isLogin }
+              setIsLogin={ setIsLogin }
+            />
+          )}
         </div>
       </div>
     </div>

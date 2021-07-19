@@ -6,10 +6,10 @@ import { getProfilePosts } from "../../store/actions/profilePostsActions";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
-const Feed = ({ user, isHome, owner }) => {
+const Feed = ({ user, isHome, owner, profilePictureName }) => {
   const dispatch = useDispatch();
   const feed = useSelector(store => store.feedPosts?.feed);
-  const profileposts = useSelector(store => store.profilePosts?.posts);
+  const profilePosts = useSelector(store => store.profilePosts?.posts);
 
   useEffect(() => {
     if (isHome) {
@@ -26,26 +26,30 @@ const Feed = ({ user, isHome, owner }) => {
   return (
     <div className="feed">
       <div className="feed-wrapper">
-        {
-          owner._id === user._id &&
-          <Share isHome={ isHome }/>
-        }
-        {
-          isHome ?
-          feed && feed.map(post => (
+        {owner._id === user._id && (
+          <Share
+            isHome={ isHome }
+            profilePictureName={ profilePictureName }
+          />
+        )}
+        {isHome ?
+          feed && feed.map((post, index) => (
             <Post
               key={ post._id }
+              index={ index }
               post={ post }
               user={ user }
               isHome={ isHome }
             />
           ))
           :
-          profileposts && profileposts.map(post => (
+          profilePosts && profilePosts.map((post, index) => (
             <Post
               key={ post._id }
+              index={ index }
               post={ post }
               user={ user }
+              owner={ owner }
               isHome={ isHome }
             />
           ))

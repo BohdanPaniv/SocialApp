@@ -1,22 +1,17 @@
 import "./share.scss";
-import {
-  PermMedia,
-  Cancel
-} from "@material-ui/icons";
+import { PermMedia, Cancel } from "@material-ui/icons";
 import { Button, TextField } from "@material-ui/core";
 import { useSelector, useDispatch } from "react-redux";
 import { useRef, useState } from "react";
 import { createPost } from "../../store/actions/postsActions";
 import { Link } from "react-router-dom";
 
-const Share = ({ isHome }) => {
+const Share = ({ isHome, profilePictureName }) => {
   const user = useSelector(store => store.auth.user);
   const dispatch = useDispatch();
   const [file, setFile] = useState();
   const description = useRef();
   const ownerLink = `/profile/${user._id}`;
-  const path = process.env.REACT_APP_GET_FILE;
-  const imageHref = user.profilePicture ? path + user.profilePicture : "/assets/default-user.png";
 
   const sharePost = (event) => {
     event.preventDefault();
@@ -26,7 +21,7 @@ const Share = ({ isHome }) => {
       const post = {
         userId: user._id,
         description: text,
-        imageName: file,
+        postImageName: file,
         createdAt: Date.now()
       };
 
@@ -47,7 +42,7 @@ const Share = ({ isHome }) => {
         />
         <Cancel
           className="cancel-btn" 
-          onClick={() => setFile(null)}
+          onClick={ () => setFile(null) }
         />
       </div>
     );
@@ -64,7 +59,7 @@ const Share = ({ isHome }) => {
       <form
         className="share-form"
         noValidate 
-        onSubmit={ event => sharePost(event) }
+        onSubmit={event => sharePost(event)}
       >
         <div className="form-top">
           <div className="form-content">
@@ -73,7 +68,7 @@ const Share = ({ isHome }) => {
               className="link-container"
             >
               <img
-                src={ imageHref }
+                src={profilePictureName}
                 alt=""
                 className="share-icon"
               />
@@ -85,17 +80,14 @@ const Share = ({ isHome }) => {
               label="What's up?"
               multiline
               variant="filled"
-              inputRef={ description }
+              inputRef={description}
               className="form-input"
             />
           </div>
         </div>
-        {
-          file && 
-          (
-            <ImageContainer />
-          )
-        }
+        {file && (
+          <ImageContainer />
+        )}
         <div className="form-bottom">
           <div className="options">
             <div className="option">

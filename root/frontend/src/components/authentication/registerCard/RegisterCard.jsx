@@ -7,10 +7,7 @@ import { register } from "../../../store/actions/authActions";
 import { useDispatch, useSelector } from 'react-redux';
 import { REGISTER_SUCCESS } from "../../../store/actions/types";
 
-const RegisterCard = ({
-    isLogin,
-    setIsLogin
-}) => {
+const RegisterCard = ({ isLogin, setIsLogin }) => {
   const name = useRef();
   const surname = useRef();
   const email = useRef();
@@ -47,14 +44,14 @@ const RegisterCard = ({
         <form
           className="register-form"
           noValidate 
-          onSubmit={event => signUp(event) }
+          onSubmit={event => signUp(event)}
         >
           <div className="form-control">
             <TextField 
               className="form-input"
               label="Name"
               variant="outlined"
-              inputRef={ name }
+              inputRef={name}
             />
           </div>
           <div className="form-control">
@@ -62,7 +59,7 @@ const RegisterCard = ({
               className="form-input"
               label="Surname"
               variant="outlined"
-              inputRef={ surname }
+              inputRef={surname}
             />
           </div>
           <div className="form-control">
@@ -71,7 +68,7 @@ const RegisterCard = ({
               className="form-input"
               label="Email"
               variant="outlined"
-              inputRef={ email }
+              inputRef={email}
             />
           </div>
           <div className="form-control">
@@ -81,7 +78,7 @@ const RegisterCard = ({
               className="form-input"
               label="Password" 
               variant="outlined"
-              inputRef={ password }
+              inputRef={password}
             />
           </div>
           <div className="form-action">
@@ -103,7 +100,7 @@ const RegisterCard = ({
             <Button 
               variant="contained" 
               className="log-into-button btn"
-              onClick={ changeIsLogin }
+              onClick={changeIsLogin}
               color="primary"
             >
               Log into Account

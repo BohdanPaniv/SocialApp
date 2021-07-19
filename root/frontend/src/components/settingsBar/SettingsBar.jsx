@@ -7,7 +7,7 @@ import { changePicture } from "../../store/actions/userActions";
 import ChangePassword from "./changePassword/ChangePassword";
 import ChangeUserInfo from "./changeUserInfo/ChangeUserInfo";
 
-const SettingsBar = ({ user, imageHref, coverPictureHref }) => {
+const SettingsBar = ({ user, profilePictureName, coverPictureHref }) => {
   const [isChangeName, setIsChangeName] = useState(false);
   const [isChangePassword, setIsChangePassword] = useState(false);
   const [isChangeUserInfo, setIsChangeUserInfo] = useState(false);
@@ -23,7 +23,7 @@ const SettingsBar = ({ user, imageHref, coverPictureHref }) => {
     const data = {
       userId: user._id,
       image: profilePicture,
-      oldImage: user.profilePicture
+      oldImage: user.profilePictureName
     };
 
     dispatch(changePicture({ data, type: PROFILE }));
@@ -34,7 +34,7 @@ const SettingsBar = ({ user, imageHref, coverPictureHref }) => {
     const data = {
       userId: user._id,
       image: coverPicture,
-      oldImage: user.coverPicture
+      oldImage: user.coverPictureName
     };
 
     dispatch(changePicture({ data, type: COVER }));
@@ -67,11 +67,10 @@ const SettingsBar = ({ user, imageHref, coverPictureHref }) => {
         <span className="name">
           Name
         </span>
-        {
-          isChangeName === false ?
+        {isChangeName === false ? (
           <div className="setting-container">
             <span className="value">
-              { userName }
+              {userName}
             </span>
             <span
               className="edit"
@@ -80,12 +79,12 @@ const SettingsBar = ({ user, imageHref, coverPictureHref }) => {
               Edit
             </span>
           </div>
-          :
+        ) : (
           <ChangeName
-           user={ user }
-           setIsChangeName={ setIsChangeName }
+            user={user}
+            setIsChangeName={setIsChangeName}
           />
-        }
+        )}
       </div>
       <div className="setting">
         <span className="name">
@@ -94,18 +93,17 @@ const SettingsBar = ({ user, imageHref, coverPictureHref }) => {
         <div className="setting-container">
           <div className="image-container">
             <img 
-              src={ profilePicture ? URL.createObjectURL(profilePicture) : imageHref }
+              src={profilePicture ? URL.createObjectURL(profilePicture) : profilePictureName}
               alt="error"
               className="profile-picture"
             />
-            {
-              profilePicture &&
+            {profilePicture && (
               <div cla="profile-picture-buttons">
                 <Button
                   variant="contained" 
                   color="primary"
                   className="save-btn btn"
-                  onClick={ changeUserProfilePicture }
+                  onClick={changeUserProfilePicture}
                 >
                   Save
                 </Button>
@@ -113,12 +111,12 @@ const SettingsBar = ({ user, imageHref, coverPictureHref }) => {
                   variant="contained" 
                   color="primary"
                   className="cancel-btn btn"
-                  onClick={() => setProfilePicture(null) }
+                  onClick={() => setProfilePicture(null)}
                 >
                   Cancel
                 </Button>
               </div>
-            }
+            )}
           </div>
           <label htmlFor="profile-picture">
             <span className="edit">
@@ -141,18 +139,17 @@ const SettingsBar = ({ user, imageHref, coverPictureHref }) => {
         <div className="setting-container">
           <div className="image-container">
             <img 
-              src={ coverPicture ? URL.createObjectURL(coverPicture) : coverPictureHref }
+              src={coverPicture ? URL.createObjectURL(coverPicture) : coverPictureHref}
               alt="error"
               className="cover-picture"
             />
-            {
-              coverPicture &&
+            {coverPicture && (
               <div cla="profile-picture-buttons">
                 <Button
                   variant="contained" 
                   color="primary"
                   className="save-btn btn"
-                  onClick={ changeUserCoverPicture }
+                  onClick={changeUserCoverPicture}
                 >
                   Save
                 </Button>
@@ -165,7 +162,7 @@ const SettingsBar = ({ user, imageHref, coverPictureHref }) => {
                   Cancel
                 </Button>
               </div>
-            }
+            )}
           </div>
           <label htmlFor="cover-picture">
             <span className="edit">
@@ -185,18 +182,17 @@ const SettingsBar = ({ user, imageHref, coverPictureHref }) => {
         <span className="name">
           User info
         </span>
-        {
-          isChangeUserInfo === false ?
+        {isChangeUserInfo === false ? (
           <div className="setting-container">
             <div className="info-container">
               <span className="value">
-                City: { user.city }
+                City: {user.city}
               </span>
               <span className="value info">
-                From: { user.from }
+                From: {user.from}
               </span>
               <span className="value info">
-                Relationship: { relationshipType[user.relationship] }
+                Relationship: {relationshipType[user.relationship]}
               </span>
             </div>
             <span
@@ -206,31 +202,30 @@ const SettingsBar = ({ user, imageHref, coverPictureHref }) => {
               Edit
             </span>
           </div>
-          :
+        ) : (
           <ChangeUserInfo
-           user={ user }
-           setIsChangeUserInfo={ setIsChangeUserInfo }
+            user={user}
+            setIsChangeUserInfo={setIsChangeUserInfo}
           />
-        }
+        )}
       </div>
       <div className="setting">
         <span className="name">
           Password
         </span>
-        {
-          isChangePassword === false ?
+        {isChangePassword === false ? (
           <span
             className="edit"
             onClick={() => setIsChangePassword(true)}
           >
             Edit
           </span>
-          :
+        ) : (
           <ChangePassword
-           user={ user }
-           setIsChangePassword={ setIsChangePassword }
+            user={user}
+            setIsChangePassword={setIsChangePassword}
           />
-        }
+        )}
       </div>
     </div>
   );

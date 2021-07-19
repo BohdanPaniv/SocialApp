@@ -21,7 +21,7 @@ const app = express();
 dbConnection();
 
 app.use(cookieParser());
-app.use(express.json({ extended: true, limit: '50mb' }));
+app.use(express.json({ extended: true, limit: "50mb" }));
 app.use("/api/auth", authRoute);
 app.use("/api/posts", postsRouter);
 app.use("/api/users", userRouter);
