@@ -4,7 +4,7 @@ import SideBar from "../../components/sideBar/SideBar";
 import { useSelector } from 'react-redux';
 import ContactsBar from "../../components/contactsBar/ContactsBar";
 import { useParams } from "react-router-dom";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import { getUser } from "../../store/actions/userActions";
 import { useDispatch } from "react-redux";
 
@@ -14,9 +14,20 @@ const Contacts = () => {
   const [owner, setOwner] = useState();
   const { id } = useParams();
   const path = process.env.REACT_APP_GET_FILE;
-  const profilePictureName = user.profilePictureName ? path + user.profilePictureName : "/assets/default-user.png";
   const [search, setSearch] = useState();
   const [switchingCounter, setSwitchingCounter] = useState(0);
+  const defaultProfilePicture = "/assets/default-user.png";
+  const [profilePictureName, setProfilePictureName] = useState(defaultProfilePicture);
+
+  const setUserData = useCallback(() => {
+    if (user.profilePictureName) {
+      setProfilePictureName(path + user.profilePictureName);
+    }
+  }, [user.profilePictureName, path]);
+
+  useEffect(() => {
+    setUserData();
+  }, [setUserData]);
 
   useEffect(() => {
     if (id !== user._id) {

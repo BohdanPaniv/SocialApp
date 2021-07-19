@@ -4,7 +4,7 @@ import SideBar from "../../components/sideBar/SideBar";
 import Feed from "../../components/feed/Feed";
 import HomeRightBar from "../../components/homeRightBar/HomeRightBar";
 import { useMessage } from "../../hooks/useMessage";
-import { useEffect } from "react";
+import { useEffect, useState, useCallback } from "react";
 import { useSelector } from 'react-redux';
 
 const Home = () => {
@@ -12,7 +12,18 @@ const Home = () => {
   const response = useSelector(state => state.response);
   const path = process.env.REACT_APP_GET_FILE;
   const user = useSelector(store => store.auth.user);
-  const profilePictureName = user.profilePictureName ? path + user.profilePictureName : "/assets/default-user.png";
+  const defaultProfilePicture = "/assets/default-user.png";
+  const [profilePictureName, setProfilePictureName] = useState(defaultProfilePicture);
+
+  const setUserData = useCallback(() => {
+    if (user.profilePictureName) {
+      setProfilePictureName(path + user.profilePictureName);
+    }
+  }, [user.profilePictureName, path]);
+
+  useEffect(() => {
+    setUserData();
+  }, [setUserData]);
 
   useEffect(() => {
     if (response.id){

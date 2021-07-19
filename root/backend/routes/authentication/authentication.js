@@ -17,8 +17,6 @@ router.post("/register", authValidators.registerRequestValidator, async (req, re
 	try {
 		const errors = validationResult(req);
 
-		console.log(errors)
-
 		if (!errors.isEmpty()) {
 			return res.status(400).json({
 				message: errors.array()
@@ -133,6 +131,7 @@ router.get("/user", async (req, res) => {
 });
 
 router.post("/logOut", async (req, res) => {
+	
 	try {
 		res.clearCookie("token");
 		res.json({ message: "Cookie deleted"});

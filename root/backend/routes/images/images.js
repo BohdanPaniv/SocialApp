@@ -11,6 +11,7 @@ conn.once("open", function () {
 });
 
 router.get("/get/:filename", async (req, res) => {
+	
 	try {
 		const downStream = bucket.openDownloadStreamByName(req.params.filename);
 		downStream.pipe(res);
@@ -20,6 +21,7 @@ router.get("/get/:filename", async (req, res) => {
 });
 
 router.delete("/delete/:filename", async (req, res) => {
+	
 	try {
 		const document = await bucket.find({ filename: req.params.filename}).toArray();
 		
@@ -30,8 +32,7 @@ router.delete("/delete/:filename", async (req, res) => {
 		await bucket.delete(document[0]._id);
 		res.json({ message:"Old image deleted" });
 	} catch (error) {
-		console.log(error);
-		res.json({ message: "An error occured"});
+		res.json({ message: `An error occured + ${error}`});
 	}
 });
 

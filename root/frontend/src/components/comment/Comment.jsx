@@ -1,12 +1,24 @@
 import "./comment.scss";
 import { Link } from "react-router-dom";
 import CircularProgress from '@material-ui/core/CircularProgress';
+import { useState, useEffect, useCallback } from "react";
 
 const Comment = ({ user, comment }) => {
   const path = process.env.REACT_APP_GET_FILE;
   const date = new Date(comment.date).toLocaleString();
   const ownerLink = `/profile/${comment.userId}`;
-  const profilePictureName = comment.profilePictureName ? path + comment.profilePictureName : "/assets/default-user.png";
+  const defaultProfilePicture = "/assets/default-user.png";
+  const [profilePictureName, setProfilePictureName] = useState(defaultProfilePicture);
+
+  const setUserData = useCallback(() => {
+    if (comment.profilePictureName) {
+      setProfilePictureName(path + comment.profilePictureName);
+    }
+  }, [comment.profilePictureName, path]);
+
+  useEffect(() => {
+    setUserData();
+  }, [setUserData]);
 
   return(
     <>

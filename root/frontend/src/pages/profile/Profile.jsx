@@ -4,7 +4,7 @@ import SideBar from "../../components/sideBar/SideBar";
 import Feed from "../../components/feed/Feed";
 import { useSelector, useDispatch } from "react-redux";
 import { useParams } from "react-router-dom";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { useMessage } from "../../hooks/useMessage";
 import { getUser } from "../../store/actions/userActions";
 import ProfileRightBar from "../../components/profileRightBar/ProfileRightBar";
@@ -18,11 +18,38 @@ const Profile = () => {
   const { id } = useParams();
   const ownerName = owner && `${owner.name} ${owner.surname}`;
   const path = process.env.REACT_APP_GET_FILE;
-  const defaultIcon = "/assets/default-user.png";
   const defaultBackground = "/assets/background.jpg";
-  const profilePictureName = user?.profilePictureName ? path + user.profilePictureName : defaultIcon;
-  const ownerImageHref = owner?.profilePictureName ? path + owner.profilePictureName : defaultIcon;
-  const backgroundHref = owner?.coverPictureName ? path + owner.coverPictureName : defaultBackground;
+  const defaultProfilePicture = "/assets/default-user.png";
+  const [profilePictureName, setProfilePictureName] = useState(defaultProfilePicture);
+  const [ownerProfilePictureName, setOwnerProfilePictureName] = useState(defaultProfilePicture);
+  const [backgroundPictureName, setBackgroundPictureName] = useState(defaultBackground);
+
+  const setUserData = useCallback(() => {
+    if (user?.profilePictureName) {
+      setProfilePictureName(path + user.profilePictureName);
+    }
+    else {
+      setProfilePictureName(defaultProfilePicture);
+    }
+
+    if (owner?.profilePictureName) {
+      setOwnerProfilePictureName(path + owner.profilePictureName);
+    }
+    else {
+      setOwnerProfilePictureName(defaultProfilePicture);
+    }
+
+    if (owner?.coverPictureName) {
+      setBackgroundPictureName(path + owner.coverPictureName);
+    }
+    else {
+      setBackgroundPictureName(defaultBackground);
+    }
+  }, [user?.profilePictureName, path, owner?.profilePictureName, owner?.coverPictureName]);
+
+  useEffect(() => {
+    setUserData();
+  }, [setUserData]);
 
   useEffect(() => {
     const userInfo = {
@@ -67,12 +94,12 @@ const Profile = () => {
           <div className="right-top">
             <div className="profile-cover">
               <img 
-                src={backgroundHref}
+                src={backgroundPictureName}
                 alt="" 
                 className="cover-image"
               />
               <img 
-                src={ownerImageHref}
+                src={ownerProfilePictureName}
                 alt="" 
                 className="profile-image" 
               />

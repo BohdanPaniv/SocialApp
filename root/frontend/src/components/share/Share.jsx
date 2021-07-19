@@ -37,12 +37,12 @@ const Share = ({ isHome, profilePictureName }) => {
       <div className="image-container">
         <img 
           className="image"
-          src={ URL.createObjectURL(file) } 
+          src={URL.createObjectURL(file)} 
           alt="" 
         />
         <Cancel
           className="cancel-btn" 
-          onClick={ () => setFile(null) }
+          onClick={() => setFile(null)}
         />
       </div>
     );

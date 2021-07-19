@@ -3,6 +3,7 @@ const Post = require("../../models/Post");
 const User = require("../../models/User");
 
 router.post("/getProfilePosts", [], async (req, res) => {
+	
 	try {
 		const { _id, search } = req.body;
 		const foundUser = await User.findById(_id);
@@ -35,6 +36,7 @@ router.post("/getProfilePosts", [], async (req, res) => {
 });
 
 router.post("/addLike", [], async (req, res) => {
+	
 	try {
 		const { user, post } = req.body;
 		const postId = post._id;
@@ -55,6 +57,7 @@ router.post("/addLike", [], async (req, res) => {
 });
 
 router.post("/removeLike", [], async (req, res) => {
+	
 	try {
 		const { user, post } = req.body;
 		const postId = post._id;
@@ -75,6 +78,7 @@ router.post("/removeLike", [], async (req, res) => {
 });
 
 router.post("/createPost", async (req, res) => {
+	
 	try {
 		const { userId, description, postImageName, createdAt } = req.body;
 
@@ -97,6 +101,7 @@ router.post("/createPost", async (req, res) => {
 });
 
 router.post("/getFeed", [], async (req, res) => {
+	
 	try {
 		const { _id, search } = req.body;
 
@@ -148,6 +153,7 @@ router.post("/getFeed", [], async (req, res) => {
 });
 
 router.post("/addComment", [], async (req, res) => {
+	
 	try {
 		const { userComment, postId } = req.body;
 
@@ -170,6 +176,7 @@ router.post("/addComment", [], async (req, res) => {
 });
 
 router.post("/getComments", [], async (req, res) => {
+	
 	try {
 		const { post } = req.body;
 

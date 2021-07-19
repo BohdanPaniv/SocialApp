@@ -1,18 +1,21 @@
 import "./comments.scss";
 import { TextField, Button } from "@material-ui/core";
-import { useRef } from "react";
+import { useRef, useState, useCallback, useEffect } from "react";
 import Comment from "../comment/Comment";
 import { useDispatch, useSelector } from "react-redux";
 import { addComment } from "../../store/actions/postsActions";
 import { Link } from "react-router-dom";
 
 const Comments = ({ user, post, isHome, index }) => {
-  const comments = useSelector(state => isHome ? state.feedPosts.feed[index].comments : state.profilePosts.posts[index].comments);
   const comment = useRef();
   const path = process.env.REACT_APP_GET_FILE;
-  const userProfileImage = user.profilePictureName? path + user.profilePictureName : "/assets/default-user.png";
+  const defaultProfilePicture = "/assets/default-user.png";
+  const [profilePictureName, setProfilePictureName] = useState(defaultProfilePicture);
   const userLink = `/profile/${user._id}`;
   const dispatch = useDispatch();
+  const comments = useSelector(state => isHome ? 
+    state.feedPosts.feed[index].comments :
+    state.profilePosts.posts[index].comments);
 
   const addUserComment = (event) => {
     event.preventDefault();
@@ -33,6 +36,16 @@ const Comments = ({ user, post, isHome, index }) => {
     comment.current.value = null;
   }
 
+  const setUserData = useCallback(() => {
+    if (user.profilePictureName) {
+      setProfilePictureName(path + user.profilePictureName);
+    }
+  }, [user.profilePictureName, path]);
+
+  useEffect(() => {
+    setUserData();
+  }, [setUserData]);
+
   return (
     <div className="comments">
       <div className="comments-top">
@@ -46,7 +59,7 @@ const Comments = ({ user, post, isHome, index }) => {
             className="link"
           >
             <img
-              src={userProfileImage}
+              src={profilePictureName}
               alt="error" 
               className="comments-icon"
             />
